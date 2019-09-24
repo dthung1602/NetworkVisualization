@@ -8,6 +8,17 @@ from igraph import *
 
 from Canvas import Canvas
 
+LAYOUT_OPTIONS = [
+    ['Circle', 'circle'],
+    ['Distributed Recursive', 'drl'],
+    ['Fruchterman-Reingold', 'fr'],
+    ['Kamada-Kawai', 'kk'],
+    ['Large Graph', 'large'],
+    ['Random', 'random'],
+    ['Reingold-Tilford', 'rt'],
+    ['Reingold-Tilford Circular', 'rt_circular']
+]
+
 
 class Window(QMainWindow):
     def __init__(self):
@@ -23,13 +34,23 @@ class Window(QMainWindow):
         self.mainLayout.addWidget(self.canvas)
         # self.setLayout(mainLayout)
 
+        self.selectLayout = self.findChild(QComboBox, 'selectLayout')
+
         self.bindMenuActions()
+        self.addSelectLayoutOptions()
 
     def displayNode(self, n):
         pass
 
     def displayLine(self, l):
         pass
+
+    def addSelectLayoutOptions(self):
+        self.selectLayout.addItems([opt[0] for opt in LAYOUT_OPTIONS])
+        self.selectLayout.currentIndexChanged.connect(self.changeLayout)
+
+    def changeLayout(self, opt):
+        self.canvas.setGraphLayout(LAYOUT_OPTIONS[opt][1])
 
     def bindMenuActions(self):
         # QMenu.File

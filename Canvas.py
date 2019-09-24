@@ -23,6 +23,11 @@ class Canvas(QWidget):
         self.g = g = igraph.read('resource/graph/NREN-delay.graphml')
         self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
 
+        self.resetGraphLayout()
+
+    def resetGraphLayout(self):
+        g = self.g
+
         # use translation to convert negative coordinates to non-negative
         mx = min(g.vs['x'])
         my = min(g.vs['y'])
@@ -44,6 +49,14 @@ class Canvas(QWidget):
         self.zoom = 1
         self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.updateViewRect()
+
+    def setGraphLayout(self, layoutName):
+        layout = self.g.layout(layoutName)
+        for c, v in zip(layout.coords, self.g.vs):
+            v['x'] = c[0]
+            v['y'] = c[1]
+        self.resetGraphLayout()
+        self.update()
 
     def updateViewRect(self):
         size = self.size()
