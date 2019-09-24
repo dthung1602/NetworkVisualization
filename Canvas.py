@@ -119,6 +119,8 @@ class Canvas(QWidget):
                 return
 
         self.backgroundDragging = pos
+        self.selectedPoint = None
+        self.update()
 
     def mouseMoveEvent(self, event):
         pos = event.pos()
