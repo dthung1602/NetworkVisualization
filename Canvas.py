@@ -1,3 +1,4 @@
+from math import sqrt
 from random import choice
 
 import igraph
@@ -13,6 +14,7 @@ def randomColor():
 class Canvas(QWidget):
     HEIGHT = 400
     POINT_RADIUS = 8
+    LINE_DISTANCE = 4
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -36,26 +38,54 @@ class Canvas(QWidget):
         g.vs['y'] = [y / my * size.height() for y in g.vs['y']]
 
         # Init
-        self.backgroundDragging = self.pointDragging = None
+        self.backgroundDragging = self.pointDragging = self.selectedLine = None
         self.center = QPointF(size.width() / 2, size.height() / 2)
         self.zoom = 1
-        self.viewRect = self.toDraw = None
+        self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.updateViewRect()
 
     def updateViewRect(self):
         size = self.size()
-        viewRectWidth = size.width() / self.zoom
-        viewRectHeight = size.height() / self.zoom
+        w = size.width()
+        h = size.height()
+        viewRectWidth = w / self.zoom
+        viewRectHeight = h / self.zoom
         viewRectX = self.center.x() - viewRectWidth / 2
         viewRectY = self.center.y() - viewRectHeight / 2
         self.viewRect = QRectF(viewRectX, viewRectY, viewRectWidth, viewRectHeight)
+
+        viewRectLines = [
+            QLineF(0, 0, w, 0),
+            QLineF(w, 0, w, h),
+            QLineF(w, h, 0, h),
+            QLineF(0, h, 0, 0)
+        ]
+
+        def intersectWithViewRect(line):
+            return any([line.intersect(vrl, QPointF()) == 1 for vrl in viewRectLines])
+
+        screenRect = QRectF(0, 0, w, h)
+
+        def inScreen(edge):
+            return screenRect.contains(self.g.vs[edge.source]['pos']) or screenRect.contains(
+                self.g.vs[edge.target]['pos'])
 
         self.g.vs['pos'] = [QPointF(
             (v['x'] - viewRectX) * self.zoom,
             (v['y'] - viewRectY) * self.zoom
         ) for v in self.g.vs]
 
-        self.toDraw = [v for v in self.g.vs if self.viewRect.contains(v['x'], v['y'])]
+        self.g.es['line'] = [QLineF(
+            self.g.vs[e.source]['pos'],
+            self.g.vs[e.target]['pos'],
+        ) for e in self.g.es]
+
+        self.pointsToDraw = [v for v in self.g.vs if self.viewRect.contains(v['x'], v['y'])]
+
+        linesInScreen = {e for e in self.g.es if inScreen(e)}
+        linesIntersectScreen = {e for e in self.g.es if intersectWithViewRect(e['line'])}
+        self.linesToDraw = linesInScreen.union(linesIntersectScreen)
+
 
     def paintEvent(self, event):
         self.updateViewRect()
@@ -65,14 +95,14 @@ class Canvas(QWidget):
         painter.fillRect(event.rect(), QBrush(Qt.black))
 
         painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
-        for e in self.g.es:
-            painter.drawLine(
-                self.g.vs[e.source]['pos'],
-                self.g.vs[e.target]['pos'],
-            )
+        # draw egdes
+
+        for e in self.linesToDraw:
+            painter.drawLine(e['line'])
+
 
         painter.setPen(QPen(Qt.black, 1))
-        for v in self.toDraw:
+        for v in self.pointsToDraw:
             painter.setBrush(self.asnToColor[v['asn']])
             painter.drawEllipse(
                 v['pos'].x() - self.POINT_RADIUS / 2,
@@ -103,10 +133,24 @@ class Canvas(QWidget):
     def mousePressEvent(self, event):
         pos = event.pos()
 
+        def clickToLine(line):
+            try:
+                d = abs((line.x2() - line.x1()) * (line.y1() - pos.y()) - (line.x1() - pos.x()) * (
+                        line.y2() - line.y1())) / sqrt((line.x2() - line.x1()) ** 2 + (line.y2() - line.y1()) ** 2)
+            except ZeroDivisionError:
+                return False
+            return d < self.LINE_DISTANCE and min(line.x1(), line.x2()) < pos.x() < max(line.x1(), line.x2())
+
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
 
-        for v in self.toDraw:
+        for l in self.linesToDraw:
+            if clickToLine(l['line']):
+                self.selectedLine = l
+                print(l)
+                return
+
+        for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.pointDragging = v
                 print(v['id'])
