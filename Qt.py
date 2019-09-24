@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -32,9 +31,9 @@ class Window(QMainWindow):
         self.mainLayout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.canvas = Canvas(self)
         self.mainLayout.addWidget(self.canvas)
-        # self.setLayout(mainLayout)
 
         self.selectLayout = self.findChild(QComboBox, 'selectLayout')
+        self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
 
         self.bindMenuActions()
         self.addSelectLayoutOptions()
@@ -57,6 +56,9 @@ class Window(QMainWindow):
         # Open_button
         openBtn = self.findChild(QAction, 'action_Open')
         openBtn.triggered.connect(self.openFileNameDialog)
+        # Save_Image_button
+        saveImageBtn = self.findChild(QAction, 'actionSave_Image')
+        saveImageBtn.triggered.connect(self.saveImageDialog)
         # Save_button
         saveBtn = self.findChild(QAction, 'action_Save')
         saveBtn.triggered.connect(self.saveFileDialog)
@@ -76,16 +78,16 @@ class Window(QMainWindow):
 
         # Toolbar
         # Zoom in
-        zoomInBtn = self.findChild(QToolButton, 'zoomInBtn')
+        zoomInBtn = self.findChild(QToolButton, 'zoom_in_btn')
         zoomInBtn.pressed.connect(self.canvas.zoomInEvent)
         # Zoom out
-        zoomOutBtn = self.findChild(QToolButton, 'zoomOutBtn')
+        zoomOutBtn = self.findChild(QToolButton, 'zoom_out_btn')
         zoomOutBtn.pressed.connect(self.canvas.zoomOutEvent)
         # Zoom reset
-        zoomResetBtn = self.findChild(QToolButton, 'zoomResetBtn')
+        zoomResetBtn = self.findChild(QToolButton, 'zoom_reset_btn')
         zoomResetBtn.pressed.connect(self.canvas.zoomResetEvent)
         # Color picker
-        colorPickerBtn = self.findChild(QToolButton, 'colorPickerBtn')
+        colorPickerBtn = self.findChild(QToolButton, 'color_picker_btn')
         colorPickerBtn.pressed.connect(self.openColorDialog)
 
     def openColorDialog(self):
@@ -94,6 +96,18 @@ class Window(QMainWindow):
         if color.isValid():
             print(color.name())
 
+    def saveImageDialog(self):
+        fileName, _ = QFileDialog.getSaveFileName(
+            self, "Save As", "",
+            "All Files (*);;JPG Files (*.jpg)"
+        )
+        if fileName != '':
+            img = QPixmap(self.canvas.size())
+            painter = QPainter(img)
+            self.canvas.paint(painter)
+            painter.end()
+            img.save(fileName)
+
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
             # Minimize window
@@ -101,27 +115,39 @@ class Window(QMainWindow):
 
     def openFileNameDialog(self):
         options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(
             self, "Open", "",
             "All Files (*);;Python Files (*.py)", options=options
         )
         if fileName:
-            print("Open filename: " + fileName)
+            self.canvas.setGraph(fileName)
 
     def saveFileDialog(self):
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getSaveFileName(
             self, "Save As", "",
-            "All Files (*);;JPG Files (*.jpg)", options=options
+            "All Files (*);;GraphML Files (*.graphml);;GML Files (*.gml)", options=options
         )
-        if fileName:
-            self.preview_screen.save(fileName, "jpg")
-            # output = plot(self.result.g)
-            # output.save(fileName)
-            # output = QScreen.grabWindow(self.main_layout.winId())
 
-            # output.save(fileName, format='jpg')
-            # print("Save filename: " + fileName)
+        if fileName:
+            if ".graphml" in fileName:
+                self.canvas.g.write_graphml(fileName)
+            elif ".gml" in fileName:
+                self.canvas.g.write_gml(fileName)
+
+    @staticmethod
+    def clearLayout(layout):
+        for i in reversed(range(layout.count())):
+            layout.itemAt(i).widget().deleteLater()
+
+    def displayVertex(self, l):
+        # vertexInfo = VertexInfo(vertex)
+        self.clearLayout(self.infoArea)
+        print('abc')
+        print(l)
+        testLabel = QLabel("&Clicked" + str(l))
+        self.infoArea.addWidget(testLabel)
 
 
 if __name__ == "__main__":

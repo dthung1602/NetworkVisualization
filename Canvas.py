@@ -14,15 +14,19 @@ def randomColor():
 class Canvas(QWidget):
     HEIGHT = 400
     POINT_RADIUS = 8
-    LINE_DISTANCE = 4
+    LINE_DISTANCE = 2
 
-    def __init__(self, gui):
+    def __init__(self, gui, fileName="resource/graph/NREN-delay.graphml"):
         super().__init__(None)
-
+        self.defaultUrl = 'resource/graph/NREN-delay.graphml'
         self.gui = gui
-        self.g = g = igraph.read('resource/graph/NREN-delay.graphml')
-        self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
 
+        self.g = self.asnToColor = None
+        self.setGraph('resource/graph/NREN-delay.graphml')
+
+    def setGraph(self, filename):
+        self.g = g = igraph.read(filename)
+        self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
         self.resetGraphLayout()
 
     def resetGraphLayout(self):
@@ -106,16 +110,16 @@ class Canvas(QWidget):
         painter = QPainter()
         painter.begin(self)
         painter.fillRect(event.rect(), QBrush(Qt.black))
+        self.paint(painter)
+        painter.end()
 
-        try:
-            for e in self.linesToDraw:
-                if e == self.selectedLine:
-                    painter.setPen(QPen(Qt.red, 2, join=Qt.PenJoinStyle(0x80)))
-                else:
-                    painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
-                painter.drawLine(e['line'])
-        except Exception as e:
-            print(e)
+    def paint(self, painter):
+        for e in self.linesToDraw:
+            if e == self.selectedLine:
+                painter.setPen(QPen(Qt.red, 2, join=Qt.PenJoinStyle(0x80)))
+            else:
+                painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
+            painter.drawLine(e['line'])
 
         for v in self.pointsToDraw:
             if v == self.selectedPoint:
@@ -128,7 +132,6 @@ class Canvas(QWidget):
                 v['pos'].y() - self.POINT_RADIUS / 2,
                 self.POINT_RADIUS, self.POINT_RADIUS
             )
-        painter.end()
 
     def zoomInEvent(self):
         self.zoom += 0.2
@@ -162,11 +165,13 @@ class Canvas(QWidget):
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
 
+        # Ongoing
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLine = l
+                self.gui.displayVertex(l['weight'])
                 self.selectedPoint = None
-                self.gui.displayLine(l)
+                # self.gui.displayLine(l)
                 self.update()
                 print(l)
                 return
@@ -174,7 +179,7 @@ class Canvas(QWidget):
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.pointDragging = v
-                self.gui.displayNode(v)
+                # self.gui.displayVertex(v)
                 self.selectedPoint = v
                 self.selectedLine = None
                 self.update()
