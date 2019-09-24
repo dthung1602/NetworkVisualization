@@ -14,9 +14,10 @@ class Canvas(QWidget):
     HEIGHT = 400
     POINT_RADIUS = 8
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, gui):
+        super().__init__(None)
 
+        self.gui = gui
         self.g = g = igraph.read('resource/graph/NREN-delay.graphml')
         self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
 
@@ -36,7 +37,7 @@ class Canvas(QWidget):
         g.vs['y'] = [y / my * size.height() for y in g.vs['y']]
 
         # Init
-        self.backgroundDragging = self.pointDragging = None
+        self.backgroundDragging = self.pointDragging = self.selectedPoint = None
         self.center = QPointF(size.width() / 2, size.height() / 2)
         self.zoom = 1
         self.viewRect = self.toDraw = None
@@ -71,8 +72,11 @@ class Canvas(QWidget):
                 self.g.vs[e.target]['pos'],
             )
 
-        painter.setPen(QPen(Qt.black, 1))
         for v in self.toDraw:
+            if v == self.selectedPoint:
+                painter.setPen(QPen(Qt.red, 3))
+            else:
+                painter.setPen(QPen(Qt.black, 1))
             painter.setBrush(self.asnToColor[v['asn']])
             painter.drawEllipse(
                 v['pos'].x() - self.POINT_RADIUS / 2,
@@ -109,7 +113,9 @@ class Canvas(QWidget):
         for v in self.toDraw:
             if clickedToPoint(v['pos']):
                 self.pointDragging = v
-                print(v['id'])
+                self.gui.displayNode(v)
+                self.selectedPoint = v
+                self.update()
                 return
 
         self.backgroundDragging = pos
@@ -133,3 +139,5 @@ class Canvas(QWidget):
 
     def sizeHint(self):
         return QSize(self.HEIGHT * self.ratio, self.HEIGHT)
+
+

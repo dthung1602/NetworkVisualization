@@ -19,11 +19,14 @@ class Window(QMainWindow):
         self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
 
         self.mainLayout = self.findChild(QVBoxLayout, 'verticalLayout')
-        self.canvas = Canvas()
+        self.canvas = Canvas(self)
         self.mainLayout.addWidget(self.canvas)
         # self.setLayout(mainLayout)
 
         self.bindMenuActions()
+
+    def displayNode(self, n):
+        pass
 
     def bindMenuActions(self):
         # QMenu.File
