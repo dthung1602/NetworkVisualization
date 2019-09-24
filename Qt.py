@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import *
 from igraph import *
 
 from Canvas import Canvas
+from VertexInfo import VertexInfo
 
 
 class Window(QMainWindow):
@@ -22,11 +23,8 @@ class Window(QMainWindow):
         self.canvas = Canvas(self)
         self.mainLayout.addWidget(self.canvas)
         # self.setLayout(mainLayout)
-
+        self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.bindMenuActions()
-
-    def displayNode(self, n):
-        pass
 
     def bindMenuActions(self):
         # QMenu.File
@@ -52,16 +50,16 @@ class Window(QMainWindow):
 
         # Toolbar
         # Zoom in
-        zoomInBtn = self.findChild(QToolButton, 'zoomInBtn')
+        zoomInBtn = self.findChild(QToolButton, 'zoom_in_btn')
         zoomInBtn.pressed.connect(self.canvas.zoomInEvent)
         # Zoom out
-        zoomOutBtn = self.findChild(QToolButton, 'zoomOutBtn')
+        zoomOutBtn = self.findChild(QToolButton, 'zoom_out_btn')
         zoomOutBtn.pressed.connect(self.canvas.zoomOutEvent)
         # Zoom reset
-        zoomResetBtn = self.findChild(QToolButton, 'zoomResetBtn')
+        zoomResetBtn = self.findChild(QToolButton, 'zoom_reset_btn')
         zoomResetBtn.pressed.connect(self.canvas.zoomResetEvent)
         # Color picker
-        colorPickerBtn = self.findChild(QToolButton, 'colorPickerBtn')
+        colorPickerBtn = self.findChild(QToolButton, 'color_picker_btn')
         colorPickerBtn.pressed.connect(self.openColorDialog)
 
     def openColorDialog(self):
@@ -98,6 +96,18 @@ class Window(QMainWindow):
 
             # output.save(fileName, format='jpg')
             # print("Save filename: " + fileName)
+
+    def clearLayout(self, layout):
+        for i in reversed(range(layout.count())):
+            layout.itemAt(i).widget().deleteLater()
+
+    def displayVertex(self, l):
+        # vertexInfo = VertexInfo(vertex)
+        self.clearLayout(self.infoArea)
+        print('abc')
+        print(l)
+        testLabel = QLabel("&Clicked" + str(l))
+        self.infoArea.addWidget(testLabel)
 
 
 if __name__ == "__main__":

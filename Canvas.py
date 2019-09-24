@@ -147,13 +147,14 @@ class Canvas(QWidget):
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLine = l
+                self.gui.displayVertex(l['weight'])
                 print(l)
                 return
 
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.pointDragging = v
-                self.gui.displayNode(v)
+                # self.gui.displayVertex(v)
                 self.selectedPoint = v
                 self.update()
                 return
