@@ -18,6 +18,17 @@ LAYOUT_OPTIONS = [
     ['Reingold-Tilford Circular', 'rt_circular']
 ]
 
+CLUSTERING_ALGOS = [
+    ['Fast Greedy', 'community_fastgreedy'],
+    ['Info Map', 'community_infomap'],
+    ['Label Propagation', 'community_label_propagation'],
+    ['Multilevel', 'community_multilevel'],
+    ['Optimal Modularity', 'community_optimal_modularity'],
+    ['Edge Betweenness', 'community_edge_betweenness'],
+    ['Spinglass', 'community_spinglass'],
+    ['Walktrap', 'community_walktrap']
+]
+
 
 class Window(QMainWindow):
     def __init__(self):
@@ -33,10 +44,11 @@ class Window(QMainWindow):
         self.mainLayout.addWidget(self.canvas)
 
         self.selectLayout = self.findChild(QComboBox, 'selectLayout')
+        self.selectClusteringAlgo = self.findChild(QComboBox, 'selectClusteringAlgo')
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
 
         self.bindMenuActions()
-        self.addSelectLayoutOptions()
+        self.addSelectOptions()
 
     def displayNode(self, n):
         pass
@@ -44,12 +56,17 @@ class Window(QMainWindow):
     def displayLine(self, l):
         pass
 
-    def addSelectLayoutOptions(self):
+    def addSelectOptions(self):
         self.selectLayout.addItems([opt[0] for opt in LAYOUT_OPTIONS])
-        self.selectLayout.currentIndexChanged.connect(self.changeLayout)
+        self.selectLayout.currentIndexChanged.connect(self.changeGraphLayout)
+        self.selectClusteringAlgo.addItems([opt[0] for opt in CLUSTERING_ALGOS])
+        self.selectClusteringAlgo.currentIndexChanged.connect(self.changeClusteringAlgo)
 
-    def changeLayout(self, opt):
+    def changeGraphLayout(self, opt):
         self.canvas.setGraphLayout(LAYOUT_OPTIONS[opt][1])
+
+    def changeClusteringAlgo(self, opt):
+        self.canvas.setClusteringAlgo(CLUSTERING_ALGOS[opt][1])
 
     def bindMenuActions(self):
         # QMenu.File

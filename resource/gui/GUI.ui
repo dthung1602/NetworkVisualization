@@ -373,6 +373,16 @@ border-image: url(&quot;resource/gui/tool/graph.png&quot;);
       </rect>
      </property>
     </widget>
+    <widget class="QComboBox" name="selectClusteringAlgo">
+     <property name="geometry">
+      <rect>
+       <x>930</x>
+       <y>10</y>
+       <width>211</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="Line" name="line_3">
     <property name="geometry">
@@ -412,7 +422,7 @@ border-image: url(&quot;resource/gui/tool/graph.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="sizePolicy">
