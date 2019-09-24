@@ -28,6 +28,9 @@ class Window(QMainWindow):
     def displayNode(self, n):
         pass
 
+    def displayLine(self, l):
+        pass
+
     def bindMenuActions(self):
         # QMenu.File
         # Open_button

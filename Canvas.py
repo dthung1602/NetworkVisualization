@@ -94,10 +94,15 @@ class Canvas(QWidget):
         painter.begin(self)
         painter.fillRect(event.rect(), QBrush(Qt.black))
 
-        painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
-
-        for e in self.linesToDraw:
-            painter.drawLine(e['line'])
+        try:
+            for e in self.linesToDraw:
+                if e == self.selectedLine:
+                    painter.setPen(QPen(Qt.red, 2, join=Qt.PenJoinStyle(0x80)))
+                else:
+                    painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
+                painter.drawLine(e['line'])
+        except Exception as e:
+            print(e)
 
         for v in self.pointsToDraw:
             if v == self.selectedPoint:
@@ -147,6 +152,9 @@ class Canvas(QWidget):
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLine = l
+                self.selectedPoint = None
+                self.gui.displayLine(l)
+                self.update()
                 print(l)
                 return
 
@@ -155,11 +163,13 @@ class Canvas(QWidget):
                 self.pointDragging = v
                 self.gui.displayNode(v)
                 self.selectedPoint = v
+                self.selectedLine = None
                 self.update()
                 return
 
         self.backgroundDragging = pos
         self.selectedPoint = None
+        self.selectedLine = None
         self.update()
 
     def mouseMoveEvent(self, event):
