@@ -16,9 +16,10 @@ class Canvas(QWidget):
     POINT_RADIUS = 8
     LINE_DISTANCE = 4
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, gui):
+        super().__init__(None)
 
+        self.gui = gui
         self.g = g = igraph.read('resource/graph/NREN-delay.graphml')
         self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
 
@@ -38,7 +39,7 @@ class Canvas(QWidget):
         g.vs['y'] = [y / my * size.height() for y in g.vs['y']]
 
         # Init
-        self.backgroundDragging = self.pointDragging = self.selectedLine = None
+        self.backgroundDragging = self.pointDragging = self.selectedLine = self.selectedPoint = None
         self.center = QPointF(size.width() / 2, size.height() / 2)
         self.zoom = 1
         self.viewRect = self.pointsToDraw = self.linesToDraw = None
@@ -86,7 +87,6 @@ class Canvas(QWidget):
         linesIntersectScreen = {e for e in self.g.es if intersectWithViewRect(e['line'])}
         self.linesToDraw = linesInScreen.union(linesIntersectScreen)
 
-
     def paintEvent(self, event):
         self.updateViewRect()
 
@@ -95,21 +95,21 @@ class Canvas(QWidget):
         painter.fillRect(event.rect(), QBrush(Qt.black))
 
         painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
-        # draw egdes
 
         for e in self.linesToDraw:
             painter.drawLine(e['line'])
 
-
-        painter.setPen(QPen(Qt.black, 1))
         for v in self.pointsToDraw:
+            if v == self.selectedPoint:
+                painter.setPen(QPen(Qt.red, 3))
+            else:
+                painter.setPen(QPen(Qt.black, 1))
             painter.setBrush(self.asnToColor[v['asn']])
             painter.drawEllipse(
                 v['pos'].x() - self.POINT_RADIUS / 2,
                 v['pos'].y() - self.POINT_RADIUS / 2,
                 self.POINT_RADIUS, self.POINT_RADIUS
             )
-
         painter.end()
 
     def zoomInEvent(self):
@@ -153,10 +153,14 @@ class Canvas(QWidget):
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.pointDragging = v
-                print(v['id'])
+                self.gui.displayNode(v)
+                self.selectedPoint = v
+                self.update()
                 return
 
         self.backgroundDragging = pos
+        self.selectedPoint = None
+        self.update()
 
     def mouseMoveEvent(self, event):
         pos = event.pos()
