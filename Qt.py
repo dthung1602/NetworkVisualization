@@ -36,6 +36,9 @@ class Window(QMainWindow):
         # Open_button
         openBtn = self.findChild(QAction, 'action_Open')
         openBtn.triggered.connect(self.openFileNameDialog)
+        # Save_Image_button
+        saveImageBtn = self.findChild(QAction, 'actionSave_Image')
+        saveImageBtn.triggered.connect(self.saveImageDialog)
         # Save_button
         saveBtn = self.findChild(QAction, 'action_Save')
         saveBtn.triggered.connect(self.saveFileDialog)
@@ -73,6 +76,24 @@ class Window(QMainWindow):
         if color.isValid():
             print(color.name())
 
+    def saveImageDialog(self):
+        try:
+            # title = self.tabWidget.currentWidget().page().mainFrame().title()
+            fileName, _ = QFileDialog.getSaveFileName(
+                self, "Save As", "",
+                "All Files (*);;JPG Files (*.jpg)"
+            )
+            if fileName != '':
+                img = QPixmap(self.canvas.size())
+                painter = QPainter(img)
+                self.canvas.paint(painter)
+                painter.end()
+                if img.save(fileName):
+                    QMessageBox.information(self, "Succesful!,Page has been saved" + fileName)
+
+        except Exception as e:
+            print(e)
+
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
             # Minimize window
@@ -95,12 +116,12 @@ class Window(QMainWindow):
         )
         if fileName:
             self.preview_screen.save(fileName, "jpg")
-            # output = plot(self.result.g)
-            # output.save(fileName)
-            # output = QScreen.grabWindow(self.main_layout.winId())
+            output = plot(self.result.g)
+            output.save(fileName)
+            output = QScreen.grabWindow(self.main_layout.winId())
 
-            # output.save(fileName, format='jpg')
-            # print("Save filename: " + fileName)
+            output.save(fileName, format='jpg')
+            print("Save filename: " + fileName)
 
 
 if __name__ == "__main__":
