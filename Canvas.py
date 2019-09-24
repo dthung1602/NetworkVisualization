@@ -117,11 +117,11 @@ class Canvas(QWidget):
             )
 
     def zoomInEvent(self):
-        self.zoom += 0.2
+        self.zoom *= 1.2
         self.update()
 
     def zoomOutEvent(self):
-        self.zoom -= 0.2
+        self.zoom /= 1.2
         self.update()
 
     def zoomResetEvent(self):
@@ -152,7 +152,6 @@ class Canvas(QWidget):
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLine = l
-                self.gui.displayVertex(l['weight'])
                 self.selectedPoint = None
                 #self.gui.displayLine(l)
                 self.update()
@@ -162,7 +161,7 @@ class Canvas(QWidget):
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.pointDragging = v
-                # self.gui.displayVertex(v)
+                self.gui.displayVertex(v)
                 self.selectedPoint = v
                 self.selectedLine = None
                 self.update()

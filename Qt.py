@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import *
 from igraph import *
 
 from Canvas import Canvas
+from VertexInfo import VertexInfo
 
 
 class Window(QMainWindow):
@@ -121,13 +122,11 @@ class Window(QMainWindow):
         for i in reversed(range(layout.count())):
             layout.itemAt(i).widget().deleteLater()
 
-    def displayVertex(self, l):
+    def displayVertex(self, v):
         # vertexInfo = VertexInfo(vertex)
         self.clearLayout(self.infoArea)
-        print('abc')
-        print(l)
-        testLabel = QLabel("&Clicked" + str(l))
-        self.infoArea.addWidget(testLabel)
+        vertexInfo = VertexInfo(v)
+        self.infoArea.addWidget(vertexInfo)
 
 
 if __name__ == "__main__":
