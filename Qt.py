@@ -51,12 +51,6 @@ class Window(QMainWindow):
         self.bindMenuActions()
         self.addSelectOptions()
 
-    def displayNode(self, n):
-        pass
-
-    def displayLine(self, l):
-        pass
-
     def addSelectOptions(self):
         self.selectLayout.addItems([opt[0] for opt in LAYOUT_OPTIONS])
         self.selectLayout.currentIndexChanged.connect(self.changeGraphLayout)
@@ -160,7 +154,6 @@ class Window(QMainWindow):
             layout.itemAt(i).widget().deleteLater()
 
     def displayVertex(self, v):
-        # vertexInfo = VertexInfo(vertex)
         self.clearLayout(self.infoArea)
         vertexInfo = VertexInfo(v)
         self.infoArea.addWidget(vertexInfo)
