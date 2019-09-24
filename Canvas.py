@@ -203,6 +203,7 @@ class Canvas(QWidget):
                 self.selectedLine = l
                 self.selectedPoint = None
                 # self.gui.displayLine(l)
+                self.gui.displayEdge(l)
                 self.update()
                 print(l)
                 return

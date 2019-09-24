@@ -7,6 +7,7 @@ from igraph import *
 
 from Canvas import Canvas
 from VertexInfo import VertexInfo
+from EdgeInfo import EdgeInfo
 
 LAYOUT_OPTIONS = [
     ['Circle', 'circle'],
@@ -158,6 +159,10 @@ class Window(QMainWindow):
         vertexInfo = VertexInfo(v)
         self.infoArea.addWidget(vertexInfo)
 
+    def displayEdge(self,l):
+        self.clearLayout(self.infoArea)
+        edgeInfo = EdgeInfo(l)
+        self.infoArea.addWidget(edgeInfo)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
