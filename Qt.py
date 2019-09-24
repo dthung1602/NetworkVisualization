@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import igraph
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -101,6 +101,8 @@ class Window(QMainWindow):
             "All Files (*);;Python Files (*.py)", options=options
         )
         if fileName:
+            # self.canvas = Canvas(self, fileName)
+            # self.canvas.update()
             print("Open filename: " + fileName)
             self.canvas.setGraph(fileName)
 
@@ -108,8 +110,15 @@ class Window(QMainWindow):
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getSaveFileName(
             self, "Save As", "",
-            "All Files (*);;JPG Files (*.jpg)", options=options
+            "All Files (*);;GraphML Files (*.graphml);;GML Files (*.gml)", options=options
         )
+
+        if fileName:
+            if ".graphml" in fileName:
+                self.canvas.g.write_graphml(fileName)
+            elif ".gml" in fileName:
+                self.canvas.g.write_gml(fileName)
+
 
     def clearLayout(self, layout):
         for i in reversed(range(layout.count())):
@@ -122,7 +131,6 @@ class Window(QMainWindow):
         print(l)
         testLabel = QLabel("&Clicked" + str(l))
         self.infoArea.addWidget(testLabel)
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

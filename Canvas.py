@@ -16,15 +16,18 @@ class Canvas(QWidget):
     POINT_RADIUS = 8
     LINE_DISTANCE = 2
 
-    def __init__(self, gui):
+    def __init__(self, gui, fileName="resource/graph/NREN-delay.graphml"):
         super().__init__(None)
         self.defaultUrl = 'resource/graph/NREN-delay.graphml'
         self.gui = gui
+
         self.g = self.asnToColor = None
         self.setGraph('resource/graph/NREN-delay.graphml')
 
     def setGraph(self, url):
         self.g = g = igraph.read(url)
+
+
         self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
 
         # use translation to convert negative coordinates to non-negative
