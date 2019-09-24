@@ -18,9 +18,13 @@ class Canvas(QWidget):
 
     def __init__(self, gui):
         super().__init__(None)
-
+        self.defaultUrl = 'resource/graph/NREN-delay.graphml'
         self.gui = gui
-        self.g = g = igraph.read('resource/graph/NREN-delay.graphml')
+        self.g = self.asnToColor = None
+        self.setGraph('resource/graph/NREN-delay.graphml')
+
+    def setGraph(self, url):
+        self.g = g = igraph.read(url)
         self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
 
         # use translation to convert negative coordinates to non-negative
@@ -148,13 +152,13 @@ class Canvas(QWidget):
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
 
-        #Ongoing
+        # Ongoing
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLine = l
                 self.gui.displayVertex(l['weight'])
                 self.selectedPoint = None
-                #self.gui.displayLine(l)
+                # self.gui.displayLine(l)
                 self.update()
                 print(l)
                 return

@@ -95,12 +95,14 @@ class Window(QMainWindow):
 
     def openFileNameDialog(self):
         options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(
             self, "Open", "",
             "All Files (*);;Python Files (*.py)", options=options
         )
         if fileName:
             print("Open filename: " + fileName)
+            self.canvas.setGraph(fileName)
 
     def saveFileDialog(self):
         options = QFileDialog.Options()
@@ -108,14 +110,6 @@ class Window(QMainWindow):
             self, "Save As", "",
             "All Files (*);;JPG Files (*.jpg)", options=options
         )
-        if fileName:
-            self.preview_screen.save(fileName, "jpg")
-            output = plot(self.result.g)
-            output.save(fileName)
-            output = QScreen.grabWindow(self.main_layout.winId())
-
-            output.save(fileName, format='jpg')
-            print("Save filename: " + fileName)
 
     def clearLayout(self, layout):
         for i in reversed(range(layout.count())):
