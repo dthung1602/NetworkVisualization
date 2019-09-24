@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -8,6 +7,28 @@ from igraph import *
 
 from Canvas import Canvas
 from VertexInfo import VertexInfo
+
+LAYOUT_OPTIONS = [
+    ['Circle', 'circle'],
+    ['Distributed Recursive', 'drl'],
+    ['Fruchterman-Reingold', 'fr'],
+    ['Kamada-Kawai', 'kk'],
+    ['Large Graph', 'large'],
+    ['Random', 'random'],
+    ['Reingold-Tilford', 'rt'],
+    ['Reingold-Tilford Circular', 'rt_circular']
+]
+
+CLUSTERING_ALGOS = [
+    ['Fast Greedy', 'community_fastgreedy'],
+    ['Info Map', 'community_infomap'],
+    ['Label Propagation', 'community_label_propagation'],
+    ['Multilevel', 'community_multilevel'],
+    ['Optimal Modularity', 'community_optimal_modularity'],
+    ['Edge Betweenness', 'community_edge_betweenness'],
+    ['Spinglass', 'community_spinglass'],
+    ['Walktrap', 'community_walktrap']
+]
 
 
 class Window(QMainWindow):
@@ -22,9 +43,31 @@ class Window(QMainWindow):
         self.mainLayout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.canvas = Canvas(self)
         self.mainLayout.addWidget(self.canvas)
-        # self.setLayout(mainLayout)
+
+        self.selectLayout = self.findChild(QComboBox, 'selectLayout')
+        self.selectClusteringAlgo = self.findChild(QComboBox, 'selectClusteringAlgo')
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
+
         self.bindMenuActions()
+        self.addSelectOptions()
+
+    def displayNode(self, n):
+        pass
+
+    def displayLine(self, l):
+        pass
+
+    def addSelectOptions(self):
+        self.selectLayout.addItems([opt[0] for opt in LAYOUT_OPTIONS])
+        self.selectLayout.currentIndexChanged.connect(self.changeGraphLayout)
+        self.selectClusteringAlgo.addItems([opt[0] for opt in CLUSTERING_ALGOS])
+        self.selectClusteringAlgo.currentIndexChanged.connect(self.changeClusteringAlgo)
+
+    def changeGraphLayout(self, opt):
+        self.canvas.setGraphLayout(LAYOUT_OPTIONS[opt][1])
+
+    def changeClusteringAlgo(self, opt):
+        self.canvas.setClusteringAlgo(CLUSTERING_ALGOS[opt][1])
 
     def bindMenuActions(self):
         # QMenu.File
@@ -72,22 +115,16 @@ class Window(QMainWindow):
             print(color.name())
 
     def saveImageDialog(self):
-        try:
-            # title = self.tabWidget.currentWidget().page().mainFrame().title()
-            fileName, _ = QFileDialog.getSaveFileName(
-                self, "Save As", "",
-                "All Files (*);;JPG Files (*.jpg)"
-            )
-            if fileName != '':
-                img = QPixmap(self.canvas.size())
-                painter = QPainter(img)
-                self.canvas.paint(painter)
-                painter.end()
-                if img.save(fileName):
-                    QMessageBox.information(self, "Succesful!,Page has been saved" + fileName)
-
-        except Exception as e:
-            print(e)
+        fileName, _ = QFileDialog.getSaveFileName(
+            self, "Save As", "",
+            "All Files (*);;JPG Files (*.jpg)"
+        )
+        if fileName != '':
+            img = QPixmap(self.canvas.size())
+            painter = QPainter(img)
+            self.canvas.paint(painter)
+            painter.end()
+            img.save(fileName)
 
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
@@ -96,29 +133,29 @@ class Window(QMainWindow):
 
     def openFileNameDialog(self):
         options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(
             self, "Open", "",
             "All Files (*);;Python Files (*.py)", options=options
         )
         if fileName:
-            print("Open filename: " + fileName)
+            self.canvas.setGraph(fileName)
 
     def saveFileDialog(self):
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getSaveFileName(
             self, "Save As", "",
-            "All Files (*);;JPG Files (*.jpg)", options=options
+            "All Files (*);;GraphML Files (*.graphml);;GML Files (*.gml)", options=options
         )
+
         if fileName:
-            self.preview_screen.save(fileName, "jpg")
-            output = plot(self.result.g)
-            output.save(fileName)
-            output = QScreen.grabWindow(self.main_layout.winId())
+            if ".graphml" in fileName:
+                self.canvas.g.write_graphml(fileName)
+            elif ".gml" in fileName:
+                self.canvas.g.write_gml(fileName)
 
-            output.save(fileName, format='jpg')
-            print("Save filename: " + fileName)
-
-    def clearLayout(self, layout):
+    @staticmethod
+    def clearLayout(layout):
         for i in reversed(range(layout.count())):
             layout.itemAt(i).widget().deleteLater()
 
