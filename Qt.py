@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import igraph
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -85,16 +85,21 @@ class Window(QMainWindow):
             "All Files (*);;Python Files (*.py)", options=options
         )
         if fileName:
+            # self.canvas = Canvas(self, fileName)
+            # self.canvas.update()
             print("Open filename: " + fileName)
 
     def saveFileDialog(self):
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getSaveFileName(
             self, "Save As", "",
-            "All Files (*);;JPG Files (*.jpg)", options=options
+            "All Files (*);;GraphML Files (*.graphml);;GML Files (*.gml)", options=options
         )
         if fileName:
-            self.preview_screen.save(fileName, "jpg")
+            if ".graphml" in fileName:
+                self.canvas.g.write_graphml(fileName)
+            elif ".gml" in fileName:
+                self.canvas.g.write_gml(fileName)
             # output = plot(self.result.g)
             # output.save(fileName)
             # output = QScreen.grabWindow(self.main_layout.winId())
