@@ -22,20 +22,17 @@ class Window(QMainWindow):
         self.canvas = Canvas(self)
         self.mainLayout.addWidget(self.canvas)
         # self.setLayout(mainLayout)
-
+        self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.bindMenuActions()
-
-    def displayNode(self, n):
-        pass
-
-    def displayLine(self, l):
-        pass
 
     def bindMenuActions(self):
         # QMenu.File
         # Open_button
         openBtn = self.findChild(QAction, 'action_Open')
         openBtn.triggered.connect(self.openFileNameDialog)
+        # Save_Image_button
+        saveImageBtn = self.findChild(QAction, 'actionSave_Image')
+        saveImageBtn.triggered.connect(self.saveImageDialog)
         # Save_button
         saveBtn = self.findChild(QAction, 'action_Save')
         saveBtn.triggered.connect(self.saveFileDialog)
@@ -55,16 +52,16 @@ class Window(QMainWindow):
 
         # Toolbar
         # Zoom in
-        zoomInBtn = self.findChild(QToolButton, 'zoomInBtn')
+        zoomInBtn = self.findChild(QToolButton, 'zoom_in_btn')
         zoomInBtn.pressed.connect(self.canvas.zoomInEvent)
         # Zoom out
-        zoomOutBtn = self.findChild(QToolButton, 'zoomOutBtn')
+        zoomOutBtn = self.findChild(QToolButton, 'zoom_out_btn')
         zoomOutBtn.pressed.connect(self.canvas.zoomOutEvent)
         # Zoom reset
-        zoomResetBtn = self.findChild(QToolButton, 'zoomResetBtn')
+        zoomResetBtn = self.findChild(QToolButton, 'zoom_reset_btn')
         zoomResetBtn.pressed.connect(self.canvas.zoomResetEvent)
         # Color picker
-        colorPickerBtn = self.findChild(QToolButton, 'colorPickerBtn')
+        colorPickerBtn = self.findChild(QToolButton, 'color_picker_btn')
         colorPickerBtn.pressed.connect(self.openColorDialog)
 
     def openColorDialog(self):
@@ -72,6 +69,24 @@ class Window(QMainWindow):
 
         if color.isValid():
             print(color.name())
+
+    def saveImageDialog(self):
+        try:
+            # title = self.tabWidget.currentWidget().page().mainFrame().title()
+            fileName, _ = QFileDialog.getSaveFileName(
+                self, "Save As", "",
+                "All Files (*);;JPG Files (*.jpg)"
+            )
+            if fileName != '':
+                img = QPixmap(self.canvas.size())
+                painter = QPainter(img)
+                self.canvas.paint(painter)
+                painter.end()
+                if img.save(fileName):
+                    QMessageBox.information(self, "Succesful!,Page has been saved" + fileName)
+
+        except Exception as e:
+            print(e)
 
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
@@ -100,13 +115,18 @@ class Window(QMainWindow):
                 self.canvas.g.write_graphml(fileName)
             elif ".gml" in fileName:
                 self.canvas.g.write_gml(fileName)
-            # output = plot(self.result.g)
-            # output.save(fileName)
-            # output = QScreen.grabWindow(self.main_layout.winId())
 
-            # output.save(fileName, format='jpg')
-            # print("Save filename: " + fileName)
+    def clearLayout(self, layout):
+        for i in reversed(range(layout.count())):
+            layout.itemAt(i).widget().deleteLater()
 
+    def displayVertex(self, l):
+        # vertexInfo = VertexInfo(vertex)
+        self.clearLayout(self.infoArea)
+        print('abc')
+        print(l)
+        testLabel = QLabel("&Clicked" + str(l))
+        self.infoArea.addWidget(testLabel)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
