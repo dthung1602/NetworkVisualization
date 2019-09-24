@@ -14,7 +14,7 @@ def randomColor():
 class Canvas(QWidget):
     HEIGHT = 400
     POINT_RADIUS = 8
-    LINE_DISTANCE = 1
+    LINE_DISTANCE = 2
 
     def __init__(self, gui):
         super().__init__(None)

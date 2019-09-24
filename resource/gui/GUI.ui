@@ -114,7 +114,7 @@
      <property name="styleSheet">
       <string notr="true">#add_node_btn{
 background-color: transparent;
-border-image: url(&quot;tool/add.png&quot;);
+border-image: url(&quot;resource/gui/tool/add.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
@@ -122,12 +122,12 @@ background-repeat: none;
 #add_node_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;tool/add.png&quot;);
+border-image: url(&quot;resource/gui/tool/add.png&quot;);
 }
 #add_node_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;tool/add.png&quot;);
+border-image: url(&quot;resource/gui/tool/add.png&quot;);
 }</string>
      </property>
      <property name="text">
@@ -161,7 +161,7 @@ border-image: url(&quot;tool/add.png&quot;);
      <property name="styleSheet">
       <string notr="true">#zoom_in_btn{
 background-color: transparent;
-border-image: url(&quot;tool/zoom-in.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-in.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
@@ -169,12 +169,12 @@ background-repeat: none;
 #zoom_in_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;tool/zoom-in.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-in.png&quot;);
 }
 #zoom_in_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;tool/zoom-in.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-in.png&quot;);
 }</string>
      </property>
      <property name="text">
@@ -205,7 +205,7 @@ border-image: url(&quot;tool/zoom-in.png&quot;);
      <property name="styleSheet">
       <string notr="true">#zoom_out_btn{
 background-color: transparent;
-border-image: url(&quot;tool/zoom-out.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-out.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
@@ -213,12 +213,12 @@ background-repeat: none;
 #zoom_out_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;tool/zoom-out.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-out.png&quot;);
 }
 #zoom_out_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;tool/zoom-out.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-out.png&quot;);
 }</string>
      </property>
      <property name="text">
@@ -249,7 +249,7 @@ border-image: url(&quot;tool/zoom-out.png&quot;);
      <property name="styleSheet">
       <string notr="true">#zoom_reset_btn{
 background-color: transparent;
-border-image: url(&quot;tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
@@ -257,12 +257,12 @@ background-repeat: none;
 #zoom_reset_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
 }
 #zoom_reset_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
 }</string>
      </property>
      <property name="text">
@@ -293,7 +293,7 @@ border-image: url(&quot;tool/zoom-reset.png&quot;);
      <property name="styleSheet">
       <string notr="true">#color_picker_btn{
 background-color: transparent;
-border-image: url(&quot;tool/color-picker.png&quot;);
+border-image: url(&quot;resource/gui/tool/color-picker.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
@@ -301,12 +301,12 @@ background-repeat: none;
 #color_picker_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;tool/color-picker.png&quot;);
+border-image: url(&quot;resource/gui/tool/color-picker.png&quot;);
 }
 #color_picker_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;tool/color-picker.png&quot;);
+border-image: url(&quot;resource/gui/tool/color-picker.png&quot;);
 }</string>
      </property>
      <property name="text">
@@ -337,7 +337,7 @@ border-image: url(&quot;tool/color-picker.png&quot;);
      <property name="styleSheet">
       <string notr="true">#graph_btn{
 background-color: transparent;
-border-image: url(&quot;tool/graph.png&quot;);
+border-image: url(&quot;resource/gui/tool/graph.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
@@ -345,12 +345,12 @@ background-repeat: none;
 #graph_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;tool/graph.png&quot;);
+border-image: url(&quot;resource/gui/tool/graph.png&quot;);
 }
 #graph_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;tool/graph.png&quot;);
+border-image: url(&quot;resource/gui/tool/graph.png&quot;);
 }</string>
      </property>
      <property name="text">
@@ -389,11 +389,11 @@ border-image: url(&quot;tool/graph.png&quot;);
       <height>771</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="infoArea"/>
-	<property name="styleSheet">
-    <string notr="true">background-color: #FFF;
+    <property name="styleSheet">
+     <string notr="true">background-color: #FFF;
 	</string>
-   </property>
+    </property>
+    <layout class="QVBoxLayout" name="infoArea"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
