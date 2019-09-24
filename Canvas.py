@@ -155,7 +155,7 @@ class Canvas(QWidget):
                 self.selectedLine = l
                 self.gui.displayVertex(l['weight'])
                 self.selectedPoint = None
-                self.gui.displayLine(l)
+                #self.gui.displayLine(l)
                 self.update()
                 print(l)
                 return
