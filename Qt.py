@@ -7,7 +7,6 @@ from PyQt5.QtWidgets import *
 from igraph import *
 
 from Canvas import Canvas
-from VertexInfo import VertexInfo
 
 
 class Window(QMainWindow):
