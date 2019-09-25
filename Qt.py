@@ -165,10 +165,11 @@ class Window(QMainWindow):
         vertexInfo = VertexInfo(v)
         self.infoArea.addWidget(vertexInfo)
 
-    def displayEdge(self,l):
+    def displayEdge(self, l):
         self.clearLayout(self.infoArea)
         edgeInfo = EdgeInfo(l)
         self.infoArea.addWidget(edgeInfo)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

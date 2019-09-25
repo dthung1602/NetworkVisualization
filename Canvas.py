@@ -28,6 +28,7 @@ class Canvas(QWidget):
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
 
         self.g = self.clusterToColor = None
+        self.addNode = None
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = self.selectedLine = self.selectedPoint = None
 
