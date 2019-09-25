@@ -244,7 +244,8 @@ class Canvas(QWidget):
             self.gui.displayVertex(v)
 
             if self.deleteNode:
-                self.selectedPoints.remove(v)
+                if v in self.selectedPoints:
+                    self.selectedPoints.remove(v)
                 self.selectedLines = filter(lambda e: v.index not in [e.source, e.target], self.selectedLines)
                 self.g.delete_vertices(v)
                 self.deleteNode = None

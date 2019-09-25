@@ -81,7 +81,6 @@ class Window(QMainWindow):
         closeBtn = self.findChild(QAction, 'action_Close')
         closeBtn.triggered.connect(self.close)
         # QMenu.View
-        #deleteVertex
 
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
