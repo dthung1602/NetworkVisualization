@@ -130,6 +130,12 @@ class Window(QMainWindow):
         # edit
         editBtn = self.findChild(QToolButton, 'editBtn')
         editBtn.pressed.connect(self.activateEditGraphMode)
+        # filter ON
+        filterBtn = self.findChild(QToolButton, 'filterBtn')
+        filterBtn.pressed.connect(self.filterEvent)
+        # filter OFF
+        cancelFilterBtn = self.findChild(QToolButton, 'cancelFilterBtn')
+        cancelFilterBtn.pressed.connect(self.cancelFilterEvent)
 
     def openColorDialog(self):
         color = QColorDialog.getColor()
@@ -148,6 +154,12 @@ class Window(QMainWindow):
         self.canvas.deleteNode = False
         self.canvas.deleteLine = True
         self.canvas.addLine = False
+
+    def filterEvent(self):
+        self.canvas.filterGraph()
+
+    def cancelFilterEvent(self):
+        self.canvas.cancelFilter()
 
     def addNewNode(self):
         self.canvas.addNode = True
