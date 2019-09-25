@@ -112,6 +112,10 @@ class Window(QMainWindow):
         # Delete Vertex
         deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
         deleteBtn.pressed.connect(self.deleteNodeEvent)
+        # Delete Line
+        deletelineBtn = self.findChild(QToolButton, 'delete_line_btn')
+        deletelineBtn.pressed.connect(self.deletelineEvent)
+
         # Add Line
         addLineBtn = self.findChild(QToolButton, 'add_line_btn')
         addLineBtn.pressed.connect(self.addLineEvent)
@@ -137,16 +141,25 @@ class Window(QMainWindow):
         self.canvas.deleteNode = True
         self.canvas.addNode = False
         self.canvas.addLine = False
+        self.canvas.deleteLine = False
+
+    def deletelineEvent(self):
+        self.canvas.addNode = False
+        self.canvas.deleteNode = False
+        self.canvas.deleteLine = True
+        self.canvas.addLine = False
 
     def addNewNode(self):
         self.canvas.addNode = True
         self.canvas.deleteNode = False
         self.canvas.addLine = False
+        self.canvas.deleteLine = False
 
     def addLineEvent(self):
         self.canvas.addLine = True
         self.canvas.deleteNode = False
         self.canvas.addNode = False
+        self.canvas.deleteLine = False
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(
