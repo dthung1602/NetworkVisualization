@@ -8,6 +8,7 @@ from igraph import *
 from Canvas import Canvas
 from EdgeInfo import EdgeInfo
 from VertexInfo import VertexInfo
+from Graph import Graph
 
 LAYOUT_OPTIONS = [
     ['Circle', 'circle'],
@@ -67,7 +68,7 @@ class Window(QMainWindow):
         self.canvas.setClusteringAlgo(CLUSTERING_ALGOS[opt][1])
 
     def bindMenuActions(self):
-        # QMenu.File
+        # -------------- Menu ----------------- #
         # Open_button
         openBtn = self.findChild(QAction, 'action_Open')
         openBtn.triggered.connect(self.openFileNameDialog)
@@ -81,8 +82,6 @@ class Window(QMainWindow):
         closeBtn = self.findChild(QAction, 'action_Close')
         closeBtn.triggered.connect(self.close)
         # QMenu.View
-        #deleteVertex
-
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
         # Zoom out
@@ -93,11 +92,10 @@ class Window(QMainWindow):
         # Minimize_button
         self.findChild(QAction, 'action_Minimize').triggered.connect(self.minimizeWindow)
 
-        # Toolbar
+        # -------------Toolbar---------------- #
         # Zoom in
         zoomInBtn = self.findChild(QToolButton, 'zoom_in_btn')
         zoomInBtn.pressed.connect(self.canvas.zoomInEvent)
-
         # Zoom out
         zoomOutBtn = self.findChild(QToolButton, 'zoom_out_btn')
         zoomOutBtn.pressed.connect(self.canvas.zoomOutEvent)
@@ -116,8 +114,10 @@ class Window(QMainWindow):
         # Add Line
         addLineBtn = self.findChild(QToolButton, 'add_line_btn')
         addLineBtn.pressed.connect(self.addLineEvent)
-
-        # Mode
+        # Generate graph
+        graphBtn = self.findChild(QToolButton, 'graph_btn')
+        graphBtn.pressed.connect(self.openGraphEvent)
+        # --- Mode ---
         # shortest path
         findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')
         findShortestPathBtn.pressed.connect(self.activateFindShortestPathMode)
@@ -151,7 +151,7 @@ class Window(QMainWindow):
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(
-            self, "Save As", "",
+            self, "Save As Image", "",
             "All Files (*);;JPG Files (*.jpg)"
         )
         if fileName != '':
@@ -215,6 +215,11 @@ class Window(QMainWindow):
         self.clearLayout(self.infoArea)
         edgeInfo = EdgeInfo(l, self.canvas)
         self.infoArea.addWidget(edgeInfo)
+
+    def openGraphEvent(self):
+        print('Load graph')
+        graph = Graph(self.canvas)
+        graph.exec_()
 
 
 if __name__ == "__main__":

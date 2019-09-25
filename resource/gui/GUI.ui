@@ -153,7 +153,7 @@ border-image: url(&quot;resource/gui/tool/add.png&quot;);
       <cursorShape>ArrowCursor</cursorShape>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/zoom-in.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Zoom In&lt;/strong&gt;&lt;br/&gt;Magnifies or reduces the view of an image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/zoom-in.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Zoom In&lt;/strong&gt;&lt;br/&gt;Magnifies the view of an image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -197,7 +197,7 @@ border-image: url(&quot;resource/gui/tool/zoom-in.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Zoom out&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/zoom-out.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Zoom Out&lt;/strong&gt;&lt;br/&gt;Reduces the view of an image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -434,7 +434,7 @@ QComboBox::down-arrow {
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Find shortest path&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string/>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -656,8 +656,8 @@ border-image: url(&quot;resource/gui/tool/deleteline.png&quot;);
     <widget class="QToolButton" name="findBottleNeckBtn">
      <property name="geometry">
       <rect>
-       <x>750</x>
-       <y>0</y>
+       <x>810</x>
+       <y>6</y>
        <width>32</width>
        <height>32</height>
       </rect>
@@ -669,25 +669,25 @@ border-image: url(&quot;resource/gui/tool/deleteline.png&quot;);
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>Change to edit mode</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/bottleneck.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Find the bottleneck&lt;/strong&gt;&lt;br/&gt;Bottlenecks are colored red&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">#editBtn{
+      <string notr="true">#findBottleNeckBtn{
 background-color: transparent;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
+border-image: url(&quot;resource/gui/tool/bottleneck.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
 }
-#editBtn:hover{
+#findBottleNeckBtn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
+border-image: url(&quot;resource/gui/tool/bottleneck.png&quot;);
 }
-#editBtn:pressed{
+#findBottleNeckBtn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
+border-image: url(&quot;resource/gui/tool/bottleneck.png&quot;);
 }</string>
      </property>
     </widget>
@@ -735,7 +735,7 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -777,7 +777,6 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
     </property>
     <addaction name="actionEdit_graph"/>
     <addaction name="actionFind_shortest_path"/>
-    <addaction name="actionFind_bottle_neck"/>
    </widget>
    <widget class="QMenu" name="menu_Window">
     <property name="title">
@@ -871,11 +870,6 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
   <action name="actionEdit_graph">
    <property name="text">
     <string>Edit graph</string>
-   </property>
-  </action>
-  <action name="actionFind_bottle_neck">
-   <property name="text">
-    <string>Find bottle neck</string>
    </property>
   </action>
  </widget>

@@ -43,13 +43,14 @@ class EdgeInfo(QWidget):
         for x, y in self.dict.items():
             keyLabel = QLabel(str(x) + ":")
             keyLabel.setWordWrap(True)
-            keyLabel.setStyleSheet("QLabel {  font-weight: Bold; font-size: 12px;"
-                                   "color: rgb(220,220,220);}")
+            keyLabel.setStyleSheet("QLabel {  background-color: #414141; font-weight: Bold; font-size: 11px;"
+                                   "color: rgb(220,220,220); border-radius: 5px; padding-left: 3px; }")
             layout.addWidget(keyLabel, count, 0)
 
             valueLabelStyleSheet = ("QLabel {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
                                     "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
-                                    "border-radius: 5px; }")
+                                    "border-radius: 5px; }"
+                                    "QLabel:hover{background-color: #242424; cursor: pointer;}")
             valueLabelEdit = QLineEdit()
             valueLabel = BuddyLabel(valueLabelEdit)
             self.valueLabelItems.append(valueLabel)
