@@ -26,8 +26,6 @@ class Canvas(QWidget):
 
     def setGraph(self, url):
         self.g = g = igraph.read(url)
-
-
         self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
 
         # use translation to convert negative coordinates to non-negative
@@ -143,6 +141,10 @@ class Canvas(QWidget):
 
     def mousePressEvent(self, event):
         pos = event.pos()
+        print(pos.x(), "--------------", pos.y())
+        crd = {'x': pos.x(), 'y': pos.y()}
+        self.g.delete()
+        #self.g.add_vertex(name="lll", **crd);
 
         def clickToLine(line):
             try:
