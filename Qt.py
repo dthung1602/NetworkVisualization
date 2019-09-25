@@ -196,7 +196,7 @@ class Window(QMainWindow):
 
     def displayEdge(self, l):
         self.clearLayout(self.infoArea)
-        edgeInfo = EdgeInfo(l)
+        edgeInfo = EdgeInfo(l, self.canvas)
         self.infoArea.addWidget(edgeInfo)
 
 

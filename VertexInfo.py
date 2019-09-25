@@ -21,10 +21,12 @@ class VertexInfo(QWidget):
         super().__init__()
         self.v = v
         self.canvas = canvas
-        print("Vertex info:" + str(v))
-        self.dict = v.attributes()
 
+        print("Vertex info:" + str(v))
+        self.dict = self.v.attributes()
         print(self.dict)
+
+        # Title layout
         layout = QGridLayout(self)
         topLabelStyleSheet = (
             "font-size: 15px; font-weight: Bold; QLabel; "
@@ -35,8 +37,7 @@ class VertexInfo(QWidget):
         self.topLabel.setStyleSheet(topLabelStyleSheet)
         layout.addWidget(self.topLabel, 0, 0, 1, 2)
 
-        # layout.addWidget(self.myEdit, 0, 0, 1, 2)
-
+        # Info layout
         count = 2
         self.valueLabelItems = []
         self.valueLabelEditItems = []
@@ -68,17 +69,11 @@ class VertexInfo(QWidget):
         self.setLayout(layout)
         print("OK")
 
-        # for i in range(len(self.valueLabelEditItems)):
-        #     self.valueLabelEditItems[i].editingFinished.connect(self.textEdited(self.valueLabelItems[i],
-        #                                                                         self.valueLabelEditItems[i]))
-        # self.valueLabelEditItems[8].editingFinished.connect(self.textEdited(self.valueLabelItems[8],
-        # self.valueLabelEditItems[8]))
-
-        # self.valueLabelEditItems[8].editingFinished.connect(self.canvas.update())
-        # self.valueLabelEditItems[8].editingFinished.connect(self.test(self.valueLabelEditItems[8]))
-        # print(self.valueLabelItems[8].text())
-
-        # print(self.v['y'])
+        # Update info
+        for i in range(len(self.valueLabelEditItems)):
+            self.valueLabelEditItems[i].editingFinished.connect(self.textEdited(self.valueLabelItems[i],
+                                                                                self.valueLabelEditItems[i]))
+            self.valueLabelEditItems[i].editingFinished.connect(self.saveInfo)
 
     @staticmethod
     def textEdited(label, edit):
@@ -87,8 +82,24 @@ class VertexInfo(QWidget):
                 label.setText(str(edit.text()))
                 edit.hide()
                 label.show()
-            else:  # If the input is left empty, revert back to the label showing
+                print('changed')
+            else:
+                # If the input is left empty, revert back to the label showing
+                print('no changed')
                 edit.hide()
                 label.show()
 
         return func
+
+    def saveInfo(self):
+        for i, count in zip(self.v.attributes(), range(len(self.valueLabelItems))):
+            # print(i)
+            # print(self.valueLabelItems[count].text())
+            if isinstance(self.v[i], str):
+                # print('>> Receive string ')
+                self.v[i] = self.valueLabelItems[count].text()
+            elif isinstance(self.v[i], float):
+                # print('>> Receive float ')
+                self.v[i] = float(self.valueLabelItems[count].text())
+
+        self.canvas.update()
