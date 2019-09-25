@@ -112,7 +112,10 @@ class Window(QMainWindow):
         addNodeBtn.pressed.connect(self.addNewNode)
         # Delete Vertex
         deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
-        deleteBtn.pressed.connect(self.deleteEvent)
+        deleteBtn.pressed.connect(self.deleteNodeEvent)
+        # Add Line
+        addLineBtn = self.findChild(QToolButton, 'add_line_btn')
+        addLineBtn.pressed.connect(self.addLineEvent)
 
         # Mode
         # shortest path
@@ -131,13 +134,20 @@ class Window(QMainWindow):
         if color.isValid():
             print(color.name())
 
-    def deleteEvent(self):
+    def deleteNodeEvent(self):
         self.canvas.deleteNode = True
         self.canvas.addNode = False
+        self.canvas.addLine = False
 
     def addNewNode(self):
         self.canvas.addNode = True
         self.canvas.deleteNode = False
+        self.canvas.addLine = False
+
+    def addLineEvent(self):
+        self.canvas.addLine = True
+        self.canvas.deleteNode = False
+        self.canvas.addNode = False
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(
@@ -198,7 +208,7 @@ class Window(QMainWindow):
 
     def displayVertex(self, v):
         self.clearLayout(self.infoArea)
-        vertexInfo = VertexInfo(v)
+        vertexInfo = VertexInfo(v, self.canvas)
         self.infoArea.addWidget(vertexInfo)
 
     def displayEdge(self, l):

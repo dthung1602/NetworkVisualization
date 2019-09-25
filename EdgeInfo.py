@@ -17,7 +17,6 @@ class EdgeInfo(QWidget):
 
             "QLabel { padding: 2px; color: rgb(220,220,220); background-color: #383838;}")
         layout.addWidget(topLabel, 0, 0, 1, 2)
-
         count = 2
         for x, y in self.dict.items():
             keyLabel = QLabel(str(x) + ":")

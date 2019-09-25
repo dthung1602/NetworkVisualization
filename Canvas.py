@@ -37,9 +37,8 @@ class Canvas(QWidget):
 
         self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
-
         self.g = self.clusterToColor = None
-        self.addNode = self.deleteNode = None
+        self.addNode = self.deleteNode = self.addLine = None
 
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
@@ -241,7 +240,6 @@ class Canvas(QWidget):
     def selectPoint(self, v):
         if self.mode == self.MODE_EDIT:
             self.pointDragging = v
-            self.selectedPoints = [v]
             self.selectedLines = []
             self.gui.displayVertex(v)
 
@@ -250,6 +248,16 @@ class Canvas(QWidget):
                 self.selectedLines = filter(lambda e: v.index not in [e.source, e.target], self.selectedLines)
                 self.g.delete_vertices(v)
                 self.deleteNode = None
+
+            if self.addLine:
+                if len(self.selectedPoints) == 2:
+                    self.selectedPoints = []
+                self.selectedPoints.append(v)
+                if len(self.selectedPoints) == 2:
+                    self.g.add_edge(self.selectedPoints[0], self.selectedPoints[1])
+                    self.selectedPoints = []
+                    self.addLine = None
+            self.selectedPoints = [v]
 
         elif self.mode == self.MODE_FIND_SHORTEST_PATH:
             spl = len(self.selectedPoints)
@@ -276,13 +284,11 @@ class Canvas(QWidget):
 
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
-
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.selectPoint(v)
                 self.update()
                 return
-
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLines = [l]
@@ -308,6 +314,18 @@ class Canvas(QWidget):
                 self.update()
 
         self.backgroundDragging = pos
+        self.update()
+
+    def addNewNode(self, pos):
+        coordinate = {
+            'x': float(pos.x() / self.zoom + self.viewRect.x()),
+            'y': float(pos.y() / self.zoom + self.viewRect.y()),
+            'cluster': 0,
+            'color': Qt.white,
+            'pos': pos,
+        }
+        self.g.add_vertex(name=None, **coordinate)
+        self.addNode = None
         self.update()
 
     def mouseMoveEvent(self, event):
