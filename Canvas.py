@@ -5,6 +5,7 @@ import igraph
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from igraph import VertexDendrogram
 
 
 def randomColor():
@@ -16,17 +17,33 @@ class Canvas(QWidget):
     POINT_RADIUS = 8
     LINE_DISTANCE = 2
 
-    def __init__(self, gui, fileName="resource/graph/NREN-delay.graphml"):
+    DEFAULT_GRAPH = 'resource/graph/NREN-delay.graphml'
+    DEFAULT_CLUSTERING_ALGO = 'community_fastgreedy'
+    DEFAULT_GRAPH_LAYOUT = 'large'
+
+    def __init__(self, gui):
         super().__init__(None)
         self.gui = gui
+        self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
+        self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
 
-        self.g = self.asnToColor = None
-        self.addNode = None
-        self.setGraph(fileName)
+        self.g = self.clusterToColor = None
+        self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
+        self.backgroundDragging = self.pointDragging = self.selectedLine = self.selectedPoint = None
 
-    def setGraph(self, url):
-        self.g = g = igraph.read(url)
-        self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
+        self.setGraph(self.DEFAULT_GRAPH)
+
+    def setGraph(self, filename):
+        self.g = g = igraph.read(filename)
+        vsAttributes = g.vs.attributes()
+        if 'x' not in vsAttributes or 'y' not in vsAttributes:
+            self.setGraphLayout(self.DEFAULT_GRAPH_LAYOUT)
+        if 'color' not in vsAttributes:
+            self.setClusteringAlgo(self.DEFAULT_CLUSTERING_ALGO)
+        self.resetViewRect()
+
+    def resetViewRect(self):
+        g = self.g
 
         # use translation to convert negative coordinates to non-negative
         mx = min(g.vs['x'])
@@ -49,6 +66,32 @@ class Canvas(QWidget):
         self.zoom = 1
         self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.updateViewRect()
+
+    def setGraphLayout(self, layoutName):
+        self.graphLayout = layoutName
+        layout = self.g.layout(layoutName)
+        for c, v in zip(layout.coords, self.g.vs):
+            v['x'] = c[0]
+            v['y'] = c[1]
+        self.resetViewRect()
+        self.update()
+
+    def setClusteringAlgo(self, algoName):
+        self.clusteringAlgo = algoName
+        clusters = getattr(self.g, algoName)()
+        if isinstance(clusters, VertexDendrogram):
+            clusters = clusters.as_clustering()
+        clusters = clusters.subgraphs()
+
+        def getClusterId(vertex):
+            for cluster in clusters:
+                if vertex['id'] in cluster.vs['id']:
+                    return id(cluster)
+
+        clusterToColor = {id(cl): randomColor() for cl in clusters}
+        self.g.vs['cluster'] = [getClusterId(v) for v in self.g.vs]
+        self.g.vs['color'] = [clusterToColor[v['cluster']] for v in self.g.vs]
+        self.update()
 
     def updateViewRect(self):
         size = self.size()
@@ -113,7 +156,8 @@ class Canvas(QWidget):
                 painter.setPen(QPen(Qt.red, 3))
             else:
                 painter.setPen(QPen(Qt.black, 1))
-            painter.setBrush(self.asnToColor.get(v['asn'], Qt.white))
+
+            painter.setBrush(v['color'])
             painter.drawEllipse(
                 v['pos'].x() - self.POINT_RADIUS / 2,
                 v['pos'].y() - self.POINT_RADIUS / 2,
@@ -121,11 +165,11 @@ class Canvas(QWidget):
             )
 
     def zoomInEvent(self):
-        self.zoom += 0.2
+        self.zoom *= 1.2
         self.update()
 
     def zoomOutEvent(self):
-        self.zoom -= 0.2
+        self.zoom /= 1.2
         self.update()
 
     def zoomResetEvent(self):
@@ -157,7 +201,8 @@ class Canvas(QWidget):
             coordinate = {
                 'x': float(pos.x() / self.zoom + self.viewRect.x()),
                 'y': float(pos.y() / self.zoom + self.viewRect.y()),
-                'asn': 1,
+                'cluster': 0,
+                'color': Qt.white,
                 'pos': pos,
             }
             self.g.add_vertex(name=None, **coordinate)
@@ -168,9 +213,9 @@ class Canvas(QWidget):
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLine = l
-                self.gui.displayVertex(l['weight'])
                 self.selectedPoint = None
                 # self.gui.displayLine(l)
+                self.gui.displayEdge(l)
                 self.update()
                 print(l)
                 return
@@ -178,7 +223,7 @@ class Canvas(QWidget):
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.pointDragging = v
-                # self.gui.displayVertex(v)
+                self.gui.displayVertex(v)
                 self.selectedPoint = v
                 self.selectedLine = None
                 self.update()

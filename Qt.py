@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import igraph
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -7,6 +6,30 @@ from PyQt5.QtWidgets import *
 from igraph import *
 
 from Canvas import Canvas
+from VertexInfo import VertexInfo
+from EdgeInfo import EdgeInfo
+
+LAYOUT_OPTIONS = [
+    ['Circle', 'circle'],
+    ['Distributed Recursive', 'drl'],
+    ['Fruchterman-Reingold', 'fr'],
+    ['Kamada-Kawai', 'kk'],
+    ['Large Graph', 'large'],
+    ['Random', 'random'],
+    ['Reingold-Tilford', 'rt'],
+    ['Reingold-Tilford Circular', 'rt_circular']
+]
+
+CLUSTERING_ALGOS = [
+    ['Fast Greedy', 'community_fastgreedy'],
+    ['Info Map', 'community_infomap'],
+    ['Label Propagation', 'community_label_propagation'],
+    ['Multilevel', 'community_multilevel'],
+    ['Optimal Modularity', 'community_optimal_modularity'],
+    ['Edge Betweenness', 'community_edge_betweenness'],
+    ['Spinglass', 'community_spinglass'],
+    ['Walktrap', 'community_walktrap']
+]
 
 
 class Window(QMainWindow):
@@ -21,9 +44,25 @@ class Window(QMainWindow):
         self.mainLayout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.canvas = Canvas(self)
         self.mainLayout.addWidget(self.canvas)
-        # self.setLayout(mainLayout)
+
+        self.selectLayout = self.findChild(QComboBox, 'selectLayout')
+        self.selectClusteringAlgo = self.findChild(QComboBox, 'selectClusteringAlgo')
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
+
         self.bindMenuActions()
+        self.addSelectOptions()
+
+    def addSelectOptions(self):
+        self.selectLayout.addItems([opt[0] for opt in LAYOUT_OPTIONS])
+        self.selectLayout.currentIndexChanged.connect(self.changeGraphLayout)
+        self.selectClusteringAlgo.addItems([opt[0] for opt in CLUSTERING_ALGOS])
+        self.selectClusteringAlgo.currentIndexChanged.connect(self.changeClusteringAlgo)
+
+    def changeGraphLayout(self, opt):
+        self.canvas.setGraphLayout(LAYOUT_OPTIONS[opt][1])
+
+    def changeClusteringAlgo(self, opt):
+        self.canvas.setClusteringAlgo(CLUSTERING_ALGOS[opt][1])
 
     def bindMenuActions(self):
         # QMenu.File
@@ -77,22 +116,16 @@ class Window(QMainWindow):
         self.canvas.addNode = True
 
     def saveImageDialog(self):
-        try:
-            # title = self.tabWidget.currentWidget().page().mainFrame().title()
-            fileName, _ = QFileDialog.getSaveFileName(
-                self, "Save As", "",
-                "All Files (*);;JPG Files (*.jpg)"
-            )
-            if fileName != '':
-                img = QPixmap(self.canvas.size())
-                painter = QPainter(img)
-                self.canvas.paint(painter)
-                painter.end()
-                if img.save(fileName):
-                    QMessageBox.information(self, "Succesful!,Page has been saved" + fileName)
-
-        except Exception as e:
-            print(e)
+        fileName, _ = QFileDialog.getSaveFileName(
+            self, "Save As", "",
+            "All Files (*);;JPG Files (*.jpg)"
+        )
+        if fileName != '':
+            img = QPixmap(self.canvas.size())
+            painter = QPainter(img)
+            self.canvas.paint(painter)
+            painter.end()
+            img.save(fileName)
 
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
@@ -107,9 +140,6 @@ class Window(QMainWindow):
             "All Files (*);;Python Files (*.py)", options=options
         )
         if fileName:
-            # self.canvas = Canvas(self, fileName)
-            # self.canvas.update()
-            print("Open filename: " + fileName)
             self.canvas.setGraph(fileName)
 
     def saveFileDialog(self):
@@ -125,18 +155,20 @@ class Window(QMainWindow):
             elif ".gml" in fileName:
                 self.canvas.g.write_gml(fileName)
 
-
-    def clearLayout(self, layout):
+    @staticmethod
+    def clearLayout(layout):
         for i in reversed(range(layout.count())):
             layout.itemAt(i).widget().deleteLater()
 
-    def displayVertex(self, l):
-        # vertexInfo = VertexInfo(vertex)
+    def displayVertex(self, v):
         self.clearLayout(self.infoArea)
-        print('abc')
-        print(l)
-        testLabel = QLabel("&Clicked" + str(l))
-        self.infoArea.addWidget(testLabel)
+        vertexInfo = VertexInfo(v)
+        self.infoArea.addWidget(vertexInfo)
+
+    def displayEdge(self,l):
+        self.clearLayout(self.infoArea)
+        edgeInfo = EdgeInfo(l)
+        self.infoArea.addWidget(edgeInfo)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
