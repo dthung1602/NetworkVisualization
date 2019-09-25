@@ -7,9 +7,9 @@ class VertexInfo(QWidget):
     def __init__(self, v):
         super().__init__()
         layout = QVBoxLayout(self)
-        print("Vertex info:" + str(v))
+        # print("Vertex info:" + str(v))
         self.dict = v.attributes()
-        print(self.dict)
+        # print(self.dict)
         topLabel = QLabel("             VERTEX INFO")
         topLabel.setFont(QFont("Times", 9, QFont.Bold))
         topLabel.setStyleSheet(
@@ -25,4 +25,4 @@ class VertexInfo(QWidget):
                 "border-radius: 5px; }")
             layout.addWidget(label)
         self.setLayout(layout)
-        print("OK")
+        # print("OK")

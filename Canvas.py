@@ -15,24 +15,36 @@ def randomColor():
 class Canvas(QWidget):
     HEIGHT = 400
     POINT_RADIUS = 8
+    SELECTED_POINT_RADIUS = 12
     LINE_DISTANCE = 2
 
     DEFAULT_GRAPH = 'resource/graph/NREN-delay.graphml'
     DEFAULT_CLUSTERING_ALGO = 'community_fastgreedy'
     DEFAULT_GRAPH_LAYOUT = 'large'
 
+    MODE_EDIT = 'edit'
+    MODE_FIND_SHORTEST_PATH = 'fsp'
+
     def __init__(self, gui):
         super().__init__(None)
         self.gui = gui
+        self.mode = 'edit'
 
         self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
 
         self.g = self.clusterToColor = None
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
-        self.backgroundDragging = self.pointDragging = self.selectedLine = self.selectedPoint = None
+        self.backgroundDragging = self.pointDragging = None
+        self.selectedLines = self.selectedPoints = []
 
         self.setGraph(self.DEFAULT_GRAPH)
+
+    def setMode(self, mode):
+        self.mode = mode
+        self.selectedPoints = []
+        self.selectedLines = []
+        self.update()
 
     def setGraph(self, filename):
         self.g = g = igraph.read(filename)
@@ -62,7 +74,8 @@ class Canvas(QWidget):
         g.vs['y'] = [y / my * size.height() for y in g.vs['y']]
 
         # Init
-        self.backgroundDragging = self.pointDragging = self.selectedLine = self.selectedPoint = None
+        self.backgroundDragging = self.pointDragging = None
+        self.selectedLines = self.selectedPoints = []
         self.center = QPointF(size.width() / 2, size.height() / 2)
         self.zoom = 1
         self.viewRect = self.pointsToDraw = self.linesToDraw = None
@@ -146,24 +159,38 @@ class Canvas(QWidget):
         painter.end()
 
     def paint(self, painter):
+        painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
         for e in self.linesToDraw:
-            if e == self.selectedLine:
-                painter.setPen(QPen(Qt.red, 2, join=Qt.PenJoinStyle(0x80)))
-            else:
-                painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
             painter.drawLine(e['line'])
 
+        painter.setPen(QPen(Qt.black, 1))
         for v in self.pointsToDraw:
-            if v == self.selectedPoint:
-                painter.setPen(QPen(Qt.red, 3))
-            else:
-                painter.setPen(QPen(Qt.black, 1))
             painter.setBrush(v['color'])
             painter.drawEllipse(
                 v['pos'].x() - self.POINT_RADIUS / 2,
                 v['pos'].y() - self.POINT_RADIUS / 2,
                 self.POINT_RADIUS, self.POINT_RADIUS
             )
+
+        painter.setPen(QPen(Qt.red, 2, join=Qt.PenJoinStyle(0x80)))
+        for e in self.selectedLines:
+            painter.drawLine(e['line'])
+
+        for v in self.selectedPoints:
+            painter.setBrush(v['color'])
+            painter.drawEllipse(
+                v['pos'].x() - self.SELECTED_POINT_RADIUS / 2,
+                v['pos'].y() - self.SELECTED_POINT_RADIUS / 2,
+                self.SELECTED_POINT_RADIUS, self.SELECTED_POINT_RADIUS
+            )
+
+    def findShortestPath(self):
+        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], output='epath')
+        if not path:
+            print("Not connected")
+        else:
+            self.selectedLines = [self.g.es[i] for i in path[0]]
+            self.selectedPoints = [self.g.vs[e.source] for e in self.selectedLines] + [self.selectedPoints[1]]
 
     def zoomInEvent(self):
         self.zoom *= 1.2
@@ -183,6 +210,21 @@ class Canvas(QWidget):
         self.zoom += event.angleDelta().y() / 120 * 0.05
         self.update()
 
+    def selectPoint(self, v):
+        if self.mode == self.MODE_EDIT:
+            self.pointDragging = v
+            self.selectedPoints = [v]
+            self.selectedLines = []
+            self.gui.displayVertex(v)
+        elif self.mode == self.MODE_FIND_SHORTEST_PATH:
+            spl = len(self.selectedPoints)
+            if spl == 0 or spl >= 2:
+                self.selectedPoints = [v]
+                self.selectedLines = []
+            else:
+                self.selectedPoints.append(v)
+                self.findShortestPath()
+
     def mousePressEvent(self, event):
         pos = event.pos()
 
@@ -197,29 +239,25 @@ class Canvas(QWidget):
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
 
-        # Ongoing
-        for l in self.linesToDraw:
-            if clickToLine(l['line']):
-                self.selectedLine = l
-                self.selectedPoint = None
-                # self.gui.displayLine(l)
-                self.gui.displayEdge(l)
-                self.update()
-                print(l)
-                return
-
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
-                self.pointDragging = v
-                self.gui.displayVertex(v)
-                self.selectedPoint = v
-                self.selectedLine = None
+                self.selectPoint(v)
                 self.update()
                 return
 
+        for l in self.linesToDraw:
+            if clickToLine(l['line']):
+                self.selectedLines = [l]
+                self.selectedPoints = []
+                self.gui.displayEdge(l)
+                self.update()
+                return
+
+        if self.mode == self.MODE_EDIT:
+            self.selectedPoints = []
+            self.selectedLines = []
+
         self.backgroundDragging = pos
-        self.selectedPoint = None
-        self.selectedLine = None
         self.update()
 
     def mouseMoveEvent(self, event):

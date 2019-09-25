@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import *
 from igraph import *
 
 from Canvas import Canvas
-from VertexInfo import VertexInfo
 from EdgeInfo import EdgeInfo
+from VertexInfo import VertexInfo
 
 LAYOUT_OPTIONS = [
     ['Circle', 'circle'],
@@ -48,6 +48,8 @@ class Window(QMainWindow):
         self.selectLayout = self.findChild(QComboBox, 'selectLayout')
         self.selectClusteringAlgo = self.findChild(QComboBox, 'selectClusteringAlgo')
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
+
+        self.mode = 'edit'
 
         self.bindMenuActions()
         self.addSelectOptions()
@@ -103,6 +105,14 @@ class Window(QMainWindow):
         colorPickerBtn = self.findChild(QToolButton, 'color_picker_btn')
         colorPickerBtn.pressed.connect(self.openColorDialog)
 
+        # Mode
+        # shortest path
+        findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')
+        findShortestPathBtn.pressed.connect(self.activateFindShortestPathMode)
+        # edit
+        editBtn = self.findChild(QToolButton, 'editBtn')
+        editBtn.pressed.connect(self.activateEditGraphMode)
+
     def openColorDialog(self):
         color = QColorDialog.getColor()
 
@@ -149,6 +159,14 @@ class Window(QMainWindow):
             elif ".gml" in fileName:
                 self.canvas.g.write_gml(fileName)
 
+    def activateFindShortestPathMode(self):
+        self.mode = Canvas.MODE_FIND_SHORTEST_PATH
+        self.canvas.setMode(self.mode)
+
+    def activateEditGraphMode(self):
+        self.mode = Canvas.MODE_EDIT
+        self.canvas.setMode(self.mode)
+
     @staticmethod
     def clearLayout(layout):
         for i in reversed(range(layout.count())):
@@ -159,10 +177,11 @@ class Window(QMainWindow):
         vertexInfo = VertexInfo(v)
         self.infoArea.addWidget(vertexInfo)
 
-    def displayEdge(self,l):
+    def displayEdge(self, l):
         self.clearLayout(self.infoArea)
         edgeInfo = EdgeInfo(l)
         self.infoArea.addWidget(edgeInfo)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
