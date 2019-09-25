@@ -15,7 +15,7 @@ class EdgeInfo(QWidget):
         topLabel.setFont(QFont("Times", 9, QFont.Bold))
         topLabel.setStyleSheet(
             "QLabel { padding: 2px; color: white; background-color: #383838;}")
-        layout.addWidget(topLabel,1,1)
+        layout.addWidget(topLabel, 1, 1)
         count = 2
         for x, y in self.dict.items():
             keyLabel = QLabel(str(x))

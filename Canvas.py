@@ -27,7 +27,7 @@ class Canvas(QWidget):
         self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
 
-        self.g = self.clusterToColor = None
+        self.g = self.clusterToColor = self.addNode = None
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = self.selectedLine = self.selectedPoint = None
 
@@ -198,23 +198,13 @@ class Canvas(QWidget):
 
         # Add new node
         if self.addNode:
-            coordinate = {
-                'x': float(pos.x() / self.zoom + self.viewRect.x()),
-                'y': float(pos.y() / self.zoom + self.viewRect.y()),
-                'cluster': 0,
-                'color': Qt.white,
-                'pos': pos,
-            }
-            self.g.add_vertex(name=None, **coordinate)
-            self.addNode = None
-            self.update()
+            self.addNewNode(pos)
 
         # Ongoing
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLine = l
                 self.selectedPoint = None
-                # self.gui.displayLine(l)
                 self.gui.displayEdge(l)
                 self.update()
                 print(l)
@@ -232,6 +222,18 @@ class Canvas(QWidget):
         self.backgroundDragging = pos
         self.selectedPoint = None
         self.selectedLine = None
+        self.update()
+
+    def addNewNode(self, pos):
+        coordinate = {
+            'x': float(pos.x() / self.zoom + self.viewRect.x()),
+            'y': float(pos.y() / self.zoom + self.viewRect.y()),
+            'cluster': 0,
+            'color': Qt.white,
+            'pos': pos,
+        }
+        self.g.add_vertex(name=None, **coordinate)
+        self.addNode = None
         self.update()
 
     def mouseMoveEvent(self, event):
