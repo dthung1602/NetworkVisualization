@@ -36,7 +36,6 @@ class EdgeInfo(QWidget):
         self.topLabel.setAlignment(Qt.AlignCenter)
         self.topLabel.setStyleSheet(topLabelStyleSheet)
         layout.addWidget(self.topLabel, 0, 0, 1, 2)
-
         # Info layout
         count = 2
         self.valueLabelItems = []

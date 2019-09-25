@@ -112,12 +112,18 @@ class Window(QMainWindow):
         addNodeBtn.pressed.connect(self.addNewNode)
         # Delete Vertex
         deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
-        deleteBtn.pressed.connect(self.deleteEvent)
+        deleteBtn.pressed.connect(self.deleteNodeEvent)
+        # Add Line
+        addLineBtn = self.findChild(QToolButton, 'add_line_btn')
+        addLineBtn.pressed.connect(self.addLineEvent)
 
         # Mode
         # shortest path
         findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')
         findShortestPathBtn.pressed.connect(self.activateFindShortestPathMode)
+        # bottle neck
+        findBottleNeck = self.findChild(QToolButton, 'findBottleNeckBtn')
+        findBottleNeck.pressed.connect(self.activateFindBottleNeckMode)
         # edit
         editBtn = self.findChild(QToolButton, 'editBtn')
         editBtn.pressed.connect(self.activateEditGraphMode)
@@ -128,13 +134,20 @@ class Window(QMainWindow):
         if color.isValid():
             print(color.name())
 
-    def deleteEvent(self):
+    def deleteNodeEvent(self):
         self.canvas.deleteNode = True
         self.canvas.addNode = False
+        self.canvas.addLine = False
 
     def addNewNode(self):
         self.canvas.addNode = True
         self.canvas.deleteNode = False
+        self.canvas.addLine = False
+
+    def addLineEvent(self):
+        self.canvas.addLine = True
+        self.canvas.deleteNode = False
+        self.canvas.addNode = False
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(
@@ -182,6 +195,10 @@ class Window(QMainWindow):
 
     def activateEditGraphMode(self):
         self.mode = Canvas.MODE_EDIT
+        self.canvas.setMode(self.mode)
+
+    def activateFindBottleNeckMode(self):
+        self.mode = Canvas.MODE_FIND_BOTTLE_NECK
         self.canvas.setMode(self.mode)
 
     @staticmethod

@@ -24,6 +24,11 @@ class Canvas(QWidget):
 
     MODE_EDIT = 'edit'
     MODE_FIND_SHORTEST_PATH = 'fsp'
+    MODE_FIND_BOTTLE_NECK = 'fbn'
+
+    initModeAction = {
+        MODE_FIND_BOTTLE_NECK: 'findBottleNeck'
+    }
 
     def __init__(self, gui):
         super().__init__(None)
@@ -32,9 +37,8 @@ class Canvas(QWidget):
 
         self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
-
         self.g = self.clusterToColor = None
-        self.addNode = self.deleteNode = None
+        self.addNode = self.deleteNode = self.addLine = None
 
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
@@ -46,6 +50,9 @@ class Canvas(QWidget):
         self.mode = mode
         self.selectedPoints = []
         self.selectedLines = []
+        initAction = self.initModeAction.get(mode)
+        if initAction:
+            getattr(self, initAction)()
         self.update()
 
     def setGraph(self, filename):
@@ -194,6 +201,24 @@ class Canvas(QWidget):
             self.selectedLines = [self.g.es[i] for i in path[0]]
             self.selectedPoints = [self.g.vs[e.source] for e in self.selectedLines] + [self.selectedPoints[1]]
 
+    def findBottleNeck(self):
+        clusterOutgoingEdges = {cl: [] for cl in set(self.g.vs['cluster'])}
+        for e in self.g.es:
+            targetCluster = self.g.vs[e.target]['cluster']
+            sourceCluster = self.g.vs[e.source]['cluster']
+            if targetCluster != sourceCluster:
+                clusterOutgoingEdges[targetCluster].append(e)
+                clusterOutgoingEdges[sourceCluster].append(e)
+        self.selectedLines = []
+        self.selectedPoints = []
+        for cluster, edges in clusterOutgoingEdges.items():
+            if len(edges) == 1:
+                e = edges[0]
+                self.selectedLines.append(e)
+                self.selectedPoints.append(self.g.vs[e.target])
+                self.selectedPoints.append(self.g.vs[e.source])
+        self.update()
+
     def zoomInEvent(self):
         self.zoom *= 1.2
         self.update()
@@ -215,7 +240,6 @@ class Canvas(QWidget):
     def selectPoint(self, v):
         if self.mode == self.MODE_EDIT:
             self.pointDragging = v
-            self.selectedPoints = [v]
             self.selectedLines = []
             self.gui.displayVertex(v)
 
@@ -225,6 +249,16 @@ class Canvas(QWidget):
                 self.g.delete_vertices(v)
                 self.deleteNode = None
 
+            if self.addLine:
+                if len(self.selectedPoints) == 2:
+                    self.selectedPoints = []
+                self.selectedPoints.append(v)
+                if len(self.selectedPoints) == 2:
+                    self.g.add_edge(self.selectedPoints[0], self.selectedPoints[1])
+                    self.selectedPoints = []
+                    self.addLine = None
+            self.selectedPoints = [v]
+
         elif self.mode == self.MODE_FIND_SHORTEST_PATH:
             spl = len(self.selectedPoints)
             if spl == 0 or spl >= 2:
@@ -233,6 +267,9 @@ class Canvas(QWidget):
             else:
                 self.selectedPoints.append(v)
                 self.findShortestPath()
+
+        elif self.mode == self.MODE_FIND_BOTTLE_NECK:
+            self.pointDragging = v
 
     def mousePressEvent(self, event):
         pos = event.pos()
@@ -247,13 +284,11 @@ class Canvas(QWidget):
 
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
-
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.selectPoint(v)
                 self.update()
                 return
-
         for l in self.linesToDraw:
             if clickToLine(l['line']):
                 self.selectedLines = [l]
@@ -279,6 +314,18 @@ class Canvas(QWidget):
                 self.update()
 
         self.backgroundDragging = pos
+        self.update()
+
+    def addNewNode(self, pos):
+        coordinate = {
+            'x': float(pos.x() / self.zoom + self.viewRect.x()),
+            'y': float(pos.y() / self.zoom + self.viewRect.y()),
+            'cluster': 0,
+            'color': Qt.white,
+            'pos': pos,
+        }
+        self.g.add_vertex(name=None, **coordinate)
+        self.addNode = None
         self.update()
 
     def mouseMoveEvent(self, event):
