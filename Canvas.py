@@ -24,6 +24,11 @@ class Canvas(QWidget):
 
     MODE_EDIT = 'edit'
     MODE_FIND_SHORTEST_PATH = 'fsp'
+    MODE_FIND_BOTTLE_NECK = 'fbn'
+
+    initModeAction = {
+        MODE_FIND_BOTTLE_NECK: 'findBottleNeck'
+    }
 
     def __init__(self, gui):
         super().__init__(None)
@@ -46,6 +51,9 @@ class Canvas(QWidget):
         self.mode = mode
         self.selectedPoints = []
         self.selectedLines = []
+        initAction = self.initModeAction.get(mode)
+        if initAction:
+            getattr(self, initAction)()
         self.update()
 
     def setGraph(self, filename):
@@ -194,6 +202,24 @@ class Canvas(QWidget):
             self.selectedLines = [self.g.es[i] for i in path[0]]
             self.selectedPoints = [self.g.vs[e.source] for e in self.selectedLines] + [self.selectedPoints[1]]
 
+    def findBottleNeck(self):
+        clusterOutgoingEdges = {cl: [] for cl in set(self.g.vs['cluster'])}
+        for e in self.g.es:
+            targetCluster = self.g.vs[e.target]['cluster']
+            sourceCluster = self.g.vs[e.source]['cluster']
+            if targetCluster != sourceCluster:
+                clusterOutgoingEdges[targetCluster].append(e)
+                clusterOutgoingEdges[sourceCluster].append(e)
+        self.selectedLines = []
+        self.selectedPoints = []
+        for cluster, edges in clusterOutgoingEdges.items():
+            if len(edges) == 1:
+                e = edges[0]
+                self.selectedLines.append(e)
+                self.selectedPoints.append(self.g.vs[e.target])
+                self.selectedPoints.append(self.g.vs[e.source])
+        self.update()
+
     def zoomInEvent(self):
         self.zoom *= 1.2
         self.update()
@@ -233,6 +259,9 @@ class Canvas(QWidget):
             else:
                 self.selectedPoints.append(v)
                 self.findShortestPath()
+
+        elif self.mode == self.MODE_FIND_BOTTLE_NECK:
+            self.pointDragging = v
 
     def mousePressEvent(self, event):
         pos = event.pos()

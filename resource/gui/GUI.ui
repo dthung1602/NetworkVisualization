@@ -653,6 +653,44 @@ border-image: url(&quot;resource/gui/tool/deleteline.png&quot;);
       </size>
      </property>
     </widget>
+    <widget class="QToolButton" name="findBottleNeckBtn">
+     <property name="geometry">
+      <rect>
+       <x>750</x>
+       <y>0</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Change to edit mode</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#editBtn{
+background-color: transparent;
+border-image: url(&quot;resource/gui/tool/edit.png&quot;);
+background: none;
+border-radius: 3px;
+background-repeat: none;
+}
+#editBtn:hover{
+background-color: #454545;
+border-radius: 3px;
+border-image: url(&quot;resource/gui/tool/edit.png&quot;);
+}
+#editBtn:pressed{
+background-color: #383838;
+border-radius: 3px;
+border-image: url(&quot;resource/gui/tool/edit.png&quot;);
+}</string>
+     </property>
+    </widget>
    </widget>
    <widget class="Line" name="line_3">
     <property name="geometry">
@@ -697,7 +735,7 @@ border-image: url(&quot;resource/gui/tool/deleteline.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -739,6 +777,7 @@ border-image: url(&quot;resource/gui/tool/deleteline.png&quot;);
     </property>
     <addaction name="actionEdit_graph"/>
     <addaction name="actionFind_shortest_path"/>
+    <addaction name="actionFind_bottle_neck"/>
    </widget>
    <widget class="QMenu" name="menu_Window">
     <property name="title">
@@ -832,6 +871,11 @@ border-image: url(&quot;resource/gui/tool/deleteline.png&quot;);
   <action name="actionEdit_graph">
    <property name="text">
     <string>Edit graph</string>
+   </property>
+  </action>
+  <action name="actionFind_bottle_neck">
+   <property name="text">
+    <string>Find bottle neck</string>
    </property>
   </action>
  </widget>

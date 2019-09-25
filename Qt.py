@@ -118,6 +118,9 @@ class Window(QMainWindow):
         # shortest path
         findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')
         findShortestPathBtn.pressed.connect(self.activateFindShortestPathMode)
+        # bottle neck
+        findBottleNeck = self.findChild(QToolButton, 'findBottleNeckBtn')
+        findBottleNeck.pressed.connect(self.activateFindBottleNeckMode)
         # edit
         editBtn = self.findChild(QToolButton, 'editBtn')
         editBtn.pressed.connect(self.activateEditGraphMode)
@@ -182,6 +185,10 @@ class Window(QMainWindow):
 
     def activateEditGraphMode(self):
         self.mode = Canvas.MODE_EDIT
+        self.canvas.setMode(self.mode)
+
+    def activateFindBottleNeckMode(self):
+        self.mode = Canvas.MODE_FIND_BOTTLE_NECK
         self.canvas.setMode(self.mode)
 
     @staticmethod
