@@ -80,8 +80,7 @@ class Window(QMainWindow):
         closeBtn.triggered.connect(self.close)
         # QMenu.View
         #deleteVertex
-        deleteBtn = self.findChild(QAction, 'action_delete')
-        deleteBtn.triggered.connect(self.deleteBtn)
+
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
         # Zoom out
@@ -96,6 +95,7 @@ class Window(QMainWindow):
         # Zoom in
         zoomInBtn = self.findChild(QToolButton, 'zoom_in_btn')
         zoomInBtn.pressed.connect(self.canvas.zoomInEvent)
+
         # Zoom out
         zoomOutBtn = self.findChild(QToolButton, 'zoom_out_btn')
         zoomOutBtn.pressed.connect(self.canvas.zoomOutEvent)
@@ -108,12 +108,18 @@ class Window(QMainWindow):
         # Add Node
         addNodeBtn = self.findChild(QToolButton, 'add_node_btn')
         addNodeBtn.pressed.connect(self.addNewNode)
+        # Delete Vertex
+        deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
+        deleteBtn.pressed.connect(self.deleteEvent)
 
     def openColorDialog(self):
         color = QColorDialog.getColor()
 
         if color.isValid():
             print(color.name())
+
+    def deleteEvent(self):
+        self.canvas.deleteNode = True
 
     def addNewNode(self):
         self.canvas.addNode = True

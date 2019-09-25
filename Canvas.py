@@ -27,7 +27,7 @@ class Canvas(QWidget):
         self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
 
-        self.g = self.clusterToColor = self.addNode = None
+        self.g = self.clusterToColor = self.addNode = self.deleteNode = None
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = self.selectedLine = self.selectedPoint = None
 
@@ -209,6 +209,19 @@ class Canvas(QWidget):
             self.addNode = None
             self.update()
 
+        if self.deleteNode:
+            print("IN DELETE MODE")
+            g = self.g
+            pointToDelete = None
+            for v in self.pointsToDraw:
+                if clickedToPoint(v['pos']):
+                    pointToDelete = v
+                    break
+
+            self.g.delete_vertices(pointToDelete)
+            self.deleteNode = None
+            self.update()
+            return
 
         # Ongoing
         for l in self.linesToDraw:
@@ -218,7 +231,7 @@ class Canvas(QWidget):
                 # self.gui.displayLine(l)
                 self.gui.displayEdge(l)
                 self.update()
-                print(l)
+                # print(l)
                 return
 
         for v in self.pointsToDraw:
