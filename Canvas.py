@@ -18,16 +18,14 @@ class Canvas(QWidget):
 
     def __init__(self, gui, fileName="resource/graph/NREN-delay.graphml"):
         super().__init__(None)
-        self.defaultUrl = 'resource/graph/NREN-delay.graphml'
         self.gui = gui
 
         self.g = self.asnToColor = None
-        self.setGraph('resource/graph/NREN-delay.graphml')
+        self.addNode = None
+        self.setGraph(fileName)
 
     def setGraph(self, url):
         self.g = g = igraph.read(url)
-
-
         self.asnToColor = {asn: randomColor() for asn in set(g.vs['asn'])}
 
         # use translation to convert negative coordinates to non-negative
@@ -110,13 +108,12 @@ class Canvas(QWidget):
             else:
                 painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
             painter.drawLine(e['line'])
-
         for v in self.pointsToDraw:
             if v == self.selectedPoint:
                 painter.setPen(QPen(Qt.red, 3))
             else:
                 painter.setPen(QPen(Qt.black, 1))
-            painter.setBrush(self.asnToColor[v['asn']])
+            painter.setBrush(self.asnToColor.get(v['asn'], Qt.white))
             painter.drawEllipse(
                 v['pos'].x() - self.POINT_RADIUS / 2,
                 v['pos'].y() - self.POINT_RADIUS / 2,
@@ -154,6 +151,18 @@ class Canvas(QWidget):
 
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
+
+        # Add new node
+        if self.addNode:
+            coordinate = {
+                'x': float(pos.x() / self.zoom + self.viewRect.x()),
+                'y': float(pos.y() / self.zoom + self.viewRect.y()),
+                'asn': 1,
+                'pos': pos,
+            }
+            self.g.add_vertex(name=None, **coordinate)
+            self.addNode = None
+            self.update()
 
         # Ongoing
         for l in self.linesToDraw:

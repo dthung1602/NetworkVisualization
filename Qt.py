@@ -63,12 +63,18 @@ class Window(QMainWindow):
         # Color picker
         colorPickerBtn = self.findChild(QToolButton, 'color_picker_btn')
         colorPickerBtn.pressed.connect(self.openColorDialog)
+        # Add Node
+        addNodeBtn = self.findChild(QToolButton, 'add_node_btn')
+        addNodeBtn.pressed.connect(self.addNewNode)
 
     def openColorDialog(self):
         color = QColorDialog.getColor()
 
         if color.isValid():
             print(color.name())
+
+    def addNewNode(self):
+        self.canvas.addNode = True
 
     def saveImageDialog(self):
         try:
