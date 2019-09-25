@@ -103,7 +103,7 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Add a node&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -143,7 +143,7 @@ border-image: url(&quot;resource/gui/tool/add.png&quot;);
     <widget class="QToolButton" name="zoom_in_btn">
      <property name="geometry">
       <rect>
-       <x>93</x>
+       <x>179</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -190,7 +190,7 @@ border-image: url(&quot;resource/gui/tool/zoom-in.png&quot;);
     <widget class="QToolButton" name="zoom_out_btn">
      <property name="geometry">
       <rect>
-       <x>136</x>
+       <x>222</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -234,7 +234,7 @@ border-image: url(&quot;resource/gui/tool/zoom-out.png&quot;);
     <widget class="QToolButton" name="zoom_reset_btn">
      <property name="geometry">
       <rect>
-       <x>179</x>
+       <x>265</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -278,7 +278,7 @@ border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
     <widget class="QToolButton" name="color_picker_btn">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>136</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -322,7 +322,7 @@ border-image: url(&quot;resource/gui/tool/color-picker.png&quot;);
     <widget class="QToolButton" name="graph_btn">
      <property name="geometry">
       <rect>
-       <x>222</x>
+       <x>308</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -429,33 +429,49 @@ QComboBox::down-arrow {
       <rect>
        <x>890</x>
        <y>0</y>
+             <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete nodes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+      <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="delete_node_btn">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>6</y>
        <width>32</width>
        <height>32</height>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset zoom&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete nodes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">#zoom_reset_btn{
+      <string notr="true">#delete_node_btn{
 background-color: transparent;
-border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/delete.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
 }
-#zoom_reset_btn:hover{
+#delete_node_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/delete.png&quot;);
 }
-#zoom_reset_btn:pressed{
+#delete_node_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/delete.png&quot;);
 }</string>
      </property>
      <property name="text">
@@ -477,29 +493,57 @@ border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
        <height>32</height>
       </rect>
      </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="add_line_btn">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>93</x>
+       <y>6</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset zoom&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Add a line&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
      <property name="styleSheet">
-      <string notr="true">#zoom_reset_btn{
+      <string notr="true">#add_line_btn{
 background-color: transparent;
-border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/addline.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
 }
-#zoom_reset_btn:hover{
+#add_line_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/addline.png&quot;);
 }
-#zoom_reset_btn:pressed{
+#add_line_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
+border-image: url(&quot;resource/gui/tool/addline.png&quot;);
 }</string>
      </property>
      <property name="text">

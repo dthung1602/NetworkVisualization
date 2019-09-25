@@ -81,6 +81,8 @@ class Window(QMainWindow):
         closeBtn = self.findChild(QAction, 'action_Close')
         closeBtn.triggered.connect(self.close)
         # QMenu.View
+        #deleteVertex
+
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
         # Zoom out
@@ -95,6 +97,7 @@ class Window(QMainWindow):
         # Zoom in
         zoomInBtn = self.findChild(QToolButton, 'zoom_in_btn')
         zoomInBtn.pressed.connect(self.canvas.zoomInEvent)
+
         # Zoom out
         zoomOutBtn = self.findChild(QToolButton, 'zoom_out_btn')
         zoomOutBtn.pressed.connect(self.canvas.zoomOutEvent)
@@ -104,6 +107,12 @@ class Window(QMainWindow):
         # Color picker
         colorPickerBtn = self.findChild(QToolButton, 'color_picker_btn')
         colorPickerBtn.pressed.connect(self.openColorDialog)
+        # Add Node
+        addNodeBtn = self.findChild(QToolButton, 'add_node_btn')
+        addNodeBtn.pressed.connect(self.addNewNode)
+        # Delete Vertex
+        deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
+        deleteBtn.pressed.connect(self.deleteEvent)
 
         # Mode
         # shortest path
@@ -118,6 +127,14 @@ class Window(QMainWindow):
 
         if color.isValid():
             print(color.name())
+
+    def deleteEvent(self):
+        self.canvas.deleteNode = True
+        self.canvas.addNode = False
+
+    def addNewNode(self):
+        self.canvas.addNode = True
+        self.canvas.deleteNode = False
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(

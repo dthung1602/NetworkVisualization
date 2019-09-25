@@ -28,12 +28,14 @@ class Canvas(QWidget):
     def __init__(self, gui):
         super().__init__(None)
         self.gui = gui
-        self.mode = 'edit'
+        self.mode = self.MODE_EDIT
 
         self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
 
         self.g = self.clusterToColor = None
+        self.addNode = self.deleteNode = None
+
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
@@ -186,7 +188,7 @@ class Canvas(QWidget):
 
     def findShortestPath(self):
         path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], output='epath')
-        if not path:
+        if not path[0]:
             print("Not connected")
         else:
             self.selectedLines = [self.g.es[i] for i in path[0]]
@@ -216,6 +218,13 @@ class Canvas(QWidget):
             self.selectedPoints = [v]
             self.selectedLines = []
             self.gui.displayVertex(v)
+
+            if self.deleteNode:
+                self.selectedPoints.remove(v)
+                self.selectedLines = filter(lambda e: v.index not in [e.source, e.target], self.selectedLines)
+                self.g.delete_vertices(v)
+                self.deleteNode = None
+
         elif self.mode == self.MODE_FIND_SHORTEST_PATH:
             spl = len(self.selectedPoints)
             if spl == 0 or spl >= 2:
@@ -256,6 +265,18 @@ class Canvas(QWidget):
         if self.mode == self.MODE_EDIT:
             self.selectedPoints = []
             self.selectedLines = []
+
+            if self.addNode:
+                coordinate = {
+                    'x': float(pos.x() / self.zoom + self.viewRect.x()),
+                    'y': float(pos.y() / self.zoom + self.viewRect.y()),
+                    'cluster': 0,
+                    'color': Qt.white,
+                    'pos': pos,
+                }
+                self.g.add_vertex(name=None, **coordinate)
+                self.addNode = None
+                self.update()
 
         self.backgroundDragging = pos
         self.update()
