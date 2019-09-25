@@ -424,6 +424,22 @@ QComboBox::down-arrow {
 </string>
      </property>
     </widget>
+    <widget class="QToolButton" name="findShortestPathBtn">
+     <property name="geometry">
+      <rect>
+       <x>890</x>
+       <y>0</y>
+             <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete nodes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+      <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
     <widget class="QToolButton" name="delete_node_btn">
      <property name="geometry">
       <rect>
@@ -466,6 +482,22 @@ border-image: url(&quot;resource/gui/tool/delete.png&quot;);
        <width>16</width>
        <height>16</height>
       </size>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="editBtn">
+     <property name="geometry">
+      <rect>
+       <x>850</x>
+       <y>0</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
     </widget>
     <widget class="QToolButton" name="add_line_btn">
@@ -568,7 +600,7 @@ border-image: url(&quot;resource/gui/tool/addline.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -604,10 +636,12 @@ border-image: url(&quot;resource/gui/tool/addline.png&quot;);
     <addaction name="actionZoom_Out"/>
     <addaction name="actionReset_Zoom"/>
    </widget>
-   <widget class="QMenu" name="menu_Setting">
+   <widget class="QMenu" name="menu_Tools">
     <property name="title">
-     <string>&amp;Setting</string>
+     <string>&amp;Tools</string>
     </property>
+    <addaction name="actionEdit_graph"/>
+    <addaction name="actionFind_shortest_path"/>
    </widget>
    <widget class="QMenu" name="menu_Window">
     <property name="title">
@@ -624,7 +658,7 @@ border-image: url(&quot;resource/gui/tool/addline.png&quot;);
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_View"/>
-   <addaction name="menu_Setting"/>
+   <addaction name="menu_Tools"/>
    <addaction name="menu_Window"/>
    <addaction name="menu_Help"/>
   </widget>
@@ -691,6 +725,16 @@ border-image: url(&quot;resource/gui/tool/addline.png&quot;);
   <action name="actionReset_Zoom">
    <property name="text">
     <string>Reset &amp;Zoom</string>
+   </property>
+  </action>
+  <action name="actionFind_shortest_path">
+   <property name="text">
+    <string>Find shortest path</string>
+   </property>
+  </action>
+  <action name="actionEdit_graph">
+   <property name="text">
+    <string>Edit graph</string>
    </property>
   </action>
  </widget>

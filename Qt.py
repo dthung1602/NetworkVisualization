@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import *
 from igraph import *
 
 from Canvas import Canvas
-from VertexInfo import VertexInfo
 from EdgeInfo import EdgeInfo
+from VertexInfo import VertexInfo
 
 LAYOUT_OPTIONS = [
     ['Circle', 'circle'],
@@ -48,6 +48,8 @@ class Window(QMainWindow):
         self.selectLayout = self.findChild(QComboBox, 'selectLayout')
         self.selectClusteringAlgo = self.findChild(QComboBox, 'selectClusteringAlgo')
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
+
+        self.mode = 'edit'
 
         self.bindMenuActions()
         self.addSelectOptions()
@@ -110,7 +112,18 @@ class Window(QMainWindow):
         addNodeBtn.pressed.connect(self.addNewNode)
         # Delete Vertex
         deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
-        deleteBtn.pressed.connect(self.deleteEvent)
+        deleteBtn.pressed.connect(self.deleteNodeEvent)
+        # Add Line
+        addLineBtn = self.findChild(QToolButton, 'add_line_btn')
+        addLineBtn.pressed.connect(self.addLineEvent)
+
+        # Mode
+        # shortest path
+        findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')
+        findShortestPathBtn.pressed.connect(self.activateFindShortestPathMode)
+        # edit
+        editBtn = self.findChild(QToolButton, 'editBtn')
+        editBtn.pressed.connect(self.activateEditGraphMode)
 
     def openColorDialog(self):
         color = QColorDialog.getColor()
@@ -118,11 +131,20 @@ class Window(QMainWindow):
         if color.isValid():
             print(color.name())
 
-    def deleteEvent(self):
+    def deleteNodeEvent(self):
         self.canvas.deleteNode = True
+        self.canvas.addNode = False
+        self.canvas.addLine = False
 
     def addNewNode(self):
         self.canvas.addNode = True
+        self.canvas.deleteNode = False
+        self.canvas.addLine = False
+
+    def addLineEvent(self):
+        self.canvas.addLine = True
+        self.canvas.deleteNode = False
+        self.canvas.addNode = False
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(
@@ -163,6 +185,14 @@ class Window(QMainWindow):
                 self.canvas.g.write_graphml(fileName)
             elif ".gml" in fileName:
                 self.canvas.g.write_gml(fileName)
+
+    def activateFindShortestPathMode(self):
+        self.mode = Canvas.MODE_FIND_SHORTEST_PATH
+        self.canvas.setMode(self.mode)
+
+    def activateEditGraphMode(self):
+        self.mode = Canvas.MODE_EDIT
+        self.canvas.setMode(self.mode)
 
     @staticmethod
     def clearLayout(layout):

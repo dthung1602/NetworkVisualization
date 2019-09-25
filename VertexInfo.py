@@ -1,20 +1,19 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QWidget, QPlainTextEdit, QLayout, QLabel, QVBoxLayout, QGridLayout
-from PyQt5.uic.properties import QtGui, QtCore
+from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout
 
 
 class VertexInfo(QWidget):
     def __init__(self, v):
         super().__init__()
-        print("Vertex info:" + str(v))
+
         self.dict = v.attributes()
 
-        print(self.dict)
         layout = QGridLayout(self)
         topLabel = QLabel("VERTEX INFO")
         topLabel.setAlignment(Qt.AlignCenter)
         topLabel.setFont(QFont("SansSerif", 9, QFont.Bold))
+
         topLabel.setStyleSheet(
             "QLabel { padding: 2px; color: rgb(220,220,220); background-color: #383838;}")
         layout.addWidget(topLabel, 0, 0, 1, 2)
@@ -35,4 +34,4 @@ class VertexInfo(QWidget):
             layout.addWidget(valueLabel, count, 1)
             count = count + 1
         self.setLayout(layout)
-        print("OK")
+        # print("OK")
