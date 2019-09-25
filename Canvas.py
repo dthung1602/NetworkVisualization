@@ -24,7 +24,6 @@ class Canvas(QWidget):
     def __init__(self, gui):
         super().__init__(None)
         self.gui = gui
-
         self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
 
@@ -152,12 +151,12 @@ class Canvas(QWidget):
             else:
                 painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
             painter.drawLine(e['line'])
-
         for v in self.pointsToDraw:
             if v == self.selectedPoint:
                 painter.setPen(QPen(Qt.red, 3))
             else:
                 painter.setPen(QPen(Qt.black, 1))
+
             painter.setBrush(v['color'])
             painter.drawEllipse(
                 v['pos'].x() - self.POINT_RADIUS / 2,
@@ -196,6 +195,19 @@ class Canvas(QWidget):
 
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
+
+        # Add new node
+        if self.addNode:
+            coordinate = {
+                'x': float(pos.x() / self.zoom + self.viewRect.x()),
+                'y': float(pos.y() / self.zoom + self.viewRect.y()),
+                'cluster': 0,
+                'color': Qt.white,
+                'pos': pos,
+            }
+            self.g.add_vertex(name=None, **coordinate)
+            self.addNode = None
+            self.update()
 
         # Ongoing
         for l in self.linesToDraw:
