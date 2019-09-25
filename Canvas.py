@@ -38,7 +38,7 @@ class Canvas(QWidget):
         self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
         self.g = self.clusterToColor = None
-        self.addNode = self.deleteNode = self.addLine = None
+        self.addNode = self.deleteNode = self.addLine = self.deleteLine = None
 
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
@@ -244,7 +244,8 @@ class Canvas(QWidget):
             self.gui.displayVertex(v)
 
             if self.deleteNode:
-                self.selectedPoints.remove(v)
+                if v in self.selectedPoints:
+                    self.selectedPoints.remove(v)
                 self.selectedLines = filter(lambda e: v.index not in [e.source, e.target], self.selectedLines)
                 self.g.delete_vertices(v)
                 self.deleteNode = None
@@ -271,6 +272,18 @@ class Canvas(QWidget):
         elif self.mode == self.MODE_FIND_BOTTLE_NECK:
             self.pointDragging = v
 
+    def selectLine(self, l):
+        if self.mode == self.MODE_EDIT:
+            self.selectedLines = [l]
+            self.selectedPoints = []
+            self.gui.displayEdge(l)
+
+        if self.deleteLine:
+            self.selectedLines.remove(l)
+            print(l)
+            self.g.delete_edges(l)
+            self.deleteLine = None
+
     def mousePressEvent(self, event):
         pos = event.pos()
 
@@ -284,6 +297,7 @@ class Canvas(QWidget):
 
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
+
         for v in self.pointsToDraw:
             if clickedToPoint(v['pos']):
                 self.selectPoint(v)
@@ -291,9 +305,7 @@ class Canvas(QWidget):
                 return
         for l in self.linesToDraw:
             if clickToLine(l['line']):
-                self.selectedLines = [l]
-                self.selectedPoints = []
-                self.gui.displayEdge(l)
+                self.selectLine(l)
                 self.update()
                 return
 
