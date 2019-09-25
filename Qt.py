@@ -201,7 +201,7 @@ class Window(QMainWindow):
 
     def displayVertex(self, v):
         self.clearLayout(self.infoArea)
-        vertexInfo = VertexInfo(v)
+        vertexInfo = VertexInfo(v, self.canvas)
         self.infoArea.addWidget(vertexInfo)
 
     def displayEdge(self, l):
