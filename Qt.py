@@ -6,10 +6,9 @@ from PyQt5.QtWidgets import *
 from igraph import *
 
 from Canvas import Canvas
-
+from Filter import Filter
 from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Stat
-from Filter import *
 
 
 class Window(QMainWindow):
@@ -23,6 +22,8 @@ class Window(QMainWindow):
 
         self.mainLayout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.canvas = Canvas(self)
+        self.filterWindow = Filter(self.canvas)
+        self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
@@ -44,6 +45,7 @@ class Window(QMainWindow):
         closeBtn = self.findChild(QAction, 'action_Close')
         closeBtn.triggered.connect(self.close)
         # QMenu.View
+
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
         # Zoom out
@@ -103,10 +105,6 @@ class Window(QMainWindow):
         if color.isValid():
             print(color.name())
 
-    def openFilterDialog(self):
-        print('Load filter dialog')
-        filterDialog = Filter(self.canvas)
-        filterDialog.exec_()
 
     def deleteNodeEvent(self):
         self.canvas.deleteNode = True
@@ -119,6 +117,12 @@ class Window(QMainWindow):
         self.canvas.deleteNode = False
         self.canvas.deleteLine = True
         self.canvas.addLine = False
+
+    def filterEvent(self):
+        self.canvas.filterGraph()
+
+    def cancelFilterEvent(self):
+        self.canvas.cancelFilter()
 
     def addNewNode(self):
         self.canvas.addNode = True
@@ -200,9 +204,12 @@ class Window(QMainWindow):
         self.infoArea.addWidget(edgeInfo)
 
     def openGraphEvent(self):
-        print('Load graph')
-        graph = Stat(self.canvas)
-        graph.exec_()
+        print('Load stat dialog')
+        self.statWindow.show()
+
+    def openFilterDialog(self):
+        print('Load filter dialog')
+        self.filterWindow.show()
 
 
 if __name__ == "__main__":

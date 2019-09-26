@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>952</width>
-    <height>604</height>
+    <width>951</width>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: #282828</string>
+   <string>Form</string>
   </property>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
@@ -36,6 +33,37 @@
      <number>0</number>
     </property>
    </layout>
+  </widget>
+  <widget class="QComboBox" name="selectPlot">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>10</y>
+     <width>241</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#selectClusteringAlgo{
+	color: rgb(200, 200, 200);
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #383838;
+	padding-left: 13px;
+	padding-right: 10px;
+}
+QComboBox::drop-down 
+{
+    border: 0px; /* This seems to replace the whole arrow of the combo box */
+}
+QComboBox::down-arrow {
+   image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
+    width: 9px;
+    height: 9px;
+	padding-right: 10px;
+}
+</string>
+   </property>
   </widget>
  </widget>
  <resources/>

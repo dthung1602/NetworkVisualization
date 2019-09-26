@@ -1,16 +1,22 @@
 import matplotlib.pyplot as plt
+import numpy as np
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QComboBox
 from PyQt5.uic import loadUi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from Filter import Filter
+
 from Canvas import Canvas
 import resource.firgureOption
 
+SELECT_PLOT = [
+    ['Edge Weight'],
+    ['Edge Speed Raw'],
+]
 
-class Stat(QDialog):
+
+class Stat(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
         print('graph')
@@ -19,26 +25,57 @@ class Stat(QDialog):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black - Graph Generator")
         self.layout = self.findChild(QVBoxLayout, 'verticalLayout')
-        self.plot()
+        self.selectPlot = self.findChild(QComboBox, 'selectPlot')
+        self.addSelectOptions()
+        self.edgeWeightPlot()
 
-    def plot(self):
-        # test data
-        x = [21, 22, 23, 4, 5, 6, 77, 8, 9, 10, 31, 32, 33, 34, 35, 36, 37, 18, 49, 50, 100]
-        num_bins = 5
+    def addSelectOptions(self):
+        # Graph Layout Opt
+        self.selectPlot.addItems([opt[0] for opt in SELECT_PLOT])
+        self.selectPlot.currentIndexChanged.connect(self.changeGraphLayout)
+
+    def changeGraphLayout(self, opt):
+        switcher = {
+            0: self.edgeWeightPlot,
+            1: self.edgeSpeedPlot
+        }
+
+        func = switcher.get(opt)
+        func()
+
+    def edgeWeightPlot(self):
+        self.clearLayout(self.layout)
+        weightArr = np.array(self.canvas.g.es['weight'])
         fig, ax1 = plt.subplots()
-        n, bins, patches = ax1.hist(x, num_bins, facecolor='blue', alpha=0.5)
-
-        # data = np.array([0.7, 0.7, 0.7, 0.8, 0.9, 0.9, 1.5, 1.5, 1.5, 1.5])
-        #
-        # bins = np.arange(0.6, 1.62, 0.02)
-        # n1, bins1, patches1 = ax1.hist(data, bins, alpha=0.6, density=False, cumulative=False)
+        num_bins = 15
+        ax1.set_title('Edge Weights Histogram')
+        ax1.set_xlabel('Number of Edges')
+        ax1.set_ylabel('Weights')
+        n, bins, patches = ax1.hist(weightArr, num_bins, facecolor='blue', alpha=0.5)
         graph = FigureCanvas(fig)
         self.layout.addWidget(graph)
+        self.addToolBar(graph)
+
+    def edgeSpeedPlot(self):
+        self.clearLayout(self.layout)
+        weightArr = np.array(self.canvas.g.es['LinkSpeedRaw'])
+        fig, ax1 = plt.subplots()
+        num_bins = 10
+        ax1.set_title('Link Speed Raw Histogram')
+        ax1.set_xlabel('Number of Edges')
+        ax1.set_ylabel('Speeds')
+        n, bins, patches = ax1.hist(weightArr, num_bins, facecolor='blue', alpha=0.5)
+        graph = FigureCanvas(fig)
+        self.layout.addWidget(graph)
+        self.addToolBar(graph)
+    def addToolBar(self, graph):
         try:
             toolbar = NavigationToolbar(graph,self)
             toolbar.__delattr__("None")
             self.layout.addWidget(QtCore.Qt.BottomToolBarArea, toolbar)
         except Exception as e:
             print(e)
-    def notify(self):
-        print("Axes changes")
+    @staticmethod
+    def clearLayout(layout):
+        for i in reversed(range(layout.count())):
+            layout.itemAt(i).widget().deleteLater()
