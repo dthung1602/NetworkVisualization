@@ -710,22 +710,22 @@ border-image: url(&quot;resource/gui/tool/bottleneck.png&quot;);
       <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/bottleneck.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Find the bottleneck&lt;/strong&gt;&lt;br/&gt;Bottlenecks are colored red&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">#findBottleNeckBtn{
+      <string notr="true">#filter_dialog_btn{
 background-color: transparent;
-border-image: url(&quot;resource/gui/tool/bottleneck.png&quot;);
+border-image: url(&quot;resource/gui/tool/filter.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
 }
-#findBottleNeckBtn:hover{
+#filter_dialog_btn:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/bottleneck.png&quot;);
+border-image: url(&quot;resource/gui/tool/filter.png&quot;);
 }
-#findBottleNeckBtn:pressed{
+#filter_dialog_btn:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/bottleneck.png&quot;);
+border-image: url(&quot;resource/gui/tool/filter.png&quot;);
 }</string>
      </property>
     </widget>
