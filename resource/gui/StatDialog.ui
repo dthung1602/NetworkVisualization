@@ -34,6 +34,37 @@
     </property>
    </layout>
   </widget>
+  <widget class="QComboBox" name="selectPlot">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>10</y>
+     <width>241</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#selectClusteringAlgo{
+	color: rgb(200, 200, 200);
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #383838;
+	padding-left: 13px;
+	padding-right: 10px;
+}
+QComboBox::drop-down 
+{
+    border: 0px; /* This seems to replace the whole arrow of the combo box */
+}
+QComboBox::down-arrow {
+   image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
+    width: 9px;
+    height: 9px;
+	padding-right: 10px;
+}
+</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
