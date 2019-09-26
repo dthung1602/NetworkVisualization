@@ -39,6 +39,7 @@ class Canvas(QWidget):
         self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
         self.g = self.clusterToColor = None
         self.addNode = self.deleteNode = self.addLine = self.deleteLine = None
+        self.filterData = None
 
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
@@ -161,6 +162,15 @@ class Canvas(QWidget):
         linesIntersectScreen = {e for e in self.g.es if intersectWithViewRect(e['line'])}
         self.linesToDraw = linesInScreen.union(linesIntersectScreen)
 
+        # filter
+        if self.filterData is not None:
+            # print(self.linesToDraw)
+            self.linesToDraw = list(filter(self.applyFilter, self.linesToDraw))
+            # print(list(self.linesToDraw))
+
+    def applyFilter(self, e):
+        return self.filterData['left'] < e[self.filterData['attr']] < self.filterData['right']
+
     def paintEvent(self, event):
         self.updateViewRect()
 
@@ -240,6 +250,14 @@ class Canvas(QWidget):
         self.zoom += event.angleDelta().y() / 120 * 0.05
         self.update()
 
+    def filterGraph(self, attr='total_delay', left=0, right=54):
+        self.filterData = {'attr': attr, 'left': left, 'right': right}
+        self.update()
+
+    def cancelFilter(self):
+        self.filterData = None
+        self.update()
+
     def selectPoint(self, v):
         if self.mode == self.MODE_EDIT:
             self.pointDragging = v
@@ -283,7 +301,7 @@ class Canvas(QWidget):
 
         if self.deleteLine:
             self.selectedLines.remove(l)
-            print(l)
+            # print(l)
             self.g.delete_edges(l)
             self.deleteLine = None
 

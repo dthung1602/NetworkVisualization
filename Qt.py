@@ -45,6 +45,7 @@ class Window(QMainWindow):
         closeBtn = self.findChild(QAction, 'action_Close')
         closeBtn.triggered.connect(self.close)
         # QMenu.View
+
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
         # Zoom out
@@ -116,6 +117,12 @@ class Window(QMainWindow):
         self.canvas.deleteNode = False
         self.canvas.deleteLine = True
         self.canvas.addLine = False
+
+    def filterEvent(self):
+        self.canvas.filterGraph()
+
+    def cancelFilterEvent(self):
+        self.canvas.cancelFilter()
 
     def addNewNode(self):
         self.canvas.addNode = True
