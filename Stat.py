@@ -7,6 +7,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from Filter import Filter
 from Canvas import Canvas
+import resource.firgureOption
 
 
 class Stat(QDialog):
@@ -34,6 +35,10 @@ class Stat(QDialog):
         graph = FigureCanvas(fig)
         self.layout.addWidget(graph)
         try:
-            self.layout.addWidget(QtCore.Qt.BottomToolBarArea, NavigationToolbar(graph, self))
+            toolbar = NavigationToolbar(graph,self)
+            toolbar.__delattr__("None")
+            self.layout.addWidget(QtCore.Qt.BottomToolBarArea, toolbar)
         except Exception as e:
             print(e)
+    def notify(self):
+        print("Axes changes")
