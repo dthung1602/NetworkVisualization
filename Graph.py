@@ -1,7 +1,6 @@
 import random
 
 import matplotlib
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel
 from PyQt5.uic import loadUi
@@ -10,7 +9,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 from matplotlib.figure import Figure
 import numpy as np
 import matplotlib.pyplot as plt
-from qtpy import QtCore
+from PyQt5 import QtCore
 
 from Canvas import Canvas
 
