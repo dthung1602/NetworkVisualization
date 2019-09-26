@@ -8,7 +8,8 @@ from igraph import *
 from Canvas import Canvas
 from EdgeInfo import EdgeInfo
 from VertexInfo import VertexInfo
-from Graph import Graph
+from Stat import Stat
+from Filter import Filter
 
 LAYOUT_OPTIONS = [
     ['Circle', 'circle'],
@@ -131,12 +132,20 @@ class Window(QMainWindow):
         # edit
         editBtn = self.findChild(QToolButton, 'editBtn')
         editBtn.pressed.connect(self.activateEditGraphMode)
+        # open Filter window
+        filterBtn = self.findChild(QToolButton, 'filter_dialog_btn')
+        filterBtn.pressed.connect(self.openFilterDialog)
 
     def openColorDialog(self):
         color = QColorDialog.getColor()
 
         if color.isValid():
             print(color.name())
+
+    def openFilterDialog(self):
+        print('Load filter dialog')
+        filterDialog = Filter()
+        filterDialog.exec_()
 
     def deleteNodeEvent(self):
         self.canvas.deleteNode = True
@@ -231,7 +240,7 @@ class Window(QMainWindow):
 
     def openGraphEvent(self):
         print('Load graph')
-        graph = Graph(self.canvas)
+        graph = Stat(self.canvas)
         graph.exec_()
 
 

@@ -60,8 +60,11 @@ class Canvas(QWidget):
         vsAttributes = g.vs.attributes()
         if 'x' not in vsAttributes or 'y' not in vsAttributes:
             self.setGraphLayout(self.DEFAULT_GRAPH_LAYOUT)
-        if 'color' not in vsAttributes:
+        if 'cluster' not in vsAttributes:
             self.setClusteringAlgo(self.DEFAULT_CLUSTERING_ALGO)
+        else:
+            clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
+            g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
         self.resetViewRect()
 
     def resetViewRect(self):
@@ -109,9 +112,9 @@ class Canvas(QWidget):
         def getClusterId(vertex):
             for cluster in clusters:
                 if vertex['id'] in cluster.vs['id']:
-                    return id(cluster)
+                    return str(id(cluster))
 
-        clusterToColor = {id(cl): randomColor() for cl in clusters}
+        clusterToColor = {str(id(cl)): randomColor() for cl in clusters}
         self.g.vs['cluster'] = [getClusterId(v) for v in self.g.vs]
         self.g.vs['color'] = [clusterToColor[v['cluster']] for v in self.g.vs]
         self.update()
