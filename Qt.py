@@ -5,17 +5,15 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from igraph import *
 
-from Canvas import Canvas
 from EdgeInfo import EdgeInfo
-from VertexInfo import VertexInfo
+from Canvas import Canvas
 from Stat import Stat
-from Filter import *
+from VertexInfo import VertexInfo
 
 
 class Window(QMainWindow):
-    def __init__(self):
-        super().__init__()
-
+    def __init__(self, parent=None):
+        super().__init__(parent)
         uic.loadUi('resource/gui/GUI.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black")
