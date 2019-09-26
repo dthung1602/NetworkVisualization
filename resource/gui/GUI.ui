@@ -363,67 +363,6 @@ border-image: url(&quot;resource/gui/tool/graph.png&quot;);
       </size>
      </property>
     </widget>
-    <widget class="QComboBox" name="selectLayout">
-     <property name="geometry">
-      <rect>
-       <x>1160</x>
-       <y>6</y>
-       <width>201</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#selectLayout{
-	color: rgb(200, 200, 200);
-	border-style: none;
-    border-radius: 7px;
-	background-color: #383838;
-	padding-left: 13px;
-}
-
-QComboBox::drop-down 
-{
-    border: 0px; /* This seems to replace the whole arrow of the combo box */
-}
-QComboBox::down-arrow {
-   image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
-    width: 9px;
-    height: 9px;
-	padding-right: 10px;
-}</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="selectClusteringAlgo">
-     <property name="geometry">
-      <rect>
-       <x>930</x>
-       <y>6</y>
-       <width>211</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#selectClusteringAlgo{
-	color: rgb(200, 200, 200);
-	border-style: 2px solid rgb(200, 200, 200);
-    border-radius: 7px;
-	background-color: #383838;
-	padding-left: 13px;
-	padding-right: 10px;
-}
-QComboBox::drop-down 
-{
-    border: 0px; /* This seems to replace the whole arrow of the combo box */
-}
-QComboBox::down-arrow {
-   image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
-    width: 9px;
-    height: 9px;
-	padding-right: 10px;
-}
-</string>
-     </property>
-    </widget>
     <widget class="QToolButton" name="findShortestPathBtn">
      <property name="geometry">
       <rect>

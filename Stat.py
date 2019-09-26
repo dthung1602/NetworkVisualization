@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QWidget
 from PyQt5.uic import loadUi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
@@ -9,7 +9,7 @@ from Filter import Filter
 from Canvas import Canvas
 
 
-class Stat(QDialog):
+class Stat(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
         print('graph')
@@ -32,6 +32,7 @@ class Stat(QDialog):
         # bins = np.arange(0.6, 1.62, 0.02)
         # n1, bins1, patches1 = ax1.hist(data, bins, alpha=0.6, density=False, cumulative=False)
         graph = FigureCanvas(fig)
+        graph.setStyleSheet("{background-color: #000;}")
         self.layout.addWidget(graph)
         try:
             self.layout.addWidget(QtCore.Qt.BottomToolBarArea, NavigationToolbar(graph, self))
