@@ -691,6 +691,44 @@ border-image: url(&quot;resource/gui/tool/bottleneck.png&quot;);
 }</string>
      </property>
     </widget>
+    <widget class="QToolButton" name="filter_dialog_btn">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>6</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/bottleneck.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Find the bottleneck&lt;/strong&gt;&lt;br/&gt;Bottlenecks are colored red&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#filter_dialog_btn{
+background-color: transparent;
+border-image: url(&quot;resource/gui/tool/filter.png&quot;);
+background: none;
+border-radius: 3px;
+background-repeat: none;
+}
+#filter_dialog_btn:hover{
+background-color: #454545;
+border-radius: 3px;
+border-image: url(&quot;resource/gui/tool/filter.png&quot;);
+}
+#filter_dialog_btn:pressed{
+background-color: #383838;
+border-radius: 3px;
+border-image: url(&quot;resource/gui/tool/filter.png&quot;);
+}</string>
+     </property>
+    </widget>
    </widget>
    <widget class="Line" name="line_3">
     <property name="geometry">
