@@ -1,6 +1,7 @@
 from PyQt5.QtGui import QIcon, QWindow
 from PyQt5.QtWidgets import QDialog, QComboBox
 from PyQt5.uic import loadUi
+from Canvas import Canvas
 
 LAYOUT_OPTIONS = [
     ['Circle', 'circle'],
@@ -26,7 +27,7 @@ CLUSTERING_ALGOS = [
 
 
 class Filter(QDialog):
-    def __init__(self, canvas):
+    def __init__(self, canvas: Canvas):
         super().__init__()
         print('Filter Dialog')
         self.canvas = canvas
@@ -36,14 +37,20 @@ class Filter(QDialog):
 
         self.selectLayout = self.findChild(QComboBox, 'selectLayout')
         self.selectClusteringAlgo = self.findChild(QComboBox, 'selectClusteringAlgo')
+        self.selectFilterEdge = self.findChild(QComboBox, 'selectFilterEdge')
 
         self.addSelectOptions()
 
     def addSelectOptions(self):
+        # Graph Layout Opt
         self.selectLayout.addItems([opt[0] for opt in LAYOUT_OPTIONS])
         self.selectLayout.currentIndexChanged.connect(self.changeGraphLayout)
+        # Clustering Algo Opt
         self.selectClusteringAlgo.addItems([opt[0] for opt in CLUSTERING_ALGOS])
         self.selectClusteringAlgo.currentIndexChanged.connect(self.changeClusteringAlgo)
+        # Filter Edge Opt
+        self.selectFilterEdge.addItems([opt for opt in self.canvas.g.es.attributes()])
+        self.selectFilterEdge.currentIndexChanged.connect(self.changeFilterEdge)
 
     def changeGraphLayout(self, opt):
         self.canvas.setGraphLayout(LAYOUT_OPTIONS[opt][1])
@@ -51,4 +58,5 @@ class Filter(QDialog):
     def changeClusteringAlgo(self, opt):
         self.canvas.setClusteringAlgo(CLUSTERING_ALGOS[opt][1])
 
-    
+    def changeFilterEdge(self):
+        print('Filter')
