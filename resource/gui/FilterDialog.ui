@@ -1,33 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>337</width>
-    <height>836</height>
+    <height>840</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #282828</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QComboBox" name="selectClusteringAlgo">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>60</y>
-      <width>301</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#selectClusteringAlgo{
+  <widget class="QLabel" name="layoutLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>87</y>
+     <width>211</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(180,180,180);
+font-size: 15px;
+background-color: transparent;</string>
+   </property>
+   <property name="text">
+    <string>Select Layout:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="selectLayout">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>117</y>
+     <width>301</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#selectLayout{
+	color: rgb(200, 200, 200);
+	border-style: none;
+    border-radius: 7px;
+	background-color: #383838;
+	padding-left: 13px;
+}
+
+QComboBox::drop-down 
+{
+    border: 0px; /* This seems to replace the whole arrow of the combo box */
+}
+QComboBox::down-arrow {
+   image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
+    width: 9px;
+    height: 9px;
+	padding-right: 10px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="selectClusteringAlgo">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>47</y>
+     <width>301</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#selectClusteringAlgo{
 	color: rgb(200, 200, 200);
 	border-style: 2px solid rgb(200, 200, 200);
     border-radius: 7px;
@@ -46,73 +93,19 @@ QComboBox::down-arrow {
 	padding-right: 10px;
 }
 </string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="filterLabel">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>173</y>
-      <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(180,180,180);
-font-size: 15px;
-background-color: transparent;</string>
-    </property>
-    <property name="text">
-     <string>Filter:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(180,180,180);
-font-size: 15px;
-background-color: transparent;</string>
-    </property>
-    <property name="text">
-     <string>Select Cluster Algorithm:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="layoutLabel">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>100</y>
-      <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(180,180,180);
-font-size: 15px;
-background-color: transparent;</string>
-    </property>
-    <property name="text">
-     <string>Select Layout:</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="selectFilterEdge">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>203</y>
-      <width>301</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QComboBox{
+   </property>
+  </widget>
+  <widget class="QComboBox" name="selectFilterEdge">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>190</y>
+     <width>301</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox{
 	color: rgb(200, 200, 200);
 	border-style: none;
     border-radius: 7px;
@@ -130,38 +123,43 @@ QComboBox::down-arrow {
     height: 9px;
 	padding-right: 10px;
 }</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="selectLayout">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>130</y>
-      <width>301</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#selectLayout{
-	color: rgb(200, 200, 200);
-	border-style: none;
-    border-radius: 7px;
-	background-color: #383838;
-	padding-left: 13px;
-}
-
-QComboBox::drop-down 
-{
-    border: 0px; /* This seems to replace the whole arrow of the combo box */
-}
-QComboBox::down-arrow {
-   image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
-    width: 9px;
-    height: 9px;
-	padding-right: 10px;
-}</string>
-    </property>
-   </widget>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>17</y>
+     <width>211</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(180,180,180);
+font-size: 15px;
+background-color: transparent;</string>
+   </property>
+   <property name="text">
+    <string>Select Cluster Algorithm:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="filterLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>160</y>
+     <width>211</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(180,180,180);
+font-size: 15px;
+background-color: transparent;</string>
+   </property>
+   <property name="text">
+    <string>Filter:</string>
+   </property>
   </widget>
  </widget>
  <resources/>

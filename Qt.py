@@ -5,15 +5,16 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from igraph import *
 
-from EdgeInfo import EdgeInfo
 from Canvas import Canvas
+from Filter import Filter
+from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Stat
-from VertexInfo import VertexInfo
 
 
 class Window(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+
         uic.loadUi('resource/gui/GUI.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black")
@@ -21,26 +22,13 @@ class Window(QMainWindow):
 
         self.mainLayout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.canvas = Canvas(self)
+        self.filterWindow = Filter(self.canvas)
+        self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
-
-        self.mode = 'edit'
-
+        self.mode = Canvas.MODE_EDIT
         self.bindMenuActions()
-        # self.addSelectOptions()
-
-    # def addSelectOptions(self):
-    #     self.selectLayout.addItems([opt[0] for opt in LAYOUT_OPTIONS])
-    #     self.selectLayout.currentIndexChanged.connect(self.changeGraphLayout)
-    #     self.selectClusteringAlgo.addItems([opt[0] for opt in CLUSTERING_ALGOS])
-    #     self.selectClusteringAlgo.currentIndexChanged.connect(self.changeClusteringAlgo)
-    #
-    # def changeGraphLayout(self, opt):
-    #     self.canvas.setGraphLayout(LAYOUT_OPTIONS[opt][1])
-    #
-    # def changeClusteringAlgo(self, opt):
-    #     self.canvas.setClusteringAlgo(CLUSTERING_ALGOS[opt][1])
 
     def bindMenuActions(self):
         # -------------- Menu ----------------- #
@@ -116,10 +104,6 @@ class Window(QMainWindow):
         if color.isValid():
             print(color.name())
 
-    def openFilterDialog(self):
-        print('Load filter dialog')
-        filterDialog = Filter(self.canvas)
-        filterDialog.exec_()
 
     def deleteNodeEvent(self):
         self.canvas.deleteNode = True
@@ -204,18 +188,21 @@ class Window(QMainWindow):
 
     def displayVertex(self, v):
         self.clearLayout(self.infoArea)
-        vertexInfo = VertexInfo(v, self.canvas)
+        vertexInfo = VertexInfoWidget(v, self.canvas)
         self.infoArea.addWidget(vertexInfo)
 
     def displayEdge(self, l):
         self.clearLayout(self.infoArea)
-        edgeInfo = EdgeInfo(l, self.canvas)
+        edgeInfo = EdgeInfoWidget(l, self.canvas)
         self.infoArea.addWidget(edgeInfo)
 
     def openGraphEvent(self):
-        print('Load graph')
-        graph = Stat(self.canvas)
-        graph.exec_()
+        print('Load stat dialog')
+        self.statWindow.show()
+
+    def openFilterDialog(self):
+        print('Load filter dialog')
+        self.filterWindow.show()
 
 
 if __name__ == "__main__":

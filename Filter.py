@@ -1,8 +1,8 @@
 from PyQt5.QtGui import QIcon, QWindow
-from PyQt5.QtWidgets import QDialog, QComboBox, QMainWindow
+from PyQt5.QtWidgets import QDialog, QComboBox, QMainWindow, QWidget
 from PyQt5.uic import loadUi
 from Canvas import Canvas
-from Qt import Window
+
 LAYOUT_OPTIONS = [
     ['Circle', 'circle'],
     ['Distributed Recursive', 'drl'],
@@ -26,7 +26,7 @@ CLUSTERING_ALGOS = [
 ]
 
 
-class Filter(QMainWindow):
+class Filter(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
         print('Filter Dialog')
