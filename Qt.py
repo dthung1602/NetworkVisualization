@@ -8,7 +8,7 @@ from igraph import *
 from Canvas import Canvas
 from EdgeInfo import EdgeInfo
 from VertexInfo import VertexInfo
-from Graph import Graph
+from Stat import Graph
 
 LAYOUT_OPTIONS = [
     ['Circle', 'circle'],

@@ -1,16 +1,10 @@
-import random
-
-import matplotlib
-from PyQt5.QtCore import Qt
+import matplotlib.pyplot as plt
+from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QDialog, QVBoxLayout
 from PyQt5.uic import loadUi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
-import numpy as np
-import matplotlib.pyplot as plt
-from qtpy import QtCore
 
 from Canvas import Canvas
 
@@ -25,7 +19,6 @@ class Graph(QDialog):
         self.setWindowTitle("Network Visualization - Team Black - Graph Generator")
         self.layout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.plot()
-        print('ok all')
 
     def plot(self):
         # test data
