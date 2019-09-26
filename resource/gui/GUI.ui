@@ -788,11 +788,7 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-<<<<<<< HEAD
-     <height>21</height>
-=======
      <height>26</height>
->>>>>>> f8aff961ee86700f5bfa598706910d88140c3b09
     </rect>
    </property>
    <property name="sizePolicy">
@@ -929,7 +925,6 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
     <string>Edit graph</string>
    </property>
   </action>
-<<<<<<< HEAD
   <action name="actionFind_bottle_neck">
    <property name="text">
     <string>Find bottle neck</string>
@@ -940,8 +935,6 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
     <string>Filter</string>
    </property>
   </action>
-=======
->>>>>>> f8aff961ee86700f5bfa598706910d88140c3b09
  </widget>
  <resources/>
  <connections/>
