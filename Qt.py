@@ -6,8 +6,7 @@ from PyQt5.QtWidgets import *
 from igraph import *
 
 from Canvas import Canvas
-from EdgeInfo import EdgeInfo
-from VertexInfo import VertexInfo
+from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Graph
 
 LAYOUT_OPTIONS = [
@@ -221,12 +220,12 @@ class Window(QMainWindow):
 
     def displayVertex(self, v):
         self.clearLayout(self.infoArea)
-        vertexInfo = VertexInfo(v, self.canvas)
+        vertexInfo = VertexInfoWidget(v, self.canvas)
         self.infoArea.addWidget(vertexInfo)
 
     def displayEdge(self, l):
         self.clearLayout(self.infoArea)
-        edgeInfo = EdgeInfo(l, self.canvas)
+        edgeInfo = EdgeInfoWidget(l, self.canvas)
         self.infoArea.addWidget(edgeInfo)
 
     def openGraphEvent(self):
