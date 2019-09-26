@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QDialog, QVBoxLayout
 from PyQt5.uic import loadUi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-
+from Filter import Filter
 from Canvas import Canvas
 
 
@@ -14,7 +14,7 @@ class Stat(QDialog):
         super().__init__()
         print('graph')
         self.canvas = canvas
-        loadUi('resource/gui/GraphDialog.ui', self)
+        loadUi('resource/gui/StatDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black - Graph Generator")
         self.layout = self.findChild(QVBoxLayout, 'verticalLayout')
