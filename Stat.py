@@ -8,7 +8,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 from Canvas import Canvas
-import resource.firgureOption
+# import figureOption
 
 SELECT_PLOT = [
     ['Edge Weight'],
@@ -35,13 +35,10 @@ class Stat(QWidget):
         self.selectPlot.currentIndexChanged.connect(self.changeGraphLayout)
 
     def changeGraphLayout(self, opt):
-        switcher = {
-            0: self.edgeWeightPlot,
-            1: self.edgeSpeedPlot
-        }
-
-        func = switcher.get(opt)
-        func()
+        [
+            self.edgeWeightPlot,
+            self.edgeSpeedPlot
+        ][opt]()
 
     def edgeWeightPlot(self):
         self.clearLayout(self.layout)
@@ -68,13 +65,15 @@ class Stat(QWidget):
         graph = FigureCanvas(fig)
         self.layout.addWidget(graph)
         self.addToolBar(graph)
+
     def addToolBar(self, graph):
         try:
-            toolbar = NavigationToolbar(graph,self)
+            toolbar = NavigationToolbar(graph, self)
             toolbar.__delattr__("None")
             self.layout.addWidget(QtCore.Qt.BottomToolBarArea, toolbar)
         except Exception as e:
             print(e)
+
     @staticmethod
     def clearLayout(layout):
         for i in reversed(range(layout.count())):
