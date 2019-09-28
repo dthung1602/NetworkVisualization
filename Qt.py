@@ -76,8 +76,8 @@ class Window(QMainWindow):
         deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
         deleteBtn.pressed.connect(self.deleteNodeEvent)
         # Delete Line
-        deletelineBtn = self.findChild(QToolButton, 'delete_line_btn')
-        deletelineBtn.pressed.connect(self.deletelineEvent)
+        deleteLineBtn = self.findChild(QToolButton, 'delete_line_btn')
+        deleteLineBtn.pressed.connect(self.deleteLineEvent)
 
         # Add Line
         addLineBtn = self.findChild(QToolButton, 'add_line_btn')
@@ -105,24 +105,17 @@ class Window(QMainWindow):
         if color.isValid():
             print(color.name())
 
-
     def deleteNodeEvent(self):
         self.canvas.deleteNode = True
         self.canvas.addNode = False
         self.canvas.addLine = False
         self.canvas.deleteLine = False
 
-    def deletelineEvent(self):
+    def deleteLineEvent(self):
         self.canvas.addNode = False
         self.canvas.deleteNode = False
         self.canvas.deleteLine = True
         self.canvas.addLine = False
-
-    def filterEvent(self):
-        self.canvas.filterGraph()
-
-    def cancelFilterEvent(self):
-        self.canvas.cancelFilter()
 
     def addNewNode(self):
         self.canvas.addNode = True
@@ -157,7 +150,7 @@ class Window(QMainWindow):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(
-            self, "Open", "",
+            self, "Open", "./resource/graph",
             "All Files (*);;Python Files (*.py)", options=options
         )
         if fileName:
