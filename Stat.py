@@ -10,7 +10,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 from Canvas import Canvas
-
+import resource.firgureOption
 
 SELECT_PLOT = [
     ['Edge Weight'],
@@ -90,7 +90,6 @@ class Stat(QWidget):
     def addToolBar(self, graph):
         try:
             toolbar = NavigationToolbar(graph, self)
-            toolbar.__delattr__("None")
             self.layout.addWidget(QtCore.Qt.BottomToolBarArea, toolbar)
         except Exception as e:
             print(e)
