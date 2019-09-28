@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QComboBox, QWidget, QPushButton, QLineEdit
+from PyQt5.QtWidgets import QComboBox, QWidget, QPushButton, QLineEdit, QLabel
 from PyQt5.uic import loadUi
 
 from Canvas import Canvas
@@ -49,7 +49,7 @@ class Filter(QWidget):
 
         self.selectLayout = self.findChild(QComboBox, 'selectLayout')
         self.selectLayoutEdgeWeight = self.findChild(QComboBox, 'selectLayoutEdgeWeight')
-        self.labelLayoutEdgeWeight = self.findChild(QComboBox, 'labelLayoutEdgeWeight')
+        self.labelLayoutEdgeWeight = self.findChild(QLabel, 'labelLayoutEdgeWeight')
         self.applyLayoutBtn = self.findChild(QPushButton, 'applyLayoutBtn')
 
         self.selectClusteringAlgo = self.findChild(QComboBox, 'selectClusteringAlgo')
@@ -62,7 +62,7 @@ class Filter(QWidget):
         self.filterRight = self.findChild(QLineEdit, 'filterRight')
 
         self.addSelectOptions()
-        self.setShowLayoutWeight()
+        self.setShowLayoutWeight(0)
 
     def addSelectOptions(self):
         # Graph Layout Opt
