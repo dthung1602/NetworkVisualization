@@ -7,20 +7,22 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
 
+LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
+
 
 def randomColor():
     return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
 
 
 class Canvas(QWidget):
-    HEIGHT = 400
+    HEIGHT = 500
     POINT_RADIUS = 8
     SELECTED_POINT_RADIUS = 12
     LINE_DISTANCE = 2
 
     DEFAULT_GRAPH = 'resource/graph/NREN-delay.graphml'
-    DEFAULT_CLUSTERING_ALGO = 'community_fastgreedy'
-    DEFAULT_GRAPH_LAYOUT = 'large'
+    DEFAULT_CLUSTERING_ALGO = 'community_edge_betweenness'
+    DEFAULT_GRAPH_LAYOUT = 'layout_lgl'
 
     MODE_EDIT = 'edit'
     MODE_FIND_SHORTEST_PATH = 'fsp'
@@ -35,8 +37,6 @@ class Canvas(QWidget):
         self.gui = gui
         self.mode = self.MODE_EDIT
 
-        self.clusteringAlgo = self.DEFAULT_CLUSTERING_ALGO
-        self.graphLayout = self.DEFAULT_GRAPH_LAYOUT
         self.g = self.clusterToColor = None
         self.addNode = self.deleteNode = self.addLine = self.deleteLine = None
         self.filterData = None
@@ -46,6 +46,7 @@ class Canvas(QWidget):
         self.selectedLines = self.selectedPoints = []
 
         self.setGraph(self.DEFAULT_GRAPH)
+        self.vertexDegree()
 
     def setMode(self, mode):
         self.mode = mode
@@ -60,12 +61,13 @@ class Canvas(QWidget):
         self.g = g = igraph.read(filename)
         vsAttributes = g.vs.attributes()
         if 'x' not in vsAttributes or 'y' not in vsAttributes:
-            self.setGraphLayout(self.DEFAULT_GRAPH_LAYOUT)
+            self.setGraphLayout(self.DEFAULT_GRAPH_LAYOUT, None)
         if 'cluster' not in vsAttributes:
-            self.setClusteringAlgo(self.DEFAULT_CLUSTERING_ALGO)
+            self.setClusteringAlgo(self.DEFAULT_CLUSTERING_ALGO, None)
         else:
             clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
             g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
+
         self.resetViewRect()
 
     def resetViewRect(self):
@@ -94,18 +96,24 @@ class Canvas(QWidget):
         self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.updateViewRect()
 
-    def setGraphLayout(self, layoutName):
-        self.graphLayout = layoutName
-        layout = self.g.layout(layoutName)
+    def setGraphLayout(self, layoutName, weights):
+        layoutFunc = getattr(self.g, layoutName)
+        if layoutName in LAYOUT_WITH_WEIGHT:
+            layout = layoutFunc(weights=weights)
+        else:
+            layout = layoutFunc()
         for c, v in zip(layout.coords, self.g.vs):
             v['x'] = c[0]
             v['y'] = c[1]
         self.resetViewRect()
         self.update()
 
-    def setClusteringAlgo(self, algoName):
-        self.clusteringAlgo = algoName
-        clusters = getattr(self.g, algoName)()
+    def setClusteringAlgo(self, algoName, weights):
+        clusterFunc = getattr(self.g, algoName)
+        if algoName == 'community_infomap':
+            clusters = clusterFunc(edge_weights=weights)
+        else:
+            clusters = clusterFunc(weights=weights)
         if isinstance(clusters, VertexDendrogram):
             clusters = clusters.as_clustering()
         clusters = clusters.subgraphs()
@@ -118,6 +126,10 @@ class Canvas(QWidget):
         clusterToColor = {str(id(cl)): randomColor() for cl in clusters}
         self.g.vs['cluster'] = [getClusterId(v) for v in self.g.vs]
         self.g.vs['color'] = [clusterToColor[v['cluster']] for v in self.g.vs]
+        self.update()
+
+    def setFilter(self, attr='total_delay', left=0, right=54):
+        self.filterData = {'attr': attr, 'left': left, 'right': right}
         self.update()
 
     def updateViewRect(self):
@@ -164,12 +176,10 @@ class Canvas(QWidget):
 
         # filter
         if self.filterData is not None:
-            # print(self.linesToDraw)
-            self.linesToDraw = list(filter(self.applyFilter, self.linesToDraw))
-            # print(list(self.linesToDraw))
-
-    def applyFilter(self, e):
-        return self.filterData['left'] < e[self.filterData['attr']] < self.filterData['right']
+            self.linesToDraw = list(filter(
+                lambda e: self.filterData['left'] < e[self.filterData['attr']] < self.filterData['right'],
+                self.linesToDraw
+            ))
 
     def paintEvent(self, event):
         self.updateViewRect()
@@ -182,10 +192,12 @@ class Canvas(QWidget):
 
     def paint(self, painter):
         painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
+
         for e in self.linesToDraw:
             painter.drawLine(e['line'])
 
         painter.setPen(QPen(Qt.black, 1))
+
         for v in self.pointsToDraw:
             painter.setBrush(v['color'])
             painter.drawEllipse(
@@ -195,6 +207,7 @@ class Canvas(QWidget):
             )
 
         painter.setPen(QPen(Qt.red, 2, join=Qt.PenJoinStyle(0x80)))
+
         for e in self.selectedLines:
             painter.drawLine(e['line'])
 
@@ -232,6 +245,11 @@ class Canvas(QWidget):
                 self.selectedPoints.append(self.g.vs[e.source])
         self.update()
 
+    def vertexDegree(self):
+        self.g.vs['degree'] = 0
+        for i in range(len(self.g.vs)):
+            self.g.vs[i]['degree'] = self.g.vs[i].degree()
+
     def zoomInEvent(self):
         self.zoom *= 1.2
         self.update()
@@ -248,10 +266,6 @@ class Canvas(QWidget):
         if self.backgroundDragging:
             return
         self.zoom += event.angleDelta().y() / 120 * 0.05
-        self.update()
-
-    def filterGraph(self, attr='total_delay', left=0, right=54):
-        self.filterData = {'attr': attr, 'left': left, 'right': right}
         self.update()
 
     def cancelFilter(self):
@@ -301,7 +315,6 @@ class Canvas(QWidget):
 
         if self.deleteLine:
             self.selectedLines.remove(l)
-            # print(l)
             self.g.delete_edges(l)
             self.deleteLine = None
 
@@ -347,18 +360,6 @@ class Canvas(QWidget):
                 self.update()
 
         self.backgroundDragging = pos
-        self.update()
-
-    def addNewNode(self, pos):
-        coordinate = {
-            'x': float(pos.x() / self.zoom + self.viewRect.x()),
-            'y': float(pos.y() / self.zoom + self.viewRect.y()),
-            'cluster': 0,
-            'color': Qt.white,
-            'pos': pos,
-        }
-        self.g.add_vertex(name=None, **coordinate)
-        self.addNode = None
         self.update()
 
     def mouseMoveEvent(self, event):

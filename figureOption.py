@@ -2,8 +2,8 @@ import os.path
 import re
 
 import matplotlib
-from matplotlib import cm, colors as mcolors, markers, image as mimage
 import matplotlib.backends.qt_editor.formlayout as formlayout
+from matplotlib import cm, colors as mcolors, markers, image as mimage
 from matplotlib.backends.qt_compat import QtGui
 
 def get_icon(name):
@@ -11,18 +11,20 @@ def get_icon(name):
     return QtGui.QIcon(os.path.join(basedir, name))
 
 
-LINESTYLES = {'-': 'Solid',
-              '--': 'Dashed',
-              '-.': 'DashDot',
-              ':': 'Dotted',
-              'None': 'None',
-              }
+LINE_STYLES = {
+    '-': 'Solid',
+    '--': 'Dashed',
+    '-.': 'DashDot',
+    ':': 'Dotted',
+    'None': 'None',
+}
 
-DRAWSTYLES = {
+DRAW_STYLES = {
     'default': 'Default',
     'steps-pre': 'Steps (Pre)', 'steps': 'Steps (Pre)',
     'steps-mid': 'Steps (Mid)',
-    'steps-post': 'Steps (Post)'}
+    'steps-post': 'Steps (Post)'
+}
 
 MARKERS = markers.MarkerStyle.markers
 
@@ -113,8 +115,8 @@ def figure_edit(axes, parent=None):
             ('Label', label),
             sep,
             (None, '<b>Line</b>'),
-            ('Line style', prepare_data(LINESTYLES, line.get_linestyle())),
-            ('Draw style', prepare_data(DRAWSTYLES, line.get_drawstyle())),
+            ('Line style', prepare_data(LINE_STYLES, line.get_linestyle())),
+            ('Draw style', prepare_data(DRAW_STYLES, line.get_drawstyle())),
             ('Width', line.get_linewidth()),
             ('Color (RGBA)', color),
             sep,
@@ -245,6 +247,9 @@ def figure_edit(axes, parent=None):
                             apply=apply_callback)
     if data is not None:
         apply_callback(data)
+
+
 # Monkey-patch original figureoptions
 from matplotlib.backends.qt_editor import figureoptions
+
 figureoptions.figure_edit = figure_edit
