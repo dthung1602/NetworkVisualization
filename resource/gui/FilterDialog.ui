@@ -21,15 +21,20 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>341</width>
-     <height>251</height>
+     <width>351</width>
+     <height>841</height>
     </rect>
    </property>
    <property name="accessibleName">
     <string/>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QTabWidget{
+	border: none;
+}</string>
+   </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="clusterTab">
     <attribute name="title">
@@ -94,7 +99,7 @@ background-color: transparent;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">#selectClusteringAlgo{
+      <string notr="true">QComboBox{
 	color: rgb(200, 200, 200);
 	border-style: 2px solid rgb(200, 200, 200);
     border-radius: 7px;
@@ -141,6 +146,18 @@ background-color: transparent;</string>
        <width>89</width>
        <height>25</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	color: rgb(200, 200, 200);
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #383838;
+}
+
+QPushButton:hover{
+	background-color: #303030;
+}</string>
      </property>
      <property name="text">
       <string>OK</string>
@@ -209,7 +226,7 @@ background-color: transparent;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">#selectClusteringAlgo{
+      <string notr="true">QComboBox{
 	color: rgb(200, 200, 200);
 	border-style: 2px solid rgb(200, 200, 200);
     border-radius: 7px;
@@ -256,6 +273,18 @@ background-color: transparent;</string>
        <width>89</width>
        <height>25</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	color: rgb(200, 200, 200);
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #383838;
+}
+QPushButton:hover{
+	background-color: #303030;
+}
+</string>
      </property>
      <property name="text">
       <string>OK</string>
@@ -323,6 +352,19 @@ background-color: transparent;</string>
        <height>25</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	color: rgb(200, 200, 200);
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #383838;
+}
+QPushButton:hover{
+	background-color: #303030;
+}
+
+</string>
+     </property>
      <property name="text">
       <string>OK</string>
      </property>
@@ -336,6 +378,18 @@ background-color: transparent;</string>
        <height>25</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	color: rgb(200, 200, 200);
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #383838;
+	padding-left: 13px;
+	padding-right: 10px;
+}
+
+</string>
+     </property>
     </widget>
     <widget class="QLineEdit" name="filterRight">
      <property name="geometry">
@@ -345,6 +399,18 @@ background-color: transparent;</string>
        <width>141</width>
        <height>25</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	color: rgb(200, 200, 200);
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #383838;
+	padding-left: 13px;
+	padding-right: 10px;
+}
+
+</string>
      </property>
     </widget>
     <widget class="QLabel" name="filterLabel_2">

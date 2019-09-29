@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
+import igraph as ig
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QComboBox
@@ -13,6 +15,8 @@ from Canvas import Canvas
 SELECT_PLOT = [
     ['Edge Weight'],
     ['Edge Speed Raw'],
+    ['Degree Histogram'],
+
 ]
 
 
@@ -37,7 +41,8 @@ class Stat(QWidget):
     def changeGraphLayout(self, opt):
         [
             self.edgeWeightPlot,
-            self.edgeSpeedPlot
+            self.edgeSpeedPlot,
+            self.degreeHistogram,
         ][opt]()
 
     def edgeWeightPlot(self):
@@ -48,6 +53,19 @@ class Stat(QWidget):
         ax1.set_title('Edge Weights Histogram')
         ax1.set_xlabel('Number of Edges')
         ax1.set_ylabel('Weights')
+        n, bins, patches = ax1.hist(weightArr, num_bins, facecolor='blue', alpha=0.5)
+        graph = FigureCanvas(fig)
+        self.layout.addWidget(graph)
+        self.addToolBar(graph)
+
+    def degreeHistogram(self):
+        self.clearLayout(self.layout)
+        weightArr = np.array(self.canvas.g.vs['degree'])
+        fig, ax1 = plt.subplots()
+        num_bins = 15
+        ax1.set_title('Degree Distribution Histogram')
+        ax1.set_xlabel('Degree')
+        ax1.set_ylabel('Number of Vertex')
         n, bins, patches = ax1.hist(weightArr, num_bins, facecolor='blue', alpha=0.5)
         graph = FigureCanvas(fig)
         self.layout.addWidget(graph)

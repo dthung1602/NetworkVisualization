@@ -47,6 +47,7 @@ class Canvas(QWidget):
         self.selectedLines = self.selectedPoints = []
 
         self.setGraph(self.DEFAULT_GRAPH)
+        self.vertexDegree()
 
     def setMode(self, mode):
         self.mode = mode
@@ -69,6 +70,7 @@ class Canvas(QWidget):
         else:
             clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
             g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
+
         self.resetViewRect()
 
     def resetViewRect(self):
@@ -217,6 +219,7 @@ class Canvas(QWidget):
 
     def paint(self, painter):
         painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
+
         for e in self.linesToDraw:
             line = e['line']
             if isinstance(line, QLineF):
@@ -225,6 +228,7 @@ class Canvas(QWidget):
                 painter.drawPath(line)
 
         painter.setPen(QPen(Qt.black, 1))
+
         for v in self.pointsToDraw:
             painter.setBrush(v['color'])
             painter.drawEllipse(
@@ -234,6 +238,7 @@ class Canvas(QWidget):
             )
 
         painter.setPen(QPen(Qt.red, 2, join=Qt.PenJoinStyle(0x80)))
+
         for e in self.selectedLines:
             line = e['line']
             if isinstance(line, QLineF):
@@ -274,6 +279,11 @@ class Canvas(QWidget):
                 self.selectedPoints.append(self.g.vs[e.target])
                 self.selectedPoints.append(self.g.vs[e.source])
         self.update()
+
+    def vertexDegree(self):
+        self.g.vs['degree'] = 0
+        for i in range(len(self.g.vs)):
+            self.g.vs[i]['degree'] = self.g.vs[i].degree()
 
     def zoomInEvent(self):
         self.zoom *= 1.2
