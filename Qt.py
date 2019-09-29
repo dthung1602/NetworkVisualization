@@ -23,7 +23,7 @@ class Window(QMainWindow):
         self.mainLayout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.canvas = Canvas(self)
         self.filterWindow = Filter(self.canvas)
-        self.statWindow = Stat(self.canvas)
+        self.statWindow = None # Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
@@ -44,8 +44,11 @@ class Window(QMainWindow):
         # Close_button
         closeBtn = self.findChild(QAction, 'action_Close')
         closeBtn.triggered.connect(self.close)
-        # QMenu.View
+        # New
+        newBtn = self.findChild(QAction, 'actionNew')
+        newBtn.triggered.connect(self.newGraph)
 
+        # QMenu.View
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
         # Zoom out
@@ -128,6 +131,10 @@ class Window(QMainWindow):
         self.canvas.deleteNode = False
         self.canvas.addNode = False
         self.canvas.deleteLine = False
+
+    def newGraph(self):
+        self.canvas.setGraph(Graph())
+        self.canvas.update()
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(

@@ -729,6 +729,7 @@ border-image: url(&quot;resource/gui/tool/filter.png&quot;);
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionNew"/>
     <addaction name="action_Open"/>
     <addaction name="action_Save"/>
     <addaction name="actionSave_Image"/>
@@ -857,6 +858,11 @@ border-image: url(&quot;resource/gui/tool/filter.png&quot;);
   <action name="actionFilter">
    <property name="text">
     <string>Filter</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
    </property>
   </action>
  </widget>

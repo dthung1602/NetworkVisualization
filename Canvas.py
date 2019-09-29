@@ -1,4 +1,3 @@
-from math import sqrt
 from random import choice
 
 import igraph
@@ -56,8 +55,10 @@ class Canvas(QWidget):
             getattr(self, initAction)()
         self.update()
 
-    def setGraph(self, filename):
-        self.g = g = igraph.read(filename)
+    def setGraph(self, g):
+        if isinstance(g, str):
+            g = igraph.read(g)
+        self.g = g
         vsAttributes = g.vs.attributes()
         if 'x' not in vsAttributes or 'y' not in vsAttributes:
             self.setGraphLayout(self.DEFAULT_GRAPH_LAYOUT, None)
@@ -72,8 +73,8 @@ class Canvas(QWidget):
         g = self.g
 
         # use translation to convert negative coordinates to non-negative
-        mx = min(g.vs['x'])
-        my = min(g.vs['y'])
+        mx = min(g.vs['x']) - 1
+        my = min(g.vs['y']) - 1
         g.vs['x'] = [x - mx for x in g.vs['x']]
         g.vs['y'] = [y - my for y in g.vs['y']]
 
@@ -146,11 +147,12 @@ class Canvas(QWidget):
             QLineF(w, h, 0, h),
             QLineF(0, h, 0, 0)
         ]
+        screenRect = QRectF(0, 0, w, h)
 
         def intersectWithViewRect(line):
-            return any([line.intersect(vrl, QPointF()) == 1 for vrl in viewRectLines])
-
-        screenRect = QRectF(0, 0, w, h)
+            if isinstance(line, QLineF):
+                return any([line.intersect(vrl, QPointF()) == 1 for vrl in viewRectLines])
+            return line.intersects(screenRect)
 
         def inScreen(edge):
             return screenRect.contains(self.g.vs[edge.source]['pos']) or screenRect.contains(
@@ -161,10 +163,32 @@ class Canvas(QWidget):
             (v['y'] - viewRectY) * self.zoom
         ) for v in self.g.vs]
 
-        self.g.es['line'] = [QLineF(
-            self.g.vs[e.source]['pos'],
-            self.g.vs[e.target]['pos'],
-        ) for e in self.g.es]
+        multipleEdge = {}
+        for e in self.g.es:
+            count = e.count_multiple()
+            if count > 0:
+                p1 = self.g.vs[e.source]['pos']
+                p2 = self.g.vs[e.target]['pos']
+                midPoint = QPointF((p1.x() + p2.x()) / 2, (p1.y() + p2.y()) / 2)
+                normalVector = QVector2D(p1.y() - p2.y(), p2.x() - p1.x())
+                startVector = QVector2D(midPoint.x() - normalVector.x() / 2, midPoint.y() - normalVector.y() / 2)
+                incVector = normalVector / (count - 1)
+                multipleEdge[(e.source, e.target)] = [(p1, p2, (startVector + incVector * i).toPointF())
+                                                      for i in range(count)]
+
+        def createLine(e):
+            result = multipleEdge.get((e.source, e.target))
+            if result:
+                p1, p2, controlPoint = result.pop()
+                path = QPainterPath(p1)
+                path.quadTo(controlPoint, p2)
+                return path
+            return QLineF(
+                self.g.vs[e.source]['pos'],
+                self.g.vs[e.target]['pos'],
+            )
+
+        self.g.es['line'] = [createLine(e) for e in self.g.es]
 
         self.pointsToDraw = [v for v in self.g.vs if self.viewRect.contains(v['x'], v['y'])]
 
@@ -191,7 +215,11 @@ class Canvas(QWidget):
     def paint(self, painter):
         painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
         for e in self.linesToDraw:
-            painter.drawLine(e['line'])
+            line = e['line']
+            if isinstance(line, QLineF):
+                painter.drawLine(line)
+            else:
+                painter.drawPath(line)
 
         painter.setPen(QPen(Qt.black, 1))
         for v in self.pointsToDraw:
@@ -312,12 +340,13 @@ class Canvas(QWidget):
         pos = event.pos()
 
         def clickToLine(line):
-            try:
-                d = abs((line.x2() - line.x1()) * (line.y1() - pos.y()) - (line.x1() - pos.x()) * (
-                        line.y2() - line.y1())) / sqrt((line.x2() - line.x1()) ** 2 + (line.y2() - line.y1()) ** 2)
-            except ZeroDivisionError:
-                return False
-            return d < self.LINE_DISTANCE and min(line.x1(), line.x2()) < pos.x() < max(line.x1(), line.x2())
+            return False
+            # try:
+            #     d = abs((line.x2() - line.x1()) * (line.y1() - pos.y()) - (line.x1() - pos.x()) * (
+            #             line.y2() - line.y1())) / sqrt((line.x2() - line.x1()) ** 2 + (line.y2() - line.y1()) ** 2)
+            # except ZeroDivisionError:
+            #     return False
+            # return d < self.LINE_DISTANCE and min(line.x1(), line.x2()) < pos.x() < max(line.x1(), line.x2())
 
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
