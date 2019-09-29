@@ -1,9 +1,11 @@
 #!/usr/bin/env python
+import sys
+
+import igraph
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from igraph import *
 
 from Canvas import Canvas
 from Filter import Filter
@@ -44,8 +46,11 @@ class Window(QMainWindow):
         # Close_button
         closeBtn = self.findChild(QAction, 'action_Close')
         closeBtn.triggered.connect(self.close)
-        # QMenu.View
+        # New
+        newBtn = self.findChild(QAction, 'actionNew')
+        newBtn.triggered.connect(self.newGraph)
 
+        # QMenu.View
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
         # Zoom out
@@ -128,6 +133,13 @@ class Window(QMainWindow):
         self.canvas.deleteNode = False
         self.canvas.addNode = False
         self.canvas.deleteLine = False
+
+    def newGraph(self):
+        g = igraph.read('resource/graph/__empty__.graphml')
+        self.canvas.setGraph(g)
+        self.canvas.center = QPointF(530, 1130)
+        self.canvas.zoom = 0.25
+        self.canvas.update()
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(
