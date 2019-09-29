@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>951</width>
-    <height>606</height>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
+     <y>40</y>
      <width>951</width>
      <height>601</height>
     </rect>
@@ -37,18 +37,49 @@
   <widget class="QComboBox" name="selectPlot">
    <property name="geometry">
     <rect>
-     <x>700</x>
+     <x>80</x>
      <y>10</y>
-     <width>241</width>
+     <width>161</width>
      <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">#selectClusteringAlgo{
-	color: rgb(200, 200, 200);
+    <string notr="true">QComboBox{
+	color:#000;
 	border-style: 2px solid rgb(200, 200, 200);
     border-radius: 7px;
-	background-color: #383838;
+	background-color: #d0d0d0;
+	padding-left: 13px;
+	padding-right: 10px;
+}
+QComboBox::drop-down 
+{
+    border: 6px; /* This seems to replace the whole arrow of the combo box */
+}
+QComboBox::down-arrow {
+   image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
+    width: 9px;
+    height: 9px;
+	padding-right: 10px;
+}
+</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="selectStyle">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>10</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox{
+	color: #000;
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #d0d0d0;
 	padding-left: 13px;
 	padding-right: 10px;
 }
@@ -63,6 +94,59 @@ QComboBox::down-arrow {
 	padding-right: 10px;
 }
 </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>17</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Graph:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>17</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Style:</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>20</y>
+     <width>241</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QGroupBox{
+	border: 1px solid rgb(211, 211, 211);
+}</string>
+   </property>
+   <property name="title">
+    <string>Coordinate/Action:</string>
    </property>
   </widget>
  </widget>

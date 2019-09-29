@@ -59,6 +59,7 @@ class Canvas(QWidget):
 
     def setGraph(self, filename):
         self.g = g = igraph.read(filename)
+        self.vertexDegree()
         vsAttributes = g.vs.attributes()
         if 'x' not in vsAttributes or 'y' not in vsAttributes:
             self.setGraphLayout(self.DEFAULT_GRAPH_LAYOUT, None)
