@@ -1,9 +1,11 @@
 #!/usr/bin/env python
+import sys
+
+import igraph
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from igraph import *
 
 from Canvas import Canvas
 from Filter import Filter
@@ -23,7 +25,7 @@ class Window(QMainWindow):
         self.mainLayout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.canvas = Canvas(self)
         self.filterWindow = Filter(self.canvas)
-        self.statWindow = None # Stat(self.canvas)
+        self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
@@ -133,7 +135,10 @@ class Window(QMainWindow):
         self.canvas.deleteLine = False
 
     def newGraph(self):
-        self.canvas.setGraph(Graph())
+        g = igraph.read('resource/graph/__empty__.graphml')
+        self.canvas.setGraph(g)
+        self.canvas.center = QPointF(530, 1130)
+        self.canvas.zoom = 0.25
         self.canvas.update()
 
     def saveImageDialog(self):

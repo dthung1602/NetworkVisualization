@@ -5,6 +5,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
+from math import sqrt
 
 LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
 
@@ -18,10 +19,11 @@ class Canvas(QWidget):
     POINT_RADIUS = 8
     SELECTED_POINT_RADIUS = 12
     LINE_DISTANCE = 2
+    CURVE_SELECT_SQUARE_SIZE = 10
 
     DEFAULT_GRAPH = 'resource/graph/NREN-delay.graphml'
     DEFAULT_CLUSTERING_ALGO = 'community_edge_betweenness'
-    DEFAULT_GRAPH_LAYOUT = 'layout_lgl'
+    DEFAULT_GRAPH_LAYOUT = 'layout_circle'
 
     MODE_EDIT = 'edit'
     MODE_FIND_SHORTEST_PATH = 'fsp'
@@ -81,7 +83,7 @@ class Canvas(QWidget):
         mx = max(g.vs['x'])
         my = max(g.vs['y'])
         self.ratio = mx / my
-        size = self.sizeHint()
+        size = self.size()
 
         # convert init coordinates to coordinates on window
         g.vs['x'] = [x / mx * size.width() for x in g.vs['x']]
@@ -166,7 +168,7 @@ class Canvas(QWidget):
         multipleEdge = {}
         for e in self.g.es:
             count = e.count_multiple()
-            if count > 0:
+            if count > 1:
                 p1 = self.g.vs[e.source]['pos']
                 p2 = self.g.vs[e.target]['pos']
                 midPoint = QPointF((p1.x() + p2.x()) / 2, (p1.y() + p2.y()) / 2)
@@ -182,6 +184,7 @@ class Canvas(QWidget):
                 p1, p2, controlPoint = result.pop()
                 path = QPainterPath(p1)
                 path.quadTo(controlPoint, p2)
+                path.quadTo(controlPoint, p1)
                 return path
             return QLineF(
                 self.g.vs[e.source]['pos'],
@@ -232,7 +235,11 @@ class Canvas(QWidget):
 
         painter.setPen(QPen(Qt.red, 2, join=Qt.PenJoinStyle(0x80)))
         for e in self.selectedLines:
-            painter.drawLine(e['line'])
+            line = e['line']
+            if isinstance(line, QLineF):
+                painter.drawLine(line)
+            else:
+                painter.drawPath(line)
 
         for v in self.selectedPoints:
             painter.setBrush(v['color'])
@@ -278,6 +285,7 @@ class Canvas(QWidget):
 
     def zoomResetEvent(self):
         self.zoom = 1
+        self.center = QPointF(self.size().width() / 2, self.size().height() / 2)
         self.update()
 
     def wheelEvent(self, event):
@@ -339,14 +347,24 @@ class Canvas(QWidget):
     def mousePressEvent(self, event):
         pos = event.pos()
 
+        clickedSquare = QPainterPath(pos)
+        clickedSquare.addRect(QRectF(
+            pos.x() - self.CURVE_SELECT_SQUARE_SIZE / 2,
+            pos.y() - self.CURVE_SELECT_SQUARE_SIZE,
+            self.CURVE_SELECT_SQUARE_SIZE,
+            self.CURVE_SELECT_SQUARE_SIZE
+        ))
+
         def clickToLine(line):
-            return False
-            # try:
-            #     d = abs((line.x2() - line.x1()) * (line.y1() - pos.y()) - (line.x1() - pos.x()) * (
-            #             line.y2() - line.y1())) / sqrt((line.x2() - line.x1()) ** 2 + (line.y2() - line.y1()) ** 2)
-            # except ZeroDivisionError:
-            #     return False
-            # return d < self.LINE_DISTANCE and min(line.x1(), line.x2()) < pos.x() < max(line.x1(), line.x2())
+            if isinstance(line, QLineF):
+                try:
+                    d = abs((line.x2() - line.x1()) * (line.y1() - pos.y()) - (line.x1() - pos.x()) * (
+                            line.y2() - line.y1())) / sqrt((line.x2() - line.x1()) ** 2 + (line.y2() - line.y1()) ** 2)
+                except ZeroDivisionError:
+                    return False
+                return d < self.LINE_DISTANCE and min(line.x1(), line.x2()) < pos.x() < max(line.x1(), line.x2())
+
+            return line.intersects(clickedSquare)
 
         def clickedToPoint(point):
             return self.POINT_RADIUS ** 2 >= (point.x() - pos.x()) ** 2 + (point.y() - pos.y()) ** 2
