@@ -54,7 +54,7 @@ class InfoWidget(QWidget):
             valueLabelStyleSheet = ("QLabel {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
                                     "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
                                     "border-radius: 5px; }"
-                                    "QLabel:hover{background-color: #242424; cursor: pointer;}")
+                                    "QLabel:hover{background-color: #242424;}")
             valueLabelEdit = QLineEdit()
             valueLabel = BuddyLabel(valueLabelEdit)
             self.valueLabelItems.append(valueLabel)
