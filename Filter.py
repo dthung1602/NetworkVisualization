@@ -44,6 +44,8 @@ class Filter(QWidget):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black - Filter Dialog")
 
+        self.vertexAttr = [opt for opt in self.canvas.g.vs.attributes()]
+
         self.edgeWeights = [opt for opt in self.canvas.g.es.attributes()]
         self.edgeWeights.remove('line')
 
@@ -60,6 +62,9 @@ class Filter(QWidget):
         self.applyFilterBtn = self.findChild(QPushButton, 'applyFilterBtn')
         self.filterLeft = self.findChild(QLineEdit, 'filterLeft')
         self.filterRight = self.findChild(QLineEdit, 'filterRight')
+
+        self.selectClusterAttribute = self.findChild(QComboBox, 'selectVertex')
+        self.applyClusterAttribute = self.findChild(QPushButton, 'applyVertexBtn')
 
         self.addSelectOptions()
         self.setShowLayoutWeight(0)
@@ -79,6 +84,10 @@ class Filter(QWidget):
         # Filter Edge Opt
         self.selectFilterEdge.addItems(self.edgeWeights)
         self.applyFilterBtn.pressed.connect(self.changeFilterEdge)
+
+        # Cluster Attribute Opt
+        self.selectClusterAttribute.addItems(self.vertexAttr)
+        self.applyClusterAttribute.pressed.connect(self.changeClusterAttribute)
 
     def setShowLayoutWeight(self, opt):
         visible = LAYOUT_OPTIONS[opt][1] in LAYOUT_WITH_WEIGHT
@@ -102,3 +111,7 @@ class Filter(QWidget):
         left = float(self.filterLeft.text())
         right = float(self.filterRight.text())
         self.canvas.setFilter(attr, left, right)
+
+    def changeClusterAttribute(self):
+        attr = self.vertexAttr[self.selectClusterAttribute.currentIndex()]
+        self.canvas.setAttributeCluster(attr)

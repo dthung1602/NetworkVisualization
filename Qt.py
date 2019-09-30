@@ -11,6 +11,8 @@ from Canvas import Canvas, LIGHT_MODE, DARK_MODE
 from Filter import Filter
 from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Stat
+from WeightDialog import WeightDialog
+from ConstraintDialog import Constraint
 
 
 class Window(QMainWindow):
@@ -27,7 +29,8 @@ class Window(QMainWindow):
         self.filterWindow = Filter(self.canvas)
         self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
-
+        self.weightDialog = WeightDialog(self.canvas)
+        self.constraint = Constraint(self.canvas)
         self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
@@ -110,6 +113,18 @@ class Window(QMainWindow):
         # open Filter window
         filterBtn = self.findChild(QToolButton, 'filter_dialog_btn')
         filterBtn.pressed.connect(self.openFilterDialog)
+        # Open Constraint Dialog
+        constraintBtn = self.findChild(QToolButton, 'constraint_btn')
+        constraintBtn.pressed.connect(self.openConstraintDialog)
+        # Add Attributes Dialog
+        addAttributeBtn = self.findChild(QToolButton, 'add_attribute_btn')
+        addAttributeBtn.pressed.connect(self.addAttributesDialog)
+
+    def addAttributesDialog(self):
+        pass
+
+    def openConstraintDialog(self):
+        self.constraint.exec()
 
     def switchViewMode(self):
         if self.viewMode == DARK_MODE:
@@ -200,6 +215,7 @@ class Window(QMainWindow):
                 self.canvas.g.write_gml(fileName)
 
     def activateFindShortestPathMode(self):
+        self.weightDialog.exec()
         self.mode = Canvas.MODE_FIND_SHORTEST_PATH
         self.canvas.setMode(self.mode)
 

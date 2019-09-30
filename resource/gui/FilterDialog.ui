@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>340</width>
-    <height>840</height>
+    <height>839</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
 }</string>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="clusterTab">
     <attribute name="title">
@@ -429,6 +429,84 @@ background-color: transparent;</string>
      </property>
      <property name="text">
       <string>Min:                                       Max:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="vertexTab">
+    <attribute name="title">
+     <string>Vertex</string>
+    </attribute>
+    <widget class="QLabel" name="vertexLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(180,180,180);
+font-size: 15px;
+background-color: transparent;</string>
+     </property>
+     <property name="text">
+      <string>Vertex's Attributes:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="selectVertex">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>301</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+	color: rgb(200, 200, 200);
+	border-style: none;
+    border-radius: 7px;
+	background-color: #383838;
+	padding-left: 13px;
+}
+
+QComboBox::drop-down 
+{
+    border: 0px; /* This seems to replace the whole arrow of the combo box */
+}
+QComboBox::down-arrow {
+   image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
+    width: 9px;
+    height: 9px;
+	padding-right: 10px;
+}</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="applyVertexBtn">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>100</y>
+       <width>89</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	color: rgb(200, 200, 200);
+	border-style: 2px solid rgb(200, 200, 200);
+    border-radius: 7px;
+	background-color: #383838;
+}
+
+QPushButton:hover{
+	background-color: #303030;
+}</string>
+     </property>
+     <property name="text">
+      <string>OK</string>
      </property>
     </widget>
    </widget>
