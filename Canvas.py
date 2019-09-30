@@ -8,7 +8,8 @@ from igraph import VertexDendrogram
 from math import sqrt
 
 LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
-
+DARK_MODE = 'Dark mode'
+LIGHT_MODE = 'Light mode'
 
 def randomColor():
     return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
@@ -45,8 +46,10 @@ class Canvas(QWidget):
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
+        self.backgroundColor = self.lineColor = None
 
         self.setGraph(self.DEFAULT_GRAPH)
+        self.setViewMode(DARK_MODE)
         self.vertexDegree()
 
     def setMode(self, mode):
@@ -57,6 +60,14 @@ class Canvas(QWidget):
         if initAction:
             getattr(self, initAction)()
         self.update()
+
+    def setViewMode(self, mode):
+        if mode == DARK_MODE:
+            self.backgroundColor = Qt.black
+            self.lineColor = Qt.white
+        else:
+            self.backgroundColor = Qt.white
+            self.lineColor = Qt.black
 
     def setGraph(self, g):
         if isinstance(g, str):
@@ -215,12 +226,12 @@ class Canvas(QWidget):
 
         painter = QPainter()
         painter.begin(self)
-        painter.fillRect(event.rect(), QBrush(Qt.black))
+        painter.fillRect(event.rect(), QBrush(self.backgroundColor))
         self.paint(painter)
         painter.end()
 
     def paint(self, painter):
-        painter.setPen(QPen(Qt.white, 0.5, join=Qt.PenJoinStyle(0x80)))
+        painter.setPen(QPen(self.lineColor, 0.5, join=Qt.PenJoinStyle(0x80)))
 
         for e in self.linesToDraw:
             line = e['line']
