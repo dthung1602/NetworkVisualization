@@ -6,7 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
 from math import sqrt
-
+from constraintAttr import constraintAttr
 LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
 
 
@@ -45,10 +45,8 @@ class Canvas(QWidget):
         self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
-
         self.setGraph(self.DEFAULT_GRAPH)
         self.vertexDegree()
-
     def setMode(self, mode):
         self.mode = mode
         self.selectedPoints = []
@@ -72,7 +70,10 @@ class Canvas(QWidget):
         else:
             clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
             g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
-
+        check = constraintAttr(self.g)
+        print(check.check())
+        if not check.check():
+            check.link("lat","latitude","vertex")
         self.resetViewRect()
 
     def resetViewRect(self):
