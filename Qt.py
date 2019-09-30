@@ -12,6 +12,8 @@ from Filter import Filter
 from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Stat
 from WeightDialog import WeightDialog
+from ConstraintDialog import Constraint
+
 
 class Window(QMainWindow):
     def __init__(self):
@@ -28,7 +30,7 @@ class Window(QMainWindow):
         self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
         self.weightDialog = WeightDialog(self.canvas)
-
+        self.constraint = Constraint(self.canvas)
         self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
@@ -111,6 +113,12 @@ class Window(QMainWindow):
         # open Filter window
         filterBtn = self.findChild(QToolButton, 'filter_dialog_btn')
         filterBtn.pressed.connect(self.openFilterDialog)
+        # Open Constraint check window
+        constraintBtn = self.findChild(QToolButton, 'constraint_btn')
+        constraintBtn.pressed.connect(self.openConstraintDialog)
+
+    def openConstraintDialog(self):
+        self.constraint.exec()
 
     def switchViewMode(self):
         if self.viewMode == DARK_MODE:
