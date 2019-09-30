@@ -11,7 +11,7 @@ from Canvas import Canvas
 from Filter import Filter
 from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Stat
-
+from WeightDialog import WeightDialog
 
 class Window(QMainWindow):
     def __init__(self):
@@ -27,6 +27,7 @@ class Window(QMainWindow):
         self.filterWindow = Filter(self.canvas)
         self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
+        self.weightDialog = WeightDialog(self.canvas)
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.mode = Canvas.MODE_EDIT
@@ -182,6 +183,7 @@ class Window(QMainWindow):
                 self.canvas.g.write_gml(fileName)
 
     def activateFindShortestPathMode(self):
+        self.weightDialog.exec()
         self.mode = Canvas.MODE_FIND_SHORTEST_PATH
         self.canvas.setMode(self.mode)
 
