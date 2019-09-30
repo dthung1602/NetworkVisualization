@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QComboBox, QWidget, QPushButton, QLineEdit, QLabel
 from PyQt5.uic import loadUi
 
 from Canvas import Canvas
+from utils import LAYOUT_WITH_WEIGHT
 
 LAYOUT_OPTIONS = [
     ['Bipartite', 'layout_bipartite'],
@@ -20,8 +21,6 @@ LAYOUT_OPTIONS = [
     ['Star', 'layout_star']
 ]
 
-LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
-
 CLUSTERING_ALGO_OPTIONS = [
     ['Fast Greedy', 'community_fastgreedy'],
     ['Info Map', 'community_infomap'],
@@ -32,6 +31,12 @@ CLUSTERING_ALGO_OPTIONS = [
     ['Edge Betweenness', 'community_edge_betweenness'],
     ['Spinglass', 'community_spinglass'],
     ['Walktrap', 'community_walktrap']
+]
+
+CENTRALITY_OPTIONS = [
+    ['Closeness', 'closeness'],
+    ['Betweenness', 'betweenness'],
+    ['Eigenvector', 'evcent']
 ]
 
 
@@ -61,6 +66,11 @@ class Filter(QWidget):
         self.filterLeft = self.findChild(QLineEdit, 'filterLeft')
         self.filterRight = self.findChild(QLineEdit, 'filterRight')
 
+        self.selectCentrality = self.findChild(QComboBox, 'selectCentrality')
+        self.selectCentralityEdgeWeight = self.findChild(QComboBox, 'selectCentralityEdgeWeight')
+        self.applyCentralityBtn = self.findChild(QPushButton, 'applyCentralityBtn')
+        self.cancelCentralityBtn = self.findChild(QPushButton, 'cancelCentralityBtn')
+
         self.addSelectOptions()
         self.setShowLayoutWeight(0)
 
@@ -79,6 +89,12 @@ class Filter(QWidget):
         # Filter Edge Opt
         self.selectFilterEdge.addItems(self.edgeWeights)
         self.applyFilterBtn.pressed.connect(self.changeFilterEdge)
+
+        # Centrality
+        self.selectCentrality.addItems([opt[0] for opt in CENTRALITY_OPTIONS])
+        self.selectCentralityEdgeWeight.addItems(['-- None --'] + self.edgeWeights)
+        self.applyCentralityBtn.pressed.connect(self.changeCentrality)
+        self.cancelCentralityBtn.pressed.connect(self.cancelCentrality)
 
     def setShowLayoutWeight(self, opt):
         visible = LAYOUT_OPTIONS[opt][1] in LAYOUT_WITH_WEIGHT
@@ -102,3 +118,13 @@ class Filter(QWidget):
         left = float(self.filterLeft.text())
         right = float(self.filterRight.text())
         self.canvas.setFilter(attr, left, right)
+
+    def changeCentrality(self):
+        centrality = CENTRALITY_OPTIONS[self.selectCentrality.currentIndex()][1]
+        i = self.selectCentralityEdgeWeight.currentIndex()
+        weight = self.edgeWeights[i - 1] if i > 0 else None
+        self.canvas.setCentrality(centrality, weight)
+        self.canvas.update()
+
+    def cancelCentrality(self):
+        self.changeClusteringAlgo()
