@@ -25,8 +25,8 @@ class InfoWidget(QWidget):
         self.canvas = canvas
 
         self.dict = value.attributes()
-        # for f in self.ignoredFields:
-        #     del self.dict[f]
+        for f in self.ignoredFields:
+            del self.dict[f]
 
         # Title layout
         layout = QGridLayout(self)

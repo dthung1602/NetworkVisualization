@@ -13,7 +13,7 @@ from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Stat
 from WeightDialog import WeightDialog
 from ConstraintDialog import Constraint
-
+from AddAttributesDialog import AddAttributesDialog
 
 class Window(QMainWindow):
     def __init__(self):
@@ -32,7 +32,7 @@ class Window(QMainWindow):
         self.weightDialog = WeightDialog(self.canvas)
         self.constraint = Constraint(self.canvas)
         self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
-
+        self.addAttributesDialog = AddAttributesDialog(self.canvas)
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.mode = Canvas.MODE_EDIT
         self.viewMode = DARK_MODE
@@ -118,10 +118,10 @@ class Window(QMainWindow):
         constraintBtn.pressed.connect(self.openConstraintDialog)
         # Add Attributes Dialog
         addAttributeBtn = self.findChild(QToolButton, 'add_attribute_btn')
-        addAttributeBtn.pressed.connect(self.addAttributesDialog)
+        addAttributeBtn.pressed.connect(self.openAddAttributesDialog)
 
-    def addAttributesDialog(self):
-        pass
+    def openAddAttributesDialog(self):
+        self.addAttributesDialog.exec()
 
     def openConstraintDialog(self):
         self.constraint.exec()
