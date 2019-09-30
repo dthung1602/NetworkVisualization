@@ -1,19 +1,11 @@
 from math import sqrt
-from random import choice
 
 import igraph
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
 
-LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
-DARK_MODE = 'Dark mode'
-LIGHT_MODE = 'Light mode'
-
-
-def randomColor():
-    return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
+from utils import *
 
 
 class Canvas(QWidget):
@@ -146,9 +138,22 @@ class Canvas(QWidget):
         self.g.vs['color'] = [clusterToColor[v['cluster']] for v in self.g.vs]
         self.update()
 
+    def setAttributeCluster(self, attr):
+        cluster = {i: [] for i in self.g.vs[attr]}
+        clusterToColor = {cl: randomColor() for cl in cluster.keys()}
+        for i in cluster.keys():
+            for v in self.g.vs:
+                if v[attr] == i:
+                    v['color'] = clusterToColor[i]
+        self.update()
+
     def setFilter(self, attr='total_delay', left=0, right=54):
         self.filterData = {'attr': attr, 'left': left, 'right': right}
         self.update()
+
+    def setCentrality(self, centrality, weights):
+        centrality = getattr(self.g, centrality)(weights=weights)
+        self.g.vs['color'] = arrayToSpectrum(centrality)
 
     def updateViewRect(self):
         size = self.size()
