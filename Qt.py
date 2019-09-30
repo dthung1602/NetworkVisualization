@@ -7,7 +7,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from Canvas import Canvas
+from Canvas import Canvas, LIGHT_MODE, DARK_MODE
 from Filter import Filter
 from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Stat
@@ -29,8 +29,12 @@ class Window(QMainWindow):
         self.mainLayout.addWidget(self.canvas)
         self.weightDialog = WeightDialog(self.canvas)
 
+        self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
+
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.mode = Canvas.MODE_EDIT
+        self.viewMode = DARK_MODE
+        self.canvas.setViewMode(DARK_MODE)
         self.bindMenuActions()
 
     def bindMenuActions(self):
@@ -58,6 +62,9 @@ class Window(QMainWindow):
         self.findChild(QAction, 'actionZoom_Out').triggered.connect(self.canvas.zoomOutEvent)
         # Zoom reset
         self.findChild(QAction, 'actionReset_Zoom').triggered.connect(self.canvas.zoomResetEvent)
+        # View mode
+        self.switchViewModeMenuItem.triggered.connect(self.switchViewMode)
+
         # QMenu.Window
         # Minimize_button
         self.findChild(QAction, 'action_Minimize').triggered.connect(self.minimizeWindow)
@@ -104,6 +111,17 @@ class Window(QMainWindow):
         # open Filter window
         filterBtn = self.findChild(QToolButton, 'filter_dialog_btn')
         filterBtn.pressed.connect(self.openFilterDialog)
+
+    def switchViewMode(self):
+        if self.viewMode == DARK_MODE:
+            self.viewMode = LIGHT_MODE
+            self.switchViewModeMenuItem.setText(DARK_MODE)
+        else:
+            self.viewMode = DARK_MODE
+            self.switchViewModeMenuItem.setText(LIGHT_MODE)
+
+        self.canvas.setViewMode(self.viewMode)
+        self.canvas.update()
 
     def openColorDialog(self):
         color = QColorDialog.getColor()
