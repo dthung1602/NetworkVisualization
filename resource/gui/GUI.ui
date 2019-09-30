@@ -712,6 +712,50 @@ border-image: url(&quot;resource/gui/tool/graph.png&quot;);
       </size>
      </property>
     </widget>
+    <widget class="QToolButton" name="add_attribute_btn">
+     <property name="geometry">
+      <rect>
+       <x>438</x>
+       <y>6</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export graphs&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#graph_btn{
+background-color: transparent;
+border-image: url(&quot;resource/gui/tool/graph.png&quot;);
+background: none;
+border-radius: 3px;
+background-repeat: none;
+}
+#graph_btn:hover{
+background-color: #454545;
+border-radius: 3px;
+border-image: url(&quot;resource/gui/tool/graph.png&quot;);
+}
+#graph_btn:pressed{
+background-color: #383838;
+border-radius: 3px;
+border-image: url(&quot;resource/gui/tool/graph.png&quot;);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>16</width>
+       <height>16</height>
+      </size>
+     </property>
+    </widget>
    </widget>
    <widget class="Line" name="line_3">
     <property name="geometry">

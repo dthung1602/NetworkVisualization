@@ -113,9 +113,15 @@ class Window(QMainWindow):
         # open Filter window
         filterBtn = self.findChild(QToolButton, 'filter_dialog_btn')
         filterBtn.pressed.connect(self.openFilterDialog)
-        # Open Constraint check window
+        # Open Constraint Dialog
         constraintBtn = self.findChild(QToolButton, 'constraint_btn')
         constraintBtn.pressed.connect(self.openConstraintDialog)
+        # Add Attributes Dialog
+        addAttributeBtn = self.findChild(QToolButton, 'add_attribute_btn')
+        addAttributeBtn.pressed.connect(self.addAttributesDialog)
+
+    def addAttributesDialog(self):
+        pass
 
     def openConstraintDialog(self):
         self.constraint.exec()
