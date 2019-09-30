@@ -144,6 +144,15 @@ class Canvas(QWidget):
         self.g.vs['color'] = [clusterToColor[v['cluster']] for v in self.g.vs]
         self.update()
 
+    def setAttributeCluster(self, attr='Network'):
+        cluster = {i: [] for i in self.g.vs[attr]}
+        clusterToColor = {cl: randomColor() for cl in cluster.keys()}
+        for i in cluster.keys():
+            for v in self.g.vs:
+                if v[attr] == i:
+                    v['color'] = clusterToColor[i]
+        self.update()
+
     def setFilter(self, attr='total_delay', left=0, right=54):
         self.filterData = {'attr': attr, 'left': left, 'right': right}
         self.update()
