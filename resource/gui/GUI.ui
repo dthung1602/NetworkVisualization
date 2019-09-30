@@ -668,82 +668,6 @@ border-image: url(&quot;resource/gui/tool/filter.png&quot;);
 }</string>
      </property>
     </widget>
-    <widget class="QToolButton" name="filterBtn">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>0</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>Change to edit mode</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#editBtn{
-background-color: transparent;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
-background: none;
-border-radius: 3px;
-background-repeat: none;
-}
-#editBtn:hover{
-background-color: #454545;
-border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
-}
-#editBtn:pressed{
-background-color: #383838;
-border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
-}</string>
-     </property>
-    </widget>
-    <widget class="QToolButton" name="cancelFilterBtn">
-     <property name="geometry">
-      <rect>
-       <x>470</x>
-       <y>0</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>Change to edit mode</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#editBtn{
-background-color: transparent;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
-background: none;
-border-radius: 3px;
-background-repeat: none;
-}
-#editBtn:hover{
-background-color: #454545;
-border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
-}
-#editBtn:pressed{
-background-color: #383838;
-border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/edit.png&quot;);
-}</string>
-     </property>
-    </widget>
    </widget>
    <widget class="Line" name="line_3">
     <property name="geometry">
@@ -788,7 +712,7 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -805,6 +729,7 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionNew"/>
     <addaction name="action_Open"/>
     <addaction name="action_Save"/>
     <addaction name="actionSave_Image"/>
@@ -823,6 +748,7 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="actionReset_Zoom"/>
+    <addaction name="actionView_Mode"/>
    </widget>
    <widget class="QMenu" name="menu_Tools">
     <property name="title">
@@ -933,6 +859,16 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
   <action name="actionFilter">
    <property name="text">
     <string>Filter</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionView_Mode">
+   <property name="text">
+    <string>Light mode</string>
    </property>
   </action>
  </widget>

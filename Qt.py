@@ -1,15 +1,17 @@
 #!/usr/bin/env python
+import sys
+
+import igraph
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from igraph import *
 
-from Canvas import Canvas
+from Canvas import Canvas, LIGHT_MODE, DARK_MODE
 from Filter import Filter
 from InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from Stat import Stat
-
+from WeightDialog import WeightDialog
 
 class Window(QMainWindow):
     def __init__(self):
@@ -25,9 +27,14 @@ class Window(QMainWindow):
         self.filterWindow = Filter(self.canvas)
         self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
+        self.weightDialog = WeightDialog(self.canvas)
+
+        self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.mode = Canvas.MODE_EDIT
+        self.viewMode = DARK_MODE
+        self.canvas.setViewMode(DARK_MODE)
         self.bindMenuActions()
 
     def bindMenuActions(self):
@@ -44,14 +51,20 @@ class Window(QMainWindow):
         # Close_button
         closeBtn = self.findChild(QAction, 'action_Close')
         closeBtn.triggered.connect(self.close)
-        # QMenu.View
+        # New
+        newBtn = self.findChild(QAction, 'actionNew')
+        newBtn.triggered.connect(self.newGraph)
 
+        # QMenu.View
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
         # Zoom out
         self.findChild(QAction, 'actionZoom_Out').triggered.connect(self.canvas.zoomOutEvent)
         # Zoom reset
         self.findChild(QAction, 'actionReset_Zoom').triggered.connect(self.canvas.zoomResetEvent)
+        # View mode
+        self.switchViewModeMenuItem.triggered.connect(self.switchViewMode)
+
         # QMenu.Window
         # Minimize_button
         self.findChild(QAction, 'action_Minimize').triggered.connect(self.minimizeWindow)
@@ -76,8 +89,8 @@ class Window(QMainWindow):
         deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
         deleteBtn.pressed.connect(self.deleteNodeEvent)
         # Delete Line
-        deletelineBtn = self.findChild(QToolButton, 'delete_line_btn')
-        deletelineBtn.pressed.connect(self.deletelineEvent)
+        deleteLineBtn = self.findChild(QToolButton, 'delete_line_btn')
+        deleteLineBtn.pressed.connect(self.deleteLineEvent)
 
         # Add Line
         addLineBtn = self.findChild(QToolButton, 'add_line_btn')
@@ -99,12 +112,22 @@ class Window(QMainWindow):
         filterBtn = self.findChild(QToolButton, 'filter_dialog_btn')
         filterBtn.pressed.connect(self.openFilterDialog)
 
+    def switchViewMode(self):
+        if self.viewMode == DARK_MODE:
+            self.viewMode = LIGHT_MODE
+            self.switchViewModeMenuItem.setText(DARK_MODE)
+        else:
+            self.viewMode = DARK_MODE
+            self.switchViewModeMenuItem.setText(LIGHT_MODE)
+
+        self.canvas.setViewMode(self.viewMode)
+        self.canvas.update()
+
     def openColorDialog(self):
         color = QColorDialog.getColor()
 
         if color.isValid():
             print(color.name())
-
 
     def deleteNodeEvent(self):
         self.canvas.deleteNode = True
@@ -112,17 +135,11 @@ class Window(QMainWindow):
         self.canvas.addLine = False
         self.canvas.deleteLine = False
 
-    def deletelineEvent(self):
+    def deleteLineEvent(self):
         self.canvas.addNode = False
         self.canvas.deleteNode = False
         self.canvas.deleteLine = True
         self.canvas.addLine = False
-
-    def filterEvent(self):
-        self.canvas.filterGraph()
-
-    def cancelFilterEvent(self):
-        self.canvas.cancelFilter()
 
     def addNewNode(self):
         self.canvas.addNode = True
@@ -135,6 +152,13 @@ class Window(QMainWindow):
         self.canvas.deleteNode = False
         self.canvas.addNode = False
         self.canvas.deleteLine = False
+
+    def newGraph(self):
+        g = igraph.read('resource/graph/__empty__.graphml')
+        self.canvas.setGraph(g)
+        self.canvas.center = QPointF(530, 1130)
+        self.canvas.zoom = 0.25
+        self.canvas.update()
 
     def saveImageDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(
@@ -157,7 +181,7 @@ class Window(QMainWindow):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(
-            self, "Open", "",
+            self, "Open", "./resource/graph",
             "All Files (*);;Python Files (*.py)", options=options
         )
         if fileName:
@@ -177,6 +201,7 @@ class Window(QMainWindow):
                 self.canvas.g.write_gml(fileName)
 
     def activateFindShortestPathMode(self):
+        self.weightDialog.exec()
         self.mode = Canvas.MODE_FIND_SHORTEST_PATH
         self.canvas.setMode(self.mode)
 
