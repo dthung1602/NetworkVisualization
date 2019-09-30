@@ -1,3 +1,4 @@
+from math import sqrt
 from random import choice
 
 import igraph
@@ -5,11 +6,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
-from math import sqrt
 
 LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
 DARK_MODE = 'Dark mode'
 LIGHT_MODE = 'Light mode'
+
 
 def randomColor():
     return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
@@ -47,6 +48,7 @@ class Canvas(QWidget):
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
         self.backgroundColor = self.lineColor = None
+        self.shortestPathWeight = None
 
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
@@ -268,7 +270,9 @@ class Canvas(QWidget):
             )
 
     def findShortestPath(self):
-        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], output='epath')
+
+        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], self.shortestPathWeight,
+                                         output='epath')
         if not path[0]:
             print("Not connected")
         else:

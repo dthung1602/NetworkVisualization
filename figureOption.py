@@ -3,8 +3,10 @@ import re
 
 import matplotlib
 import matplotlib.backends.qt_editor.formlayout as formlayout
+
 from matplotlib import cm, colors as mcolors, markers, image as mimage
 from matplotlib.backends.qt_compat import QtGui
+
 
 
 def get_icon(name):
