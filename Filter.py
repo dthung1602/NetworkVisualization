@@ -49,6 +49,8 @@ class Filter(QWidget):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black - Filter Dialog")
 
+        self.vertexAttr = [opt for opt in self.canvas.g.vs.attributes()]
+
         self.edgeWeights = [opt for opt in self.canvas.g.es.attributes()]
         self.edgeWeights.remove('line')
 
@@ -70,6 +72,9 @@ class Filter(QWidget):
         self.selectCentralityEdgeWeight = self.findChild(QComboBox, 'selectCentralityEdgeWeight')
         self.applyCentralityBtn = self.findChild(QPushButton, 'applyCentralityBtn')
         self.cancelCentralityBtn = self.findChild(QPushButton, 'cancelCentralityBtn')
+
+        self.selectClusterAttribute = self.findChild(QComboBox, 'selectVertex')
+        self.applyClusterAttribute = self.findChild(QPushButton, 'applyVertexBtn')
 
         self.addSelectOptions()
         self.setShowLayoutWeight(0)
@@ -95,6 +100,10 @@ class Filter(QWidget):
         self.selectCentralityEdgeWeight.addItems(['-- None --'] + self.edgeWeights)
         self.applyCentralityBtn.pressed.connect(self.changeCentrality)
         self.cancelCentralityBtn.pressed.connect(self.cancelCentrality)
+
+        # Cluster Attribute Opt
+        self.selectClusterAttribute.addItems(self.vertexAttr)
+        self.applyClusterAttribute.pressed.connect(self.changeClusterAttribute)
 
     def setShowLayoutWeight(self, opt):
         visible = LAYOUT_OPTIONS[opt][1] in LAYOUT_WITH_WEIGHT
@@ -128,3 +137,7 @@ class Filter(QWidget):
 
     def cancelCentrality(self):
         self.changeClusteringAlgo()
+
+    def changeClusterAttribute(self):
+        attr = self.vertexAttr[self.selectClusterAttribute.currentIndex()]
+        self.canvas.setAttributeCluster(attr)

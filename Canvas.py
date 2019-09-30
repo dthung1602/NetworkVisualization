@@ -40,6 +40,7 @@ class Canvas(QWidget):
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
         self.backgroundColor = self.lineColor = None
+        self.shortestPathWeight = None
 
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
@@ -135,6 +136,15 @@ class Canvas(QWidget):
         clusterToColor = {str(id(cl)): randomColor() for cl in clusters}
         self.g.vs['cluster'] = [getClusterId(v) for v in self.g.vs]
         self.g.vs['color'] = [clusterToColor[v['cluster']] for v in self.g.vs]
+        self.update()
+
+    def setAttributeCluster(self, attr):
+        cluster = {i: [] for i in self.g.vs[attr]}
+        clusterToColor = {cl: randomColor() for cl in cluster.keys()}
+        for i in cluster.keys():
+            for v in self.g.vs:
+                if v[attr] == i:
+                    v['color'] = clusterToColor[i]
         self.update()
 
     def setFilter(self, attr='total_delay', left=0, right=54):
@@ -265,7 +275,9 @@ class Canvas(QWidget):
             )
 
     def findShortestPath(self):
-        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], output='epath')
+
+        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], self.shortestPathWeight,
+                                         output='epath')
         if not path[0]:
             print("Not connected")
         else:
