@@ -108,8 +108,6 @@ class RandomDialog(QDialog):
         acceptBtn.clicked.connect(self.textEdited(self.max, self.maxEdit))
         acceptBtn.clicked.connect(self.generateUniformDistribution)
 
-
-
     @staticmethod
     def textEdited(label, edit):
         def func():
