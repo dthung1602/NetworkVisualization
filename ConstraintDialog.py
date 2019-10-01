@@ -14,7 +14,6 @@ class Constraint(QDialog):
         print('graph')
         self.canvas = canvas
         self.g = canvas.g
-        self.randomDialog = RandomDialog(self.canvas)
         loadUi('resource/gui/ConstraintDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Warning")
@@ -22,6 +21,7 @@ class Constraint(QDialog):
         self.grid = self.findChild(QGridLayout, 'gridLayout')
         print("Checkhere")
         self.check()
+        self.name = ""
 
     def checkConstrainEdge(self):
         attr = self.g.es.attributes()
@@ -78,7 +78,9 @@ class Constraint(QDialog):
                 buttonRandom.setToolTip('This is random dialog')
                 self.grid.addWidget(buttonRandom, count, 2)
                 buttonRandom.clicked.connect(self.openRandomDialog)
-
+                buttonRandom.setObjectName(i)
+                setattr(buttonRandom,'type','EDGE')
+                print(getattr(buttonRandom,"type"))
                 count = count + 1
         count = 1
         if len(vertexMissing) > 0:
@@ -90,6 +92,8 @@ class Constraint(QDialog):
         print("Missing requirement attributes. Please choose input method")
 
     def openRandomDialog(self):
+        self.randomDialog = RandomDialog(self.canvas,getattr(self.sender(),"type"))
+        self.setObjectName(self.sender().objectName())
         self.randomDialog.exec()
 
     def openRenameDialog(self):

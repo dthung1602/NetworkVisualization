@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QComboBox, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PyQt5.uic import loadUi
-
+import numpy as np
 from Canvas import Canvas
 
 DIST = [
@@ -24,10 +24,13 @@ class BuddyLabel(QLabel):
 
 
 class RandomDialog(QDialog):
-    def __init__(self, canvas: Canvas):
+    def __init__(self, canvas: Canvas, type):
         super().__init__()
         print('Random Dialog')
         self.canvas = canvas
+        self.type = type
+        self.g = canvas.g
+        self.attr = self.sender().objectName()
         loadUi('resource/gui/RandomDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Random data")
@@ -108,8 +111,6 @@ class RandomDialog(QDialog):
         acceptBtn.clicked.connect(self.textEdited(self.max, self.maxEdit))
         acceptBtn.clicked.connect(self.generateUniformDistribution)
 
-
-
     @staticmethod
     def textEdited(label, edit):
         def func():
@@ -130,7 +131,37 @@ class RandomDialog(QDialog):
             layout.itemAt(i).widget().deleteLater()
 
     def generateNormalDistribution(self):
-        print('Generate Norm')
+        mean = (float)(self.meanEdit.text())
+        stdDeviation = (float)(self.standardDeviationEdit.text())
+        if self.type == 'EDGE':
+            size = self.g.ecount()
+            randomArr = np.random.normal(mean, stdDeviation, size)
+            self.changeEdge(self.attr, randomArr)
+        else:
+            size = self.g.vcount()
+            randomArr = np.random.normal(mean, stdDeviation, size)
+        print('Generate Norm ')
 
     def generateUniformDistribution(self):
-        print('Generate Uniform')
+        min = (float)(self.minEdit.text())
+        max = (float)(self.maxEdit.text())
+        if self.type == 'EDGE':
+            size = self.g.ecount()
+            randomArr = np.random.uniform(min,max,size)
+            self.changeEdge(self.attr, randomArr)
+        else:
+            size = self.g.vcount()
+            randomArr = np.random.uniform(min,max,size)
+            self.changeVertex(self.attr, randomArr)
+
+    def changeEdge(self, attributeName, randomArr):
+        count = 0
+        for i in self.g.es:
+            i[attributeName] = randomArr[count]
+            count = count + 1
+
+    def changeVertex(self, attributeName, randomArr):
+        count = 0
+        for i in self.g.vs:
+            i[attributeName] = randomArr[count]
+            count = count + 1
