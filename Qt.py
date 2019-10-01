@@ -15,6 +15,7 @@ from WeightDialog import WeightDialog
 from ConstraintDialog import Constraint
 from AddAttributesDialog import AddAttributesDialog
 
+
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -30,15 +31,14 @@ class Window(QMainWindow):
         self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
         self.weightDialog = WeightDialog(self.canvas)
-        self.constraint = Constraint(self.canvas)
         self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
+        self.constraint = Constraint(self.canvas)
         self.addAttributesDialog = AddAttributesDialog(self.canvas)
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.mode = Canvas.MODE_EDIT
         self.viewMode = DARK_MODE
         self.canvas.setViewMode(DARK_MODE)
         self.bindMenuActions()
-
     def bindMenuActions(self):
         # -------------- Menu ----------------- #
         # Open_button
@@ -125,7 +125,6 @@ class Window(QMainWindow):
 
     def openConstraintDialog(self):
         self.constraint.exec()
-
     def switchViewMode(self):
         if self.viewMode == DARK_MODE:
             self.viewMode = LIGHT_MODE
@@ -249,7 +248,6 @@ class Window(QMainWindow):
     def openFilterDialog(self):
         print('Load filter dialog')
         self.filterWindow.show()
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

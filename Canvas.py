@@ -4,9 +4,15 @@ import igraph
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
+from math import sqrt
+LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
+DARK_MODE = 'Dark mode'
+LIGHT_MODE = 'Light mode'
+
+def randomColor():
+    return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
 
 from utils import *
-
 
 class Canvas(QWidget):
     HEIGHT = 500
@@ -41,11 +47,9 @@ class Canvas(QWidget):
         self.selectedLines = self.selectedPoints = []
         self.backgroundColor = self.lineColor = None
         self.shortestPathWeight = None
-
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
         self.vertexDegree()
-
     def setMode(self, mode):
         self.mode = mode
         self.selectedPoints = []
@@ -77,9 +81,7 @@ class Canvas(QWidget):
         else:
             clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
             g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
-
         self.resetViewRect()
-
     def resetViewRect(self):
         g = self.g
 
