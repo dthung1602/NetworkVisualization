@@ -18,7 +18,7 @@ class constraintAttr():
                 return True
         return False
     def check(self):
-        while not self.checkConstrainEdge() and self.checkConstrainVertex()):
+        while not (self.checkConstrainEdge() and self.checkConstrainVertex()):
             return True
         self.notify()
         return False
