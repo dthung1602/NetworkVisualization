@@ -17,8 +17,11 @@ class WeightDialog(QDialog):
         self.addSelectOptions()
 
     def addSelectOptions(self):
-        self.selectWeight.addItems([opt for opt in self.canvas.g.es.attributes()])
+        self.selectWeight.addItems(['-- None --'] + self.canvas.g.es.attributes())
         self.selectWeight.currentIndexChanged.connect(self.changeWeight)
 
-    def changeWeight(self):
-        pass
+    def changeWeight(self, opt):
+        if opt != 0:
+            self.canvas.shortestPathWeight = self.canvas.g.es.attributes()[opt-1]
+        else:
+            self.canvas.shortestPathWeight = None

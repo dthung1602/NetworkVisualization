@@ -1,8 +1,7 @@
-from random import choice
+from math import sqrt
 
 import igraph
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
 from math import sqrt
@@ -13,6 +12,7 @@ LIGHT_MODE = 'Light mode'
 def randomColor():
     return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
 
+from utils import *
 
 class Canvas(QWidget):
     HEIGHT = 500
@@ -46,6 +46,7 @@ class Canvas(QWidget):
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
         self.backgroundColor = self.lineColor = None
+        self.shortestPathWeight = None
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
         self.vertexDegree()
@@ -139,9 +140,22 @@ class Canvas(QWidget):
         self.g.vs['color'] = [clusterToColor[v['cluster']] for v in self.g.vs]
         self.update()
 
+    def setAttributeCluster(self, attr):
+        cluster = {i: [] for i in self.g.vs[attr]}
+        clusterToColor = {cl: randomColor() for cl in cluster.keys()}
+        for i in cluster.keys():
+            for v in self.g.vs:
+                if v[attr] == i:
+                    v['color'] = clusterToColor[i]
+        self.update()
+
     def setFilter(self, attr='total_delay', left=0, right=54):
         self.filterData = {'attr': attr, 'left': left, 'right': right}
         self.update()
+
+    def setCentrality(self, centrality, weights):
+        centrality = getattr(self.g, centrality)(weights=weights)
+        self.g.vs['color'] = arrayToSpectrum(centrality)
 
     def updateViewRect(self):
         size = self.size()
@@ -263,7 +277,9 @@ class Canvas(QWidget):
             )
 
     def findShortestPath(self):
-        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], output='epath')
+
+        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], self.shortestPathWeight,
+                                         output='epath')
         if not path[0]:
             print("Not connected")
         else:
