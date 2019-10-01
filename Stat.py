@@ -140,3 +140,4 @@ class Plot(FigureCanvas):
         ax1.set_ylabel('Number of Vertex')
         n, bins, patches = ax1.hist(weightArr, num_bins)
         return fig
+

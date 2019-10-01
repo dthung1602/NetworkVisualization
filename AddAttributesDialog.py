@@ -15,7 +15,7 @@ class BuddyLabel(QLabel):
     def mousePressEvent(self, event):
         self.hide()
         self.buddy.show()
-        self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click againe
+        self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click again
 
 
 class AddAttributesDialog(QDialog):
