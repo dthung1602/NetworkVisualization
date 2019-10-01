@@ -4,7 +4,8 @@ import igraph
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
-
+from threading import Thread
+import threading
 from utils import *
 
 
@@ -22,9 +23,11 @@ class Canvas(QWidget):
     MODE_EDIT = 'edit'
     MODE_FIND_SHORTEST_PATH = 'fsp'
     MODE_FIND_BOTTLE_NECK = 'fbn'
+    MODE_REAL_TIME = 'rt'
 
     initModeAction = {
         MODE_FIND_BOTTLE_NECK: 'findBottleNeck'
+
     }
 
     def __init__(self, gui):
@@ -41,6 +44,8 @@ class Canvas(QWidget):
         self.selectedLines = self.selectedPoints = []
         self.backgroundColor = self.lineColor = None
         self.shortestPathWeight = None
+
+        self.threading = None
 
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
@@ -301,6 +306,21 @@ class Canvas(QWidget):
                 self.selectedPoints.append(self.g.vs[e.target])
                 self.selectedPoints.append(self.g.vs[e.source])
         self.update()
+
+    def startRealTime(self, arguments):
+        # neu co thread cu, stop thread cu, tao thread moi
+        # tao thread, luu thread vao self.updateThread
+        # trong thread, while true -> tao random -> self.update -> sleep
+        if self.threading.isAlive() :
+            self.threading._Thread_delete()
+        thread = threading.Thread(target=self.doRealTime, args=(arguments,))
+        self.setMode(Canvas.MODE_REAL_TIME)
+        self.threading = thread
+        thread.start()
+
+
+    def doRealTime(self, arg):
+        while (self.mode == )
 
     def vertexDegree(self):
         self.g.vs['degree'] = 0

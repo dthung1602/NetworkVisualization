@@ -1,7 +1,7 @@
 from random import choice
 
 from PyQt5.QtGui import *
-
+from math import *
 DARK_MODE = 'Dark mode'
 LIGHT_MODE = 'Light mode'
 
@@ -30,3 +30,5 @@ def arrayToSpectrum(arr):
     arr = [v - minValue for v in arr]
     maxValue = max(arr)
     return [COLOR_SPECTRUM[min(99, int(v / maxValue * 100))] for v in arr]
+
+
