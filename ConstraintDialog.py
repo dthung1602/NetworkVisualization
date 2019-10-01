@@ -1,7 +1,8 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QComboBox, QLabel, QGridLayout
+from PyQt5.QtWidgets import QDialog, QComboBox, QLabel, QGridLayout, QPushButton
 from PyQt5.uic import loadUi
 from Canvas import Canvas
+from RandomDialog import RandomDialog
 
 
 class Constraint(QDialog):
@@ -11,7 +12,9 @@ class Constraint(QDialog):
     def __init__(self, canvas: Canvas):
         super().__init__()
         print('graph')
+        self.canvas = canvas
         self.g = canvas.g
+        self.randomDialog = RandomDialog(self.canvas)
         loadUi('resource/gui/ConstraintDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Warning")
@@ -43,7 +46,7 @@ class Constraint(QDialog):
         vertexMissing = self.checkConstrainVertex()
         print(edgeMissing)
         print(vertexMissing)
-        if (len(edgeMissing) == 0 and len(vertexMissing) == 0):
+        if len(edgeMissing) == 0 and len(vertexMissing) == 0:
             return True
         print("Check false")
         self.notify(edgeMissing, vertexMissing)
@@ -62,17 +65,32 @@ class Constraint(QDialog):
     def notify(self, edgeMissing, vertexMissing):
         self.label.setText("Warning")
         count = 1
-        if (len(edgeMissing) > 0):
+        if len(edgeMissing) > 0:
             self.grid.addWidget(QLabel("Missing attribute of edge"), 0, 0)
             for i in edgeMissing:
                 label = QLabel(i)
                 self.grid.addWidget(label, count, 0)
+                buttonRandom = QPushButton('RN', self)
+                buttonRandom.setToolTip('This is rename dialog')
+                self.grid.addWidget(buttonRandom, count, 1)
+                buttonRandom.clicked.connect(self.openRenameDialog)
+                buttonRandom = QPushButton('RD', self)
+                buttonRandom.setToolTip('This is random dialog')
+                self.grid.addWidget(buttonRandom, count, 2)
+                buttonRandom.clicked.connect(self.openRandomDialog)
+
                 count = count + 1
         count = 1
-        if (len(vertexMissing) > 0):
-            self.grid.addWidget(QLabel("Missing attribute of vertex"), 0, 1)
+        if len(vertexMissing) > 0:
+            self.grid.addWidget(QLabel("Missing attribute of vertex"), 0, 3)
             for i in vertexMissing:
                 label = QLabel(i)
-                self.grid.addWidget(label, count, 1)
+                self.grid.addWidget(label, count, 3)
                 count = count + 1
         print("Missing requirement attributes. Please choose input method")
+
+    def openRandomDialog(self):
+        self.randomDialog.exec()
+
+    def openRenameDialog(self):
+        print('REname')

@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QComboBox, QVBoxLayout, QLabel, QLineEdit
+from PyQt5.QtWidgets import QDialog, QComboBox, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PyQt5.uic import loadUi
 
 from Canvas import Canvas
@@ -48,39 +48,67 @@ class RandomDialog(QDialog):
         self.maxEdit = QLineEdit()
         self.max = BuddyLabel(self.maxEdit)
 
+        self.valueLabelStyleSheet = ("QLabel {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
+                                     "padding: 2px; color: rgb(220,220,220); border-radius: 5px;}"
+                                     "QLabel:hover{background-color: #242424;}")
+
     def changeDist(self, opt):
         [
             self.normalDistribution,
             self.uniformDistribution,
         ][opt]()
 
+    def addDistSelectOptions(self):
+        self.selectDistribution.addItems([opt for opt in DIST])
+        self.selectDistribution.currentIndexChanged.connect(self.changeDist)
+
     def normalDistribution(self):
         self.clearLayout(self.randomLayout)
         print("normal")
         meanLabel = QLabel('Mean: ')
+        self.mean.setStyleSheet(self.valueLabelStyleSheet)
+        self.meanEdit.setStyleSheet(self.valueLabelStyleSheet)
         self.randomLayout.addWidget(meanLabel)
         self.randomLayout.addWidget(self.mean)
         self.randomLayout.addWidget(self.meanEdit)
 
         stdevLabel = QLabel('Standard Deviation: ')
         self.randomLayout.addWidget(stdevLabel)
+        self.standardDeviationEdit.setStyleSheet(self.valueLabelStyleSheet)
+        self.standardDeviation.setStyleSheet(self.valueLabelStyleSheet)
         self.randomLayout.addWidget(self.standardDeviation)
         self.randomLayout.addWidget(self.standardDeviationEdit)
 
-
+        acceptBtn = QPushButton('OK', self)
+        self.randomLayout.addWidget(acceptBtn)
+        acceptBtn.clicked.connect(self.textEdited(self.mean, self.meanEdit))
+        acceptBtn.clicked.connect(self.textEdited(self.standardDeviation, self.standardDeviationEdit))
+        acceptBtn.clicked.connect(self.generateNormalDistribution)
 
     def uniformDistribution(self):
         print("uniform")
         self.clearLayout(self.randomLayout)
         minLabel = QLabel('Min: ')
+        self.minEdit.setStyleSheet(self.valueLabelStyleSheet)
+        self.min.setStyleSheet(self.valueLabelStyleSheet)
         self.randomLayout.addWidget(minLabel)
         self.randomLayout.addWidget(self.min)
         self.randomLayout.addWidget(self.minEdit)
 
         maxLabel = QLabel('Max: ')
+        self.max.setStyleSheet(self.valueLabelStyleSheet)
+        self.maxEdit.setStyleSheet(self.valueLabelStyleSheet)
         self.randomLayout.addWidget(maxLabel)
         self.randomLayout.addWidget(self.max)
         self.randomLayout.addWidget(self.maxEdit)
+
+        acceptBtn = QPushButton('OK', self)
+        self.randomLayout.addWidget(acceptBtn)
+        acceptBtn.clicked.connect(self.textEdited(self.min, self.minEdit))
+        acceptBtn.clicked.connect(self.textEdited(self.max, self.maxEdit))
+        acceptBtn.clicked.connect(self.generateUniformDistribution)
+
+
 
     @staticmethod
     def textEdited(label, edit):
@@ -100,3 +128,9 @@ class RandomDialog(QDialog):
     def clearLayout(layout):
         for i in reversed(range(layout.count())):
             layout.itemAt(i).widget().deleteLater()
+
+    def generateNormalDistribution(self):
+        print('Generate Norm')
+
+    def generateUniformDistribution(self):
+        print('Generate Uniform')

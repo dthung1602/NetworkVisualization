@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>338</width>
-    <height>433</height>
+    <height>255</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <height>61</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="distLayout">
     <item>
      <widget class="QLabel" name="label">
       <property name="text">
@@ -31,7 +31,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox"/>
+     <widget class="QComboBox" name="distBox"/>
     </item>
    </layout>
   </widget>
@@ -41,7 +41,7 @@
      <x>40</x>
      <y>90</y>
      <width>271</width>
-     <height>321</height>
+     <height>151</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="randomLayout"/>
