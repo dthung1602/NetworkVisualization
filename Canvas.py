@@ -6,8 +6,9 @@ from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
 from threading import Thread
 import threading
+import time
+from numpy import *
 from utils import *
-
 
 class Canvas(QWidget):
     HEIGHT = 500
@@ -44,13 +45,11 @@ class Canvas(QWidget):
         self.selectedLines = self.selectedPoints = []
         self.backgroundColor = self.lineColor = None
         self.shortestPathWeight = None
-
         self.threading = None
-
+        self.inRealTimeMode = None
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
         self.vertexDegree()
-
     def setMode(self, mode):
         self.mode = mode
         self.selectedPoints = []
@@ -82,9 +81,7 @@ class Canvas(QWidget):
         else:
             clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
             g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
-
         self.resetViewRect()
-
     def resetViewRect(self):
         g = self.g
 
@@ -308,19 +305,26 @@ class Canvas(QWidget):
         self.update()
 
     def startRealTime(self, arguments):
+
         # neu co thread cu, stop thread cu, tao thread moi
         # tao thread, luu thread vao self.updateThread
         # trong thread, while true -> tao random -> self.update -> sleep
-        if self.threading.isAlive() :
-            self.threading._Thread_delete()
-        thread = threading.Thread(target=self.doRealTime, args=(arguments,))
-        self.setMode(Canvas.MODE_REAL_TIME)
+        arguments = [['b_delay', 'normal', 2, 0.2], ['t_delay', 'normal', 1, 0.15]]
+        # remember to delete daemon
+        thread = threading.Thread(target=self.doRealTime, args=(arguments,), daemon=True)
         self.threading = thread
         thread.start()
 
 
     def doRealTime(self, arg):
-        while (self.mode == )
+        while self.inRealTimeMode:
+            for e in arg:
+                if e[1] == "normal":
+                    self.g.es[e[0]] = [random.normal(e[2], e[3]) for v in self.g.es[e[0]]]
+                else:
+                    self.g.es[e[0]] = [random.uniform(e[2], e[3]) for v in self.g.es[e[0]]]
+            time.sleep(1)
+            self.update()
 
     def vertexDegree(self):
         self.g.vs['degree'] = 0

@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-
 import numpy as np
 import igraph as ig
 from PyQt5 import QtCore
@@ -54,7 +53,7 @@ class Stat(QWidget):
 
     def changeStyleLayout(self, opt):
         self.styleOpt = plt.style.available[opt]
-        i: int = int(self.selectPlot.currentIndex())
+        i = int(self.selectPlot.currentIndex())
         self.changeGraphLayout(i)
         print(self.styleOpt)
 
@@ -140,3 +139,4 @@ class Plot(FigureCanvas):
         ax1.set_ylabel('Number of Vertex')
         n, bins, patches = ax1.hist(weightArr, num_bins)
         return fig
+
