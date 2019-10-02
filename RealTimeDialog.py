@@ -61,7 +61,6 @@ class RealTimeDialog(QWidget):
         for key in self.canvas.g.vs.attributes():
             value = self.canvas.g.vs[0][key]
             keyLabel = QLabel(key)
-            name = ""
             if isinstance(value, float) and key not in VertexKeyIgnore.ignoredFields:
                 self.vertexGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
@@ -77,7 +76,6 @@ class RealTimeDialog(QWidget):
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
                 self.vertexGridLayout.addWidget(secondValueLabel, count, 4)
-
                 count += 1
 
     # def addDistSelectOptions(self, column):
@@ -97,9 +95,11 @@ class RealTimeDialog(QWidget):
     def openRandomDialog(self, name):
         self.randomDialog = RandomDialog(self.canvas, "Vertex")
         self.setObjectName(name)
+        setattr(self.randomDialog, "update", False)
         self.randomDialog.exec()
         self.randomDialog.attrBack.append(name)
         self.notify(self.randomDialog.attrBack)
+        print(self.randomDialog.randomArr)
 
     def notify(self, mes):
         print(mes)

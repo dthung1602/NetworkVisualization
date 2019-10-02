@@ -55,6 +55,8 @@ class RandomDialog(QDialog):
                                      "padding: 2px; color: rgb(220,220,220); border-radius: 5px;}"
                                      "QLabel:hover{background-color: #242424;}")
         self.attrBack = []
+        self.randomArr = []
+        self.update = True
     def changeDist(self, opt):
         [
             self.normalDistribution,
@@ -132,16 +134,19 @@ class RandomDialog(QDialog):
 
     def generateNormalDistribution(self):
         print("generateNormalDistribution ",self.attr)
+        print(self.update)
         mean = (float)(self.meanEdit.text())
         stdDeviation = (float)(self.standardDeviationEdit.text())
         if self.type == 'EDGE':
             size = self.g.ecount()
-            randomArr = np.random.normal(mean, stdDeviation, size)
-            self.changeEdge(self.attr, randomArr)
+            self.randomArr = np.random.normal(mean, stdDeviation, size)
+            if self.update:
+                self.changeEdge(self.attr, self.randomArr)
         else:
             size = self.g.vcount()
-            randomArr = np.random.normal(mean, stdDeviation, size)
-            self.changeVertex(self.attr,randomArr)
+            self.randomArr = np.random.normal(mean, stdDeviation, size)
+            if self.update:
+                self.changeVertex(self.attr,self.randomArr)
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(mean)
         self.attrBack.append(stdDeviation)
@@ -152,12 +157,14 @@ class RandomDialog(QDialog):
         max = (float)(self.maxEdit.text())
         if self.type == 'EDGE':
             size = self.g.ecount()
-            randomArr = np.random.uniform(min,max,size)
-            self.changeEdge(self.attr, randomArr)
+            self.randomArr = np.random.uniform(min,max,size)
+            if self.update:
+                self.changeEdge(self.attr, self.randomArr)
         else:
             size = self.g.vcount()
-            randomArr = np.random.uniform(min,max,size)
-            self.changeVertex(self.attr, randomArr)
+            self.randomArr = np.random.uniform(min,max,size)
+            if self.update:
+                self.changeVertex(self.attr, self.randomArr)
         self.attrBack.append("Uniform Distribution")
         self.attrBack.append(min)
         self.attrBack.append(max)
