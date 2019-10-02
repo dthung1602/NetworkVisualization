@@ -39,6 +39,9 @@ class RealTimeDialog(QWidget):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
         self.checkBoxList = []
+        self.vertexAttr = []
+        self.edgeAttr = []
+        self.fPs = 0
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.generateBtn.pressed.connect(self.realTimeEvent)
@@ -100,12 +103,16 @@ class RealTimeDialog(QWidget):
         setattr(randomDialog, "update", False)
         randomDialog.exec()
         randomDialog.attrBack.append(name)
-        self.attr.append(randomDialog.attrBack)
-        print("Self attr: ", self.attr)
+        self.vertexAttr.append(randomDialog.attrBack)
+        print("Self attr: ", self.vertexAttr)
         self.notify(randomDialog.attrBack)
-        print(self.attr)
+        print(self.vertexAttr)
 
     def realTimeEvent(self):
+        self.attr.append(self.vertexAttr)
+        self.attr.append(self.edgeAttr)
+        self.attr.append(self.fPs)
+        print(self.attr)
         self.canvas.inRealTimeMode = True
         self.canvas.startRealTime(self.attr)
 
