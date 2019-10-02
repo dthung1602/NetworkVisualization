@@ -18,18 +18,17 @@ class RenameDialog(QDialog):
         self.attribute = self.findChild(QComboBox, 'comboBox')
         self.renameBtn = self.findChild(QPushButton, 'pushButton')
         self.label = self.findChild(QLabel, 'label')
+        self.label.setText('Choose an attribute to be renamed as "' + self.newAttributeName + '" ')
         self.addSelectOptions()
 
     def addSelectOptions(self):
         self.attribute.addItems(self.canvas.g.es.attributes())
-        #self.renameBtn.clicked.connect(self.rename)
-        self.attribute.currentIndexChanged.connect(self.rename)
+        self.renameBtn.clicked.connect(self.rename)
 
     def rename(self):
         opt = int(self.attribute.currentIndex())
-        print("RENAME")
         key = self.canvas.g.es.attributes()[opt]
         print(key)
         self.canvas.g.es[self.newAttributeName] = self.canvas.g.es[key]
         del self.canvas.g.es[key]
-        self.label.setText(key + 'has been renamed to ' + self.newAttributeName)
+        self.label.setText('"' + key + '"' + ' has been renamed to ' + '"' + self.newAttributeName + '"')

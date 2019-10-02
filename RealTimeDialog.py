@@ -31,7 +31,6 @@ class BuddyLabel(QLabel):
 
 
 class RealTimeDialog(QWidget):
-
     def __init__(self, canvas: Canvas):
         super().__init__()
         print('Real Time Dialog')
@@ -42,22 +41,18 @@ class RealTimeDialog(QWidget):
         self.checkBoxList = []
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
-        #self.generateBtn.pressed.connect()
+        self.generateBtn.pressed.connect(self.realTimeEvent)
         # Vertex tab
+
         self.vertexGridLayout = self.findChild(QGridLayout, 'vertexGridLayout')
-        self.addVertexTitle()
+        self.edgeGridLayout = self.findChild(QGridLayout, 'edgeGridLayout')
         self.addVertexKey()
+        self.addEdgeKey()
         self.selectDistribution = QComboBox()
         self.selectDistribution.addItems([opt for opt in DIST])
+
         for i in range(len(self.checkBoxList)):
             self.checkBoxList[i].stateChanged.connect(self.checkBoxEdited)
-
-    def addVertexTitle(self):
-        count = 0
-        for title in TITLE:
-            titleLabel = QLabel(title)
-            self.vertexGridLayout.addWidget(titleLabel, 0, count)
-            count += 1
 
     def addVertexKey(self):
         count = 1
@@ -84,6 +79,27 @@ class RealTimeDialog(QWidget):
     # def addDistSelectOptions(self, column):
 
     # self.selectDistribution.currentIndexChanged.connect(self.changeDist)
+    def addEdgeKey(self):
+        count = 1
+        for key in self.canvas.g.es.attributes():
+            value = self.canvas.g.es[0][key]
+            keyLabel = QLabel(key)
+            if isinstance(value, float) and key not in EdgeKeyIgnore.ignoredFields:
+                self.edgeGridLayout.addWidget(keyLabel, count, 0)
+                checkBox = QCheckBox(self)
+                checkBox.setObjectName(key)
+                self.checkBoxList.append(checkBox)
+                self.edgeGridLayout.addWidget(checkBox, count, 1)
+                distLabel = QLabel("None")
+                distLabel.setObjectName(key + 'dist')
+                self.edgeGridLayout.addWidget(distLabel, count, 2)
+                firstValueLabel = QLabel("None")
+                firstValueLabel.setObjectName(key + 'value1')
+                self.edgeGridLayout.addWidget(firstValueLabel, count, 3)
+                secondValueLabel = QLabel("None")
+                secondValueLabel.setObjectName(key + 'value2')
+                self.edgeGridLayout.addWidget(secondValueLabel, count, 4)
+                count += 1
 
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
@@ -105,6 +121,10 @@ class RealTimeDialog(QWidget):
         print("Self attr: ", self.attr)
         self.notify(randomDialog.attrBack)
         print(self.attr)
+
+    def realTimeEvent(self):
+        self.canvas.inRealTimeMode = True
+        self.canvas.startRealTime(self.attr)
 
     def notify(self, mes):
         print(mes)
@@ -131,3 +151,7 @@ class RealTimeDialog(QWidget):
 
 class VertexKeyIgnore(RealTimeDialog):
     ignoredFields = ['hyperedge']
+
+
+class EdgeKeyIgnore(RealTimeDialog):
+    ignoredFields = ['b_delay', 't_delay', 'p_delay', 'key', 'zorder', 'edge_weight']

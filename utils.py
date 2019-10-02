@@ -5,6 +5,7 @@ from PyQt5.QtGui import *
 
 DARK_MODE = 'Dark mode'
 LIGHT_MODE = 'Light mode'
+GEO_MODE = 'Geo mode'
 
 LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
 
@@ -13,7 +14,8 @@ def randomColor():
     return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
 
 
-def arrayToSpectrum(arr, useBrush=True):
+def arrayToSpectrum(arr):
+
     def g(i):
         return 255 * (i + 1) / 2.0
 
@@ -30,9 +32,13 @@ def arrayToSpectrum(arr, useBrush=True):
     BLUE = f(1.5, 2.5, n)
     RGBs = [('#%02x%02x%02x' % rgb) for rgb in zip(RED, GREEN, BLUE)]
 
+    # minValue = min(arr)
+    # arr = [v - minValue for v in arr]
+    # maxValue = max(arr)
+    # return [COLOR_SPECTRUM[min(99, int(v / maxValue * 100))] for v in arr]
+
     temp = sorted(uniqueValues, reverse=True)
+    # RGBs_sorted = sorted(RGBs)
     dictColor = {central: color for central, color in zip(temp, RGBs)}
-
-
     return [QColor(dictColor[i]) for i in arr]
 
