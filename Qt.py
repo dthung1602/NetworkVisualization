@@ -21,6 +21,7 @@ class Window(QMainWindow):
         super().__init__()
 
         uic.loadUi('resource/gui/GUI.ui', self)
+
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black")
         self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
@@ -189,10 +190,6 @@ class Window(QMainWindow):
             self.canvas.paint(painter)
             painter.end()
             img.save(fileName)
-
-    def realTimeEvent(self):
-        self.canvas.inRealTimeMode = True
-        self.canvas.startRealTime(None)
 
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
