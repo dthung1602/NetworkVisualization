@@ -41,12 +41,21 @@ class RealTimeDialog(QWidget):
         self.checkBoxList = []
         self.vertexAttr = []
         self.edgeAttr = []
-        self.fPs = 15
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.generateBtn.pressed.connect(self.realTimeEvent)
-        # Vertex tab
 
+        # FPS
+        self.fpsSlider = self.findChild(QSlider, 'fpsSlider')
+        self.fpsSlider.setMinimum(10)
+        self.fpsSlider.setMaximum(50)
+        self.fpsSlider.setValue(30)
+        self.fps = 30
+        self.fpsSlider.setTickPosition(QSlider.TicksBelow)
+        self.fpsSlider.setTickInterval(5)
+        self.fpsValueLabel = self.findChild(QLabel, 'fpsLabel')
+        self.fpsSlider.valueChanged.connect(self.changeFPSValue)
+        # Vertex tab
         self.vertexGridLayout = self.findChild(QGridLayout, 'vertexGridLayout')
         self.edgeGridLayout = self.findChild(QGridLayout, 'edgeGridLayout')
         self.addVertexKey()
@@ -57,15 +66,6 @@ class RealTimeDialog(QWidget):
         for i in range(len(self.checkBoxList)):
             self.checkBoxList[i].stateChanged.connect(self.checkBoxEdited)
 
-        #Slider
-        self.slider = self.findChild(QSlider,'horizontalSlider')
-        self.slider.valueChanged.connect(self.sliderValueChange)
-        self.slider.setMinimum(10)
-        self.slider.setMaximum(50)
-        self.slider.setTickInterval(5)
-        self.slider.setTickPosition(QSlider.TicksBelow)
-        self.slider.setSingleStep(5)
-        self.slider.setValue(15)
     def addVertexKey(self):
         count = 1
         for key in self.canvas.g.vs.attributes():
@@ -87,9 +87,13 @@ class RealTimeDialog(QWidget):
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
                 self.vertexGridLayout.addWidget(secondValueLabel, count, 4)
+
                 count += 1
 
-    # def addDistSelectOptions(self, column):
+    def changeFPSValue(self):
+        fpsValue = self.fpsSlider.value()
+        self.fpsValueLabel.setText('FPS Value = ' + str(fpsValue))
+        self.fps = fpsValue
 
     # self.selectDistribution.currentIndexChanged.connect(self.changeDist)
     def addEdgeKey(self):
@@ -114,8 +118,10 @@ class RealTimeDialog(QWidget):
                 secondValueLabel.setObjectName(key + 'value2')
                 self.edgeGridLayout.addWidget(secondValueLabel, count, 4)
                 count += 1
+
     def sliderValueChange(self):
         self.fPs = self.slider.value()
+        print(self.fPs)
 
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
@@ -138,23 +144,24 @@ class RealTimeDialog(QWidget):
         else:
             self.vertexAttr.append(randomDialog.attrBack)
         print("Sender type : ", getattr(self.sender(), "type"))
-        print("Self attr: ", self.vertexAttr)
-        self.notify(randomDialog.attrBack,getattr(self.sender(),"type"))
-    def realTimeEvent(self):
-        self.attr.append(self.vertexAttr)
-        self.attr.append(self.edgeAttr)
-        self.attr.append(self.fPs)
-        print("Self.attr = ",self.attr)
-        self.canvas.inRealTimeMode = True
-        try:
-            self.canvas.startRealTime(self.attr)
-        except e Exception:
-            print (e)
+        self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+        self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
 
-    def notify(self, mes,type):
+    def realTimeEvent(self):
+        try:
+            self.attr.append(self.vertexAttr)
+            self.attr.append(self.edgeAttr)
+            self.attr.append(self.fps)
+            print("Self.attr = ", self.attr)
+            self.canvas.inRealTimeMode = True
+            self.canvas.startRealTime(self.attr)
+        except Exception as e:
+            print(e)
+
+    def notify(self, mes, type):
         print(mes)
         dist, value1, value2, name = mes
-        if type is "VERTEX" :
+        if type is "VERTEX":
             print(type)
             for r in range(1, self.vertexGridLayout.rowCount()):
                 for c in range(2, self.vertexGridLayout.columnCount()):
@@ -174,7 +181,7 @@ class RealTimeDialog(QWidget):
                                 (item.widget()).setText("Min = " + str(value1))
                             if (item.widget()).objectName() == (name + 'value2'):
                                 (item.widget()).setText("Max = " + str(value2))
-        else :
+        else:
             print(type)
             for r in range(1, self.edgeGridLayout.rowCount()):
                 for c in range(2, self.edgeGridLayout.columnCount()):
@@ -194,6 +201,7 @@ class RealTimeDialog(QWidget):
                                 (item.widget()).setText("Min = " + str(value1))
                             if (item.widget()).objectName() == (name + 'value2'):
                                 (item.widget()).setText("Max = " + str(value2))
+
 
 class VertexKeyIgnore(RealTimeDialog):
     ignoredFields = ['hyperedge']

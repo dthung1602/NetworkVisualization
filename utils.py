@@ -15,6 +15,7 @@ def randomColor():
 
 
 def arrayToSpectrum(arr):
+
     def g(i):
         return 255 * (i + 1) / 2.0
 
@@ -39,4 +40,5 @@ def arrayToSpectrum(arr):
     temp = sorted(uniqueValues, reverse=True)
     # RGBs_sorted = sorted(RGBs)
     dictColor = {central: color for central, color in zip(temp, RGBs)}
-    return [QBrush(QColor(dictColor[i])) for i in arr]
+    return [QColor(dictColor[i]) for i in arr]
+
