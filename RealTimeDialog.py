@@ -33,7 +33,6 @@ class BuddyLabel(QLabel):
 class RealTimeDialog(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
-        print('Real Time Dialog')
         self.canvas = canvas
         loadUi('resource/gui/RealTimeDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
@@ -102,11 +101,7 @@ class RealTimeDialog(QWidget):
 
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
-            print("check")
-            try:
-                self.openRandomDialog(self.sender().objectName())
-            except Exception as e:
-                print(e)
+            self.openRandomDialog(self.sender().objectName())
         else:
             print('unchecked')
 
@@ -117,19 +112,13 @@ class RealTimeDialog(QWidget):
         randomDialog.exec()
         randomDialog.attrBack.append(name)
         self.attr.append(randomDialog.attrBack)
-        # print("Self attr: ", self.attr)
         self.notify(randomDialog.attrBack)
-        # print(self.attr)
 
     def realTimeEvent(self):
-        try:
-            self.canvas.inRealTimeMode = True
-            self.canvas.startRealTime(self.attr)
-        except Exception as e:
-            print(e)
+        self.canvas.inRealTimeMode = True
+        self.canvas.startRealTime(self.attr)
 
     def notify(self, mes):
-        print(mes)
         dist, value1, value2, name = mes
         for r in range(1, self.vertexGridLayout.rowCount()):
             for c in range(2, self.vertexGridLayout.columnCount()):

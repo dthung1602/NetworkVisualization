@@ -24,7 +24,6 @@ SELECT_PLOT = [
 class Stat(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
-        print('graph')
         self.canvas = canvas
         loadUi('resource/gui/StatDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
@@ -55,7 +54,6 @@ class Stat(QWidget):
         self.styleOpt = plt.style.available[opt]
         i = int(self.selectPlot.currentIndex())
         self.changeGraphLayout(i)
-        print(self.styleOpt)
 
     def edgeWeightPlot(self):
         self.clearLayout(self.layout)

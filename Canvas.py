@@ -84,7 +84,7 @@ class Canvas(QWidget):
             self.lineColor = Qt.black
             self.g.es['color'] = [Qt.black] * self.g.ecount()
         elif self.backGroundImage is None:
-            self.backGroundImage = QImage('resource/gui/map.jpg')
+            self.backGroundImage = QImage('resource/gui/maptovl.png')
             self.lineColor = Qt.red
         self.resetViewRect()
 
@@ -95,6 +95,8 @@ class Canvas(QWidget):
         self.vertexDegree()
 
         vsAttributes = g.vs.attributes()
+        if 'color' not in self.g.es.attributes():
+            self.g.es['color'] = [self.lineColor for i in range(self.g.ecount())]
         if 'x' not in vsAttributes or 'y' not in vsAttributes:
             self.setGraphLayout(self.DEFAULT_GRAPH_LAYOUT, None)
         if 'cluster' not in vsAttributes:
@@ -276,48 +278,45 @@ class Canvas(QWidget):
         painter.end()
 
     def paint(self, painter):
-        try:
-            if self.viewMode == GEO_MODE:
-                painter.drawImage(self.SCREEN_RECT, self.backGroundImage, self.backgroundRect)
+        if self.viewMode == GEO_MODE:
+            painter.drawImage(self.SCREEN_RECT, self.backGroundImage, self.backgroundRect)
+        else:
+            painter.fillRect(self.SCREEN_RECT, QBrush(self.backgroundColor))
+
+        for edge in self.linesToDraw:
+            line = edge['line']
+            painter.setPen(QPen(edge['color'], 1.3, join=Qt.PenJoinStyle(0x80)))
+            if isinstance(line, QLineF):
+                painter.drawLine(line)
             else:
-                painter.fillRect(self.SCREEN_RECT, QBrush(self.backgroundColor))
+                painter.drawPath(line)
 
-            for edge in self.linesToDraw:
-                line = edge['line']
-                painter.setPen(QPen(edge['color'], 1.3, join=Qt.PenJoinStyle(0x80)))
-                if isinstance(line, QLineF):
-                    painter.drawLine(line)
-                else:
-                    painter.drawPath(line)
+        painter.setPen(QPen(self.backgroundColor, 0.5, join=Qt.PenJoinStyle(0x80)))
 
-            painter.setPen(QPen(self.backgroundColor, 0.5, join=Qt.PenJoinStyle(0x80)))
+        for v in self.pointsToDraw:
+            painter.setBrush(QBrush(v['color']))
+            painter.drawEllipse(
+                int(v['pos'].x() - self.POINT_RADIUS / 2.0),
+                int(v['pos'].y() - self.POINT_RADIUS / 2.0),
+                self.POINT_RADIUS, self.POINT_RADIUS
+            )
 
-            for v in self.pointsToDraw:
-                painter.setBrush(QBrush(v['color']))
-                painter.drawEllipse(
-                    int(v['pos'].x() - self.POINT_RADIUS / 2.0),
-                    int(v['pos'].y() - self.POINT_RADIUS / 2.0),
-                    self.POINT_RADIUS, self.POINT_RADIUS
-                )
+        painter.setPen(QPen(Qt.red, 4, join=Qt.PenJoinStyle(0x80)))
 
-            painter.setPen(QPen(Qt.red, 4, join=Qt.PenJoinStyle(0x80)))
+        for e in self.selectedLines:
+            line = e['line']
+            if isinstance(line, QLineF):
+                painter.drawLine(line)
+            else:
+                painter.drawPath(line)
 
-            for e in self.selectedLines:
-                line = e['line']
-                if isinstance(line, QLineF):
-                    painter.drawLine(line)
-                else:
-                    painter.drawPath(line)
-
-            for v in self.selectedPoints:
-                painter.setBrush(v['color'])
-                painter.drawEllipse(
-                    int(v['pos'].x() - self.SELECTED_POINT_RADIUS / 2),
-                    int(v['pos'].y() - self.SELECTED_POINT_RADIUS / 2),
-                    self.SELECTED_POINT_RADIUS, self.SELECTED_POINT_RADIUS
-                )
-        except Exception as exception:
-            print(exception)
+        for v in self.selectedPoints:
+            painter.setBrush(v['color'])
+            painter.drawEllipse(
+                int(v['pos'].x() - self.SELECTED_POINT_RADIUS / 2),
+                int(v['pos'].y() - self.SELECTED_POINT_RADIUS / 2),
+                self.SELECTED_POINT_RADIUS, self.SELECTED_POINT_RADIUS
+            )
 
     def findShortestPath(self):
         path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1],
@@ -357,9 +356,6 @@ class Canvas(QWidget):
                 vertexAttr.append(randomInput)
             else:
                 edgeAttr.append(randomInput)
-
-        print("vertex's attribute ", vertexAttr)
-        print("edge's attributes ", edgeAttr)
         thread = threading.Thread(target=self.doRealTime, args=(vertexAttr, edgeAttr, fps), daemon=True)
         self.threading = thread
         thread.start()

@@ -145,9 +145,6 @@ class Window(QMainWindow):
     def openColorDialog(self):
         color = QColorDialog.getColor()
 
-        if color.isValid():
-            print(color.name())
-
     def deleteNodeEvent(self):
         self.canvas.deleteNode = True
         self.canvas.addNode = False
@@ -248,11 +245,9 @@ class Window(QMainWindow):
         self.infoArea.addWidget(edgeInfo)
 
     def openGraphEvent(self):
-        print('Load stat dialog')
         self.statWindow.show()
 
     def openFilterDialog(self):
-        print('Load filter dialog')
         self.filterWindow.show()
 
     def openRealTimeDialog(self):
