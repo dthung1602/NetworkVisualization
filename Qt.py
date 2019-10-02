@@ -2,19 +2,18 @@
 import sys
 
 import igraph
-from PyQt5 import uic, QtCore
+from PyQt5 import uic
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from Canvas import Canvas, LIGHT_MODE, DARK_MODE
+from AddAttributesDialog import AddAttributesDialog
+from ConstraintDialog import Constraint
 from Filter import Filter
 from InfoWidget import EdgeInfoWidget, VertexInfoWidget
+from RealTimeDialog import *
 from Stat import Stat
 from WeightDialog import WeightDialog
-from ConstraintDialog import Constraint
-from AddAttributesDialog import AddAttributesDialog
-from RealTimeDialog import *
+from utils import *
 
 
 class Window(QMainWindow):
@@ -36,11 +35,9 @@ class Window(QMainWindow):
         self.constraint = Constraint(self.canvas)
         self.addAttributesDialog = AddAttributesDialog(self.canvas)
         self.realTimeDialog = RealTimeDialog(self.canvas)
-        self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.mode = Canvas.MODE_EDIT
-        self.viewMode = DARK_MODE
         self.canvas.setViewMode(DARK_MODE)
         self.bindMenuActions()
 
@@ -70,7 +67,9 @@ class Window(QMainWindow):
         # Zoom reset
         self.findChild(QAction, 'actionReset_Zoom').triggered.connect(self.canvas.zoomResetEvent)
         # View mode
-        self.switchViewModeMenuItem.triggered.connect(self.switchViewMode)
+        self.findChild(QAction, 'actionGeographical_Mode').triggered.connect(self.changeViewModeTo(GEO_MODE))
+        self.findChild(QAction, 'actionDark_Mode').triggered.connect(self.changeViewModeTo(DARK_MODE))
+        self.findChild(QAction, 'actionLight_Mode').triggered.connect(self.changeViewModeTo(LIGHT_MODE))
 
         # QMenu.Window
         # Minimize_button
@@ -106,8 +105,8 @@ class Window(QMainWindow):
         graphBtn = self.findChild(QToolButton, 'graph_btn')
         graphBtn.pressed.connect(self.openGraphEvent)
         # Real time
-        #realTimeBtn = self.findChild(QToolButton, 'realTimeBtn')
-        #realTimeBtn.pressed.connect(self.realTimeEvent)
+        # realTimeBtn = self.findChild(QToolButton, 'realTimeBtn')
+        # realTimeBtn.pressed.connect(self.realTimeEvent)
         # --- Mode ---
         # shortest path
         findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')
@@ -137,16 +136,11 @@ class Window(QMainWindow):
     def openConstraintDialog(self):
         self.constraint.exec()
 
-    def switchViewMode(self):
-        if self.viewMode == DARK_MODE:
-            self.viewMode = LIGHT_MODE
-            self.switchViewModeMenuItem.setText(DARK_MODE)
-        else:
-            self.viewMode = DARK_MODE
-            self.switchViewModeMenuItem.setText(LIGHT_MODE)
-
-        self.canvas.setViewMode(self.viewMode)
-        self.canvas.update()
+    def changeViewModeTo(self, viewMode):
+        def func():
+            self.canvas.setViewMode(viewMode)
+            self.canvas.update()
+        return func
 
     def openColorDialog(self):
         color = QColorDialog.getColor()
