@@ -106,13 +106,16 @@ class RandomDialog(QDialog):
         self.randomLayout.addWidget(self.standardDeviation)
         self.randomLayout.addWidget(self.standardDeviationEdit)
 
-        #acceptBtn = QPushButton('Generate', self)
-        #acceptBtn.setStyleSheet(self.buttonStyleSheet)
-        #self.randomLayout.addWidget(acceptBtn)
-        #self.meanEdit.self.textEdited(self.mean, self.meanEdit))
-        #acceptBtn.clicked.connect(self.textEdited(self.standardDeviation, self.standardDeviationEdit))
-        #acceptBtn.clicked.connect(self.generateNormalDistribution)
-        self.generateBtn.clicked.connect(self.generateNormalDistribution)
+        # acceptBtn = QPushButton('Generate', self)
+        # acceptBtn.setStyleSheet(self.buttonStyleSheet)
+        # self.randomLayout.addWidget(acceptBtn)
+        # self.meanEdit.self.textEdited(self.mean, self.meanEdit))
+        # acceptBtn.clicked.connect(self.textEdited(self.standardDeviation, self.standardDeviationEdit))
+        # acceptBtn.clicked.connect(self.generateNormalDistribution)
+        self.meanEdit.editingFinished.connect(self.textEdited(self.mean, self.meanEdit))
+        self.standardDeviationEdit.editingFinished.connect(
+            self.textEdited(self.standardDeviation, self.standardDeviationEdit))
+        self.generateBtn.pressed.connect(self.generateNormalDistribution)
 
     def uniformDistribution(self):
         self.clearLayout(self.randomLayout)
@@ -132,13 +135,13 @@ class RandomDialog(QDialog):
         self.randomLayout.addWidget(self.max)
         self.randomLayout.addWidget(self.maxEdit)
 
-        #acceptBtn = QPushButton('Generate', self)
-        #acceptBtn.setStyleSheet(self.buttonStyleSheet)
-        #self.randomLayout.addWidget(acceptBtn)
+        # acceptBtn = QPushButton('Generate', self)
+        # acceptBtn.setStyleSheet(self.buttonStyleSheet)
+        # self.randomLayout.addWidget(acceptBtn)
         self.minEdit.editingFinished.connect(self.textEdited(self.min, self.minEdit))
         self.maxEdit.editingFinished.connect(self.textEdited(self.max, self.maxEdit))
-        self.generateBtn.clicked.connect(self.generateUniformDistribution)
-        #acceptBtn.clicked.connect(self.generateUniformDistribution)
+        self.generateBtn.pressed.connect(self.generateUniformDistribution)
+        # acceptBtn.clicked.connect(self.generateUniformDistribution)
 
     @staticmethod
     def textEdited(label, edit):

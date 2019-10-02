@@ -154,4 +154,4 @@ class VertexKeyIgnore(RealTimeDialog):
 
 
 class EdgeKeyIgnore(RealTimeDialog):
-    ignoredFields = ['']
+    ignoredFields = ['b_delay', 't_delay', 'p_delay', 'key', 'zorder', 'edge_weight']

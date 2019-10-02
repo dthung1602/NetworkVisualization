@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>374</width>
-    <height>398</height>
+    <height>261</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <x>40</x>
      <y>90</y>
      <width>301</width>
-     <height>161</height>
+     <height>121</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="randomLayout"/>
@@ -31,7 +31,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>270</y>
+     <y>220</y>
      <width>93</width>
      <height>28</height>
     </rect>
