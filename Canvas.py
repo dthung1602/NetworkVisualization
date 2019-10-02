@@ -199,7 +199,7 @@ class Canvas(QWidget):
 
     def setEdgeColor(self):
         self.g.es['color'] = arrayToSpectrum(self.g.es['total_delay'])
-        self.update()
+
 
     def updateViewRect(self):
         viewRectWidth = self.WIDTH / self.zoom
@@ -284,7 +284,7 @@ class Canvas(QWidget):
 
             for edge in self.linesToDraw:
                 line = edge['line']
-                painter.setPen(QPen(edge['color'], 0.5, join=Qt.PenJoinStyle(0x80)))
+                painter.setPen(QPen(edge['color'], 1.3, join=Qt.PenJoinStyle(0x80)))
                 if isinstance(line, QLineF):
                     painter.drawLine(line)
                 else:
@@ -351,7 +351,7 @@ class Canvas(QWidget):
         # remember to delete daemon
         vertexAttr = []
         edgeAttr = []
-        fps = 60
+        fps = 3
         for randomInput in randomInputs:
             if randomInput[3] in self.g.vs.attributes():
                 vertexAttr.append(randomInput)
@@ -379,7 +379,7 @@ class Canvas(QWidget):
                         self.g.es[edge[3]] = [random.normal(edge[1], edge[2]) for i in range(self.g.ecount())]
                     else:
                         self.g.es[edge[3]] = [random.uniform(edge[1], edge[2]) for i in range(self.g.ecount())]
-                self.setEdgeColor()
+            self.setEdgeColor()
             time.sleep(1.0 / fps)
             self.update()
 

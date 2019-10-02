@@ -76,9 +76,6 @@ class Window(QMainWindow):
         self.findChild(QAction, 'action_Minimize').triggered.connect(self.minimizeWindow)
 
         # -------------Toolbar---------------- #
-        # thanhlong test
-        thanhlongBtn = self.findChild(QToolButton,'thanhlong')
-        thanhlongBtn.pressed.connect(self.canvas.setEdgeColor)
         # Zoom in
         zoomInBtn = self.findChild(QToolButton, 'zoom_in_btn')
         zoomInBtn.pressed.connect(self.canvas.zoomInEvent)
