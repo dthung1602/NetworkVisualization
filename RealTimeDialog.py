@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox
+from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton
 from PyQt5.uic import loadUi
 
 from Canvas import Canvas
@@ -40,6 +40,8 @@ class RealTimeDialog(QWidget):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
         self.checkBoxList = []
+        self.generateBtn = self.findChild(QPushButton, 'generate_btn')
+        #self.generateBtn.pressed.connect()
         # Vertex tab
         self.vertexGridLayout = self.findChild(QGridLayout, 'vertexGridLayout')
         self.addVertexTitle()

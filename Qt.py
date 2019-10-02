@@ -105,8 +105,8 @@ class Window(QMainWindow):
         graphBtn = self.findChild(QToolButton, 'graph_btn')
         graphBtn.pressed.connect(self.openGraphEvent)
         # Real time
-        realTimeBtn = self.findChild(QToolButton, 'realTimeBtn')
-        realTimeBtn.pressed.connect(self.realTimeEvent)
+        #realTimeBtn = self.findChild(QToolButton, 'realTimeBtn')
+        #realTimeBtn.pressed.connect(self.realTimeEvent)
         # --- Mode ---
         # shortest path
         findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')

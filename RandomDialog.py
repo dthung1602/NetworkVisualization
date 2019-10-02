@@ -131,9 +131,11 @@ class RandomDialog(QDialog):
             layout.itemAt(i).widget().deleteLater()
 
     def generateNormalDistribution(self):
+
         print("generateNormalDistribution ",self.attr)
-        mean = (float)(self.meanEdit.text())
-        stdDeviation = (float)(self.standardDeviationEdit.text())
+        mean = float(self.meanEdit.text())
+        stdDeviation = float(self.standardDeviationEdit.text())
+
         if self.type == 'EDGE':
             size = self.g.ecount()
             randomArr = np.random.normal(mean, stdDeviation, size)
@@ -148,15 +150,15 @@ class RandomDialog(QDialog):
         print('Generate Norm ')
 
     def generateUniformDistribution(self):
-        min = (float)(self.minEdit.text())
-        max = (float)(self.maxEdit.text())
+        min = float(self.minEdit.text())
+        max = float(self.maxEdit.text())
         if self.type == 'EDGE':
             size = self.g.ecount()
-            randomArr = np.random.uniform(min,max,size)
+            randomArr = np.random.uniform(min, max, size)
             self.changeEdge(self.attr, randomArr)
         else:
             size = self.g.vcount()
-            randomArr = np.random.uniform(min,max,size)
+            randomArr = np.random.uniform(min, max, size)
             self.changeVertex(self.attr, randomArr)
         self.attrBack.append("Uniform Distribution")
         self.attrBack.append(min)
