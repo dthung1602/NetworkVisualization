@@ -164,12 +164,7 @@ class RandomDialog(QDialog):
 
     def generateNormalDistribution(self):
 
-        print("generateNormalDistribution ", self.attr)
-        print(self.update)
-        mean = float(self.meanEdit.text())
-        stdDeviation = float(self.standardDeviationEdit.text())
-
-        print("generateNormalDistribution ", self.attr)
+        print("generateNormalDistribution ", self.type)
         mean = float(self.meanEdit.text())
         stdDeviation = float(self.standardDeviationEdit.text())
         if self.type == 'EDGE':

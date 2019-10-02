@@ -342,6 +342,8 @@ class Canvas(QWidget):
         # tao thread, luu thread vao self.updateThread
         # trong thread, while true -> tao random -> self.update -> sleep
         # remember to delete daemon
+        print("Start Real Time")
+        print(vertexAttr," ",edgeAttr," ",fps)
         thread = threading.Thread(target=self.doRealTime, args=(vertexAttr, edgeAttr, fps))
         self.threading = thread
         thread.start()
