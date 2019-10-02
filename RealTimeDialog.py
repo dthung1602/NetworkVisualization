@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton
+from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
 
 from Canvas import Canvas
@@ -42,6 +42,16 @@ class RealTimeDialog(QWidget):
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.generateBtn.pressed.connect(self.realTimeEvent)
+
+        # FPS
+        self.fpsSlider = self.findChild(QSlider, 'fpsSlider')
+        self.fpsSlider.setMinimum(10)
+        self.fpsSlider.setMaximum(50)
+        self.fpsSlider.setValue(30)
+        self.fpsSlider.setTickPosition(QSlider.TicksBelow)
+        self.fpsSlider.setTickInterval(5)
+        self.fpsValueLabel = self.findChild(QLabel, 'fpsLabel')
+        self.fpsSlider.valueChanged.connect(self.changeFPSValue)
         # Vertex tab
 
         self.vertexGridLayout = self.findChild(QGridLayout, 'vertexGridLayout')
@@ -74,9 +84,12 @@ class RealTimeDialog(QWidget):
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
                 self.vertexGridLayout.addWidget(secondValueLabel, count, 4)
+
                 count += 1
 
-    # def addDistSelectOptions(self, column):
+    def changeFPSValue(self):
+        fpsValue = self.fpsSlider.value()
+        self.fpsValueLabel.setText('FPS Value = ' + str(fpsValue))
 
     # self.selectDistribution.currentIndexChanged.connect(self.changeDist)
     def addEdgeKey(self):

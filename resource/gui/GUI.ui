@@ -678,28 +678,28 @@ border-image: url(&quot;resource/gui/tool/filter.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export graphs&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List the missing edge/vertex's attributes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">#graph_btn{
+      <string notr="true">QToolButton{
 background-color: transparent;
-border-image: url(&quot;resource/gui/tool/graph.png&quot;);
+border-image: url(&quot;resource/gui/tool/constraint.png&quot;);
 background: none;
 border-radius: 3px;
 background-repeat: none;
 }
-#graph_btn:hover{
+QToolButton:hover{
 background-color: #454545;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/graph.png&quot;);
+border-image: url(&quot;resource/gui/tool/constraint.png&quot;);
 }
-#graph_btn:pressed{
+QToolButton:pressed{
 background-color: #383838;
 border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/graph.png&quot;);
+border-image: url(&quot;resource/gui/tool/constraint.png&quot;);
 }</string>
      </property>
      <property name="text">
@@ -848,7 +848,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="sizePolicy">
