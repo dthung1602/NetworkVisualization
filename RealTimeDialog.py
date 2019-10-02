@@ -53,7 +53,6 @@ class RealTimeDialog(QWidget):
         self.fpsValueLabel = self.findChild(QLabel, 'fpsLabel')
         self.fpsSlider.valueChanged.connect(self.changeFPSValue)
         # Vertex tab
-
         self.vertexGridLayout = self.findChild(QGridLayout, 'vertexGridLayout')
         self.edgeGridLayout = self.findChild(QGridLayout, 'edgeGridLayout')
         self.addVertexKey()
@@ -131,13 +130,16 @@ class RealTimeDialog(QWidget):
         randomDialog.exec()
         randomDialog.attrBack.append(name)
         self.attr.append(randomDialog.attrBack)
-        print("Self attr: ", self.attr)
+        # print("Self attr: ", self.attr)
         self.notify(randomDialog.attrBack)
-        print(self.attr)
+        # print(self.attr)
 
     def realTimeEvent(self):
-        self.canvas.inRealTimeMode = True
-        self.canvas.startRealTime(self.attr)
+        try:
+            self.canvas.inRealTimeMode = True
+            self.canvas.startRealTime(self.attr)
+        except Exception as e:
+            print(e)
 
     def notify(self, mes):
         print(mes)
