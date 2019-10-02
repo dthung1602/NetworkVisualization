@@ -1,14 +1,14 @@
-from math import sqrt
+import threading
+import time
 
 import igraph
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
-from threading import Thread
-import threading
-import time
 from numpy import *
+
 from utils import *
+
 
 class Canvas(QWidget):
     HEIGHT = 500
@@ -50,6 +50,8 @@ class Canvas(QWidget):
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
         self.vertexDegree()
+
+
     def setMode(self, mode):
         self.mode = mode
         self.selectedPoints = []
@@ -62,10 +64,10 @@ class Canvas(QWidget):
     def setViewMode(self, mode):
         if mode == DARK_MODE:
             self.backgroundColor = Qt.black
-            self.lineColor = Qt.white
+            self.g.es['color'] = [Qt.white for e in range(self.g.ecount())]
         else:
             self.backgroundColor = Qt.white
-            self.lineColor = Qt.black
+            self.g.es['color'] = [Qt.black for e in range(self.g.ecount())]
 
     def setGraph(self, g):
         if isinstance(g, str):
@@ -82,6 +84,7 @@ class Canvas(QWidget):
             clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
             g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
         self.resetViewRect()
+
     def resetViewRect(self):
         g = self.g
 
@@ -156,6 +159,9 @@ class Canvas(QWidget):
     def setCentrality(self, centrality, weights):
         centrality = getattr(self.g, centrality)(weights=weights)
         self.g.vs['color'] = arrayToSpectrum(centrality)
+
+    def setEdgeColor(self):
+        self.g.es['color'] = arrayToSpectrum(self.g.es['total_delay'])
 
     def updateViewRect(self):
         size = self.size()
@@ -240,19 +246,21 @@ class Canvas(QWidget):
         painter.end()
 
     def paint(self, painter):
-        painter.setPen(QPen(self.lineColor, 0.5, join=Qt.PenJoinStyle(0x80)))
-
-        for e in self.linesToDraw:
-            line = e['line']
-            if isinstance(line, QLineF):
-                painter.drawLine(line)
-            else:
-                painter.drawPath(line)
+        try:
+            for edge in self.linesToDraw:
+                line = edge['line']
+                painter.setPen(QPen(edge['color'], 0.5, join=Qt.PenJoinStyle(0x80)))
+                if isinstance(line, QLineF):
+                    painter.drawLine(line)
+                else:
+                    painter.drawPath(line)
+        except Exception as e:
+            print(e)
 
         painter.setPen(QPen(Qt.black, 1))
 
         for v in self.pointsToDraw:
-            painter.setBrush(v['color'])
+            painter.setBrush(QBrush(v['color']))
             painter.drawEllipse(
                 v['pos'].x() - self.POINT_RADIUS / 2,
                 v['pos'].y() - self.POINT_RADIUS / 2,
@@ -315,7 +323,6 @@ class Canvas(QWidget):
         self.threading = thread
         thread.start()
 
-
     def doRealTime(self, arg):
         while self.inRealTimeMode:
             for e in arg:
@@ -324,6 +331,8 @@ class Canvas(QWidget):
                 else:
                     self.g.es[e[0]] = [random.uniform(e[2], e[3]) for v in self.g.es[e[0]]]
             time.sleep(1)
+
+            self.setEdgeColor()
             self.update()
 
     def vertexDegree(self):
