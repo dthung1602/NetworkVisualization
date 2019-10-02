@@ -29,6 +29,7 @@ class BuddyLabel(QLabel):
         self.buddy.show()
         self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click again
 
+
 class RealTimeDialog(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
@@ -106,7 +107,7 @@ class RealTimeDialog(QWidget):
 
     def realTimeEvent(self):
         self.canvas.inRealTimeMode = True
-        self.canvas.startRealTime(None)
+        self.canvas.startRealTime(self.attr)
 
     def notify(self, mes):
         print(mes)

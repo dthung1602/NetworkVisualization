@@ -59,7 +59,6 @@ class RandomDialog(QDialog):
         self.randomArr = []
         self.update = True
 
-
     def changeDist(self, opt):
         [
             self.normalDistribution,
