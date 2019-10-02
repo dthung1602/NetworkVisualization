@@ -1,17 +1,28 @@
-from math import sqrt
+import threading
+import time
 
 import igraph
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
-from threading import Thread
-import threading
-import time
 from numpy import *
+from math import isnan
 from utils import *
 
+
 class Canvas(QWidget):
-    HEIGHT = 500
+    WIDTH = 1120
+    HEIGHT = 760
+
+    SCREEN_RECT_LINE = [
+        QLineF(0, 0, WIDTH, 0),
+        QLineF(WIDTH, 0, WIDTH, HEIGHT),
+        QLineF(WIDTH, HEIGHT, 0, HEIGHT),
+        QLineF(0, HEIGHT, 0, 0)
+    ]
+
+    SCREEN_RECT = QRectF(0, 0, WIDTH, HEIGHT)
+
     POINT_RADIUS = 8
     SELECTED_POINT_RADIUS = 12
     LINE_DISTANCE = 2
@@ -28,28 +39,31 @@ class Canvas(QWidget):
 
     initModeAction = {
         MODE_FIND_BOTTLE_NECK: 'findBottleNeck'
-
     }
 
     def __init__(self, gui):
         super().__init__(None)
         self.gui = gui
+
         self.mode = self.MODE_EDIT
+        self.viewMode = DARK_MODE
 
         self.g = self.clusterToColor = None
         self.addNode = self.deleteNode = self.addLine = self.deleteLine = None
         self.filterData = None
 
-        self.ratio = self.center = self.zoom = self.viewRect = self.pointsToDraw = self.linesToDraw = None
+        self.center = self.zoom = self.viewRect = self.backgroundRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
-        self.backgroundColor = self.lineColor = None
+        self.backGroundImage = self.backgroundColor = self.lineColor = None
         self.shortestPathWeight = None
         self.threading = None
         self.inRealTimeMode = None
+
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
         self.vertexDegree()
+
     def setMode(self, mode):
         self.mode = mode
         self.selectedPoints = []
@@ -59,13 +73,19 @@ class Canvas(QWidget):
             getattr(self, initAction)()
         self.update()
 
-    def setViewMode(self, mode):
-        if mode == DARK_MODE:
+    def setViewMode(self, viewMode):
+        self.viewMode = viewMode
+        if viewMode == DARK_MODE:
             self.backgroundColor = Qt.black
             self.lineColor = Qt.white
-        else:
+        elif viewMode == LIGHT_MODE:
             self.backgroundColor = Qt.white
             self.lineColor = Qt.black
+        elif self.backGroundImage is None:
+            self.backGroundImage = QImage('resource/gui/map.jpg')
+            self.lineColor = Qt.red
+
+        self.resetViewRect()
 
     def setGraph(self, g):
         if isinstance(g, str):
@@ -82,28 +102,47 @@ class Canvas(QWidget):
             clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
             g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
         self.resetViewRect()
+
+    def geolocationToXY(self, longitude, latitude):
+        x = (longitude + 180) * (self.WIDTH / 360)
+        latRad = radians(latitude)
+        mercN = log(tan((pi / 4) + (latRad / 2)))
+        y = (self.HEIGHT / 2) - (self.WIDTH * mercN / (2 * pi))
+        return x, y
+
     def resetViewRect(self):
         g = self.g
 
-        # use translation to convert negative coordinates to non-negative
-        mx = min(g.vs['x']) - 1
-        my = min(g.vs['y']) - 1
-        g.vs['x'] = [x - mx for x in g.vs['x']]
-        g.vs['y'] = [y - my for y in g.vs['y']]
+        if self.viewMode == GEO_MODE:
+            for v in g.vs:
+                longitude = v['Longitude']
+                latitude = v['Latitude']
+                if isnan(longitude) or isnan(latitude):
+                    v['x'] = self.WIDTH / 2
+                    v['y'] = self.HEIGHT / 2 + 150
+                else:
+                    x, y = self.geolocationToXY(longitude, latitude)
+                    v['x'] = x
+                    v['y'] = y + 150
+        else:
+            # use translation to convert negative coordinates to non-negative
+            mx = min(g.vs['x']) - 1
+            my = min(g.vs['y']) - 1
+            g.vs['x'] = [x - mx for x in g.vs['x']]
+            g.vs['y'] = [y - my for y in g.vs['y']]
 
-        mx = max(g.vs['x'])
-        my = max(g.vs['y'])
-        self.ratio = mx / my
-        size = self.size()
+            mx = max(g.vs['x'])
+            my = max(g.vs['y'])
+            scale = self.WIDTH / mx if mx / my > self.WIDTH / self.HEIGHT else self.HEIGHT / my
 
-        # convert init coordinates to coordinates on window
-        g.vs['x'] = [x / mx * size.width() for x in g.vs['x']]
-        g.vs['y'] = [y / my * size.height() for y in g.vs['y']]
+            # convert init coordinates to coordinates on window
+            g.vs['x'] = [x * scale for x in g.vs['x']]
+            g.vs['y'] = [y * scale for y in g.vs['y']]
 
         # Init
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
-        self.center = QPointF(size.width() / 2, size.height() / 2)
+        self.center = QPointF(self.WIDTH / 2, self.HEIGHT / 2)
         self.zoom = 1
         self.viewRect = self.pointsToDraw = self.linesToDraw = None
         self.updateViewRect()
@@ -158,30 +197,24 @@ class Canvas(QWidget):
         self.g.vs['color'] = arrayToSpectrum(centrality)
 
     def updateViewRect(self):
-        size = self.size()
-        w = size.width()
-        h = size.height()
-        viewRectWidth = w / self.zoom
-        viewRectHeight = h / self.zoom
+        viewRectWidth = self.WIDTH / self.zoom
+        viewRectHeight = self.HEIGHT / self.zoom
         viewRectX = self.center.x() - viewRectWidth / 2
         viewRectY = self.center.y() - viewRectHeight / 2
         self.viewRect = QRectF(viewRectX, viewRectY, viewRectWidth, viewRectHeight)
 
-        viewRectLines = [
-            QLineF(0, 0, w, 0),
-            QLineF(w, 0, w, h),
-            QLineF(w, h, 0, h),
-            QLineF(0, h, 0, 0)
-        ]
-        screenRect = QRectF(0, 0, w, h)
+        if self.backGroundImage:
+            scale = self.backGroundImage.width() / self.WIDTH
+            self.backgroundRect = QRectF(viewRectX * scale, viewRectY * scale,
+                                         viewRectWidth * scale, viewRectHeight * scale)
 
         def intersectWithViewRect(line):
             if isinstance(line, QLineF):
-                return any([line.intersect(vrl, QPointF()) == 1 for vrl in viewRectLines])
-            return line.intersects(screenRect)
+                return any([line.intersect(vrl, QPointF()) == 1 for vrl in self.SCREEN_RECT_LINE])
+            return line.intersects(self.SCREEN_RECT)
 
         def inScreen(edge):
-            return screenRect.contains(self.g.vs[edge.source]['pos']) or screenRect.contains(
+            return self.SCREEN_RECT.contains(self.g.vs[edge.source]['pos']) or self.SCREEN_RECT.contains(
                 self.g.vs[edge.target]['pos'])
 
         self.g.vs['pos'] = [QPointF(
@@ -232,14 +265,17 @@ class Canvas(QWidget):
 
     def paintEvent(self, event):
         self.updateViewRect()
-
         painter = QPainter()
         painter.begin(self)
-        painter.fillRect(event.rect(), QBrush(self.backgroundColor))
         self.paint(painter)
         painter.end()
 
     def paint(self, painter):
+        if self.viewMode == GEO_MODE:
+            painter.drawImage(self.SCREEN_RECT, self.backGroundImage, self.backgroundRect)
+        else:
+            painter.fillRect(self.SCREEN_RECT, QBrush(self.backgroundColor))
+
         painter.setPen(QPen(self.lineColor, 0.5, join=Qt.PenJoinStyle(0x80)))
 
         for e in self.linesToDraw:
@@ -254,8 +290,8 @@ class Canvas(QWidget):
         for v in self.pointsToDraw:
             painter.setBrush(v['color'])
             painter.drawEllipse(
-                v['pos'].x() - self.POINT_RADIUS / 2,
-                v['pos'].y() - self.POINT_RADIUS / 2,
+                int(v['pos'].x() - self.POINT_RADIUS / 2.0),
+                int(v['pos'].y() - self.POINT_RADIUS / 2.0),
                 self.POINT_RADIUS, self.POINT_RADIUS
             )
 
@@ -271,18 +307,15 @@ class Canvas(QWidget):
         for v in self.selectedPoints:
             painter.setBrush(v['color'])
             painter.drawEllipse(
-                v['pos'].x() - self.SELECTED_POINT_RADIUS / 2,
-                v['pos'].y() - self.SELECTED_POINT_RADIUS / 2,
+                int(v['pos'].x() - self.SELECTED_POINT_RADIUS / 2),
+                int(v['pos'].y() - self.SELECTED_POINT_RADIUS / 2),
                 self.SELECTED_POINT_RADIUS, self.SELECTED_POINT_RADIUS
             )
 
     def findShortestPath(self):
-
-        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1], self.shortestPathWeight,
-                                         output='epath')
-        if not path[0]:
-            print("Not connected")
-        else:
+        path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1],
+                                         self.shortestPathWeight, output='epath')
+        if path[0]:
             self.selectedLines = [self.g.es[i] for i in path[0]]
             self.selectedPoints = [self.g.vs[e.source] for e in self.selectedLines] + [self.selectedPoints[1]]
 
@@ -328,7 +361,7 @@ class Canvas(QWidget):
                         self.g.es[edge[3]] = [random.normal(edge[1], edge[2]) for i in self.g.ecount()]
                     else:
                         self.g.es[edge[3]] = [random.uniform(edge[1], edge[2]) for i in self.g.ecount()]
-            time.sleep(1.0/fps)
+            time.sleep(1.0 / fps)
             self.update()
 
     def vertexDegree(self):
@@ -346,7 +379,7 @@ class Canvas(QWidget):
 
     def zoomResetEvent(self):
         self.zoom = 1
-        self.center = QPointF(self.size().width() / 2, self.size().height() / 2)
+        self.center = QPointF(self.WIDTH / 2, self.HEIGHT / 2)
         self.update()
 
     def wheelEvent(self, event):
@@ -476,6 +509,3 @@ class Canvas(QWidget):
 
     def mouseReleaseEvent(self, event):
         self.backgroundDragging = self.pointDragging = None
-
-    def sizeHint(self):
-        return QSize(self.HEIGHT * self.ratio, self.HEIGHT)
