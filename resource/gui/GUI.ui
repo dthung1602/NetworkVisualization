@@ -36,6 +36,9 @@
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
+     <item>
+      <widget class="QWidget" name="widget_2" native="true"/>
+     </item>
     </layout>
    </widget>
    <widget class="Line" name="line_2">
@@ -756,13 +759,11 @@ border-image: url(&quot;resource/gui/tool/add-attribute.png&quot;);
       </size>
      </property>
     </widget>
-
     <widget class="QToolButton" name="real_time_btn">
      <property name="geometry">
       <rect>
        <x>481</x>
        <y>6</y>
-
        <width>32</width>
        <height>32</height>
       </rect>
@@ -774,7 +775,6 @@ border-image: url(&quot;resource/gui/tool/add-attribute.png&quot;);
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
-
       <string notr="true">QToolButton{
 background-color: transparent;
 border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
@@ -851,7 +851,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -884,10 +884,18 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <widget class="QMenu" name="menuView_Mode">
+     <property name="title">
+      <string>View Mode</string>
+     </property>
+     <addaction name="actionLight_Mode"/>
+     <addaction name="actionDark_Mode"/>
+     <addaction name="actionGeographical_Mode"/>
+    </widget>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="actionReset_Zoom"/>
-    <addaction name="actionView_Mode"/>
+    <addaction name="menuView_Mode"/>
    </widget>
    <widget class="QMenu" name="menu_Tools">
     <property name="title">
@@ -1008,6 +1016,21 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
   <action name="actionView_Mode">
    <property name="text">
     <string>Light mode</string>
+   </property>
+  </action>
+  <action name="actionLight_Mode">
+   <property name="text">
+    <string>Light Mode</string>
+   </property>
+  </action>
+  <action name="actionDark_Mode">
+   <property name="text">
+    <string>Dark Mode</string>
+   </property>
+  </action>
+  <action name="actionGeographical_Mode">
+   <property name="text">
+    <string>Geographical Mode</string>
    </property>
   </action>
  </widget>
