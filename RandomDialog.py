@@ -138,15 +138,18 @@ class RandomDialog(QDialog):
         print(self.update)
         mean = float(self.meanEdit.text())
         stdDeviation = float(self.standardDeviationEdit.text())
+        print("generateNormalDistribution ", self.attr)
+        mean = float(self.meanEdit.text())
+        stdDeviation = float(self.standardDeviationEdit.text())
         if self.type == 'EDGE':
-            size = self.g.ecount()
-            self.randomArr = np.random.normal(mean, stdDeviation, size)
             if self.update:
+                size = self.g.ecount()
+                self.randomArr = np.random.normal(mean, stdDeviation, size)
                 self.changeEdge(self.attr, self.randomArr)
         else:
-            size = self.g.vcount()
-            self.randomArr = np.random.normal(mean, stdDeviation, size)
             if self.update:
+                size = self.g.vcount()
+                self.randomArr = np.random.normal(mean, stdDeviation, size)
                 self.changeVertex(self.attr, self.randomArr)
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(mean)
@@ -157,14 +160,14 @@ class RandomDialog(QDialog):
         minValue = float(self.minEdit.text())
         maxValue = float(self.maxEdit.text())
         if self.type == 'EDGE':
-            size = self.g.ecount()
-            self.randomArr = np.random.uniform(minValue, maxValue, size)
             if self.update:
+                size = self.g.ecount()
+                self.randomArr = np.random.uniform(minValue, maxValue, size)
                 self.changeEdge(self.attr, self.randomArr)
         else:
-            size = self.g.vcount()
-            self.randomArr = np.random.uniform(minValue, maxValue, size)
             if self.update:
+                size = self.g.vcount()
+                self.randomArr = np.random.uniform(minValue, maxValue, size)
                 self.changeVertex(self.attr, self.randomArr)
         self.attrBack.append("Uniform Distribution")
         self.attrBack.append(minValue)

@@ -104,6 +104,9 @@ class Window(QMainWindow):
         # Generate graph
         graphBtn = self.findChild(QToolButton, 'graph_btn')
         graphBtn.pressed.connect(self.openGraphEvent)
+        # Real time
+        #realTimeBtn = self.findChild(QToolButton, 'realTimeBtn')
+        #realTimeBtn.pressed.connect(self.realTimeEvent)
         # --- Mode ---
         # shortest path
         findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')
@@ -192,6 +195,10 @@ class Window(QMainWindow):
             self.canvas.paint(painter)
             painter.end()
             img.save(fileName)
+
+    def realTimeEvent(self):
+        self.canvas.inRealTimeMode = True
+        self.canvas.startRealTime(None)
 
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
