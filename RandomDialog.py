@@ -132,7 +132,7 @@ class RandomDialog(QDialog):
 
     def generateNormalDistribution(self):
 
-        print("generateNormalDistribution ",self.attr)
+        print("generateNormalDistribution ", self.attr)
         mean = float(self.meanEdit.text())
         stdDeviation = float(self.standardDeviationEdit.text())
 

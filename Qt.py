@@ -196,10 +196,6 @@ class Window(QMainWindow):
             painter.end()
             img.save(fileName)
 
-    def realTimeEvent(self):
-        self.canvas.inRealTimeMode = True
-        self.canvas.startRealTime(None)
-
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
             # Minimize window

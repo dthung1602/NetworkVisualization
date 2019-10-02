@@ -304,26 +304,31 @@ class Canvas(QWidget):
                 self.selectedPoints.append(self.g.vs[e.source])
         self.update()
 
-    def startRealTime(self, arguments):
-
+    def startRealTime(self, vertexAttr, edgeAttr, fps):
         # neu co thread cu, stop thread cu, tao thread moi
         # tao thread, luu thread vao self.updateThread
         # trong thread, while true -> tao random -> self.update -> sleep
-        arguments = [['b_delay', 'normal', 2, 0.2], ['t_delay', 'normal', 1, 0.15]]
         # remember to delete daemon
-        thread = threading.Thread(target=self.doRealTime, args=(arguments,), daemon=True)
+        thread = threading.Thread(target=self.doRealTime, args=(vertexAttr, edgeAttr, fps))
         self.threading = thread
         thread.start()
 
-
-    def doRealTime(self, arg):
+    def doRealTime(self, vertexAttr, edgeAttr, fps):
         while self.inRealTimeMode:
-            for e in arg:
-                if e[1] == "normal":
-                    self.g.es[e[0]] = [random.normal(e[2], e[3]) for v in self.g.es[e[0]]]
-                else:
-                    self.g.es[e[0]] = [random.uniform(e[2], e[3]) for v in self.g.es[e[0]]]
-            time.sleep(1)
+            if len(vertexAttr) > 0:
+                for v in vertexAttr:
+                    if v[0] == "Normal Distribution":
+                        self.g.vs[v[3]] = [random.normal(v[1], v[2]) for i in self.g.vcount()]
+                    else:
+                        self.g.vs[v[3]] = [random.uniform(v[1], v[2]) for i in self.g.vcount()]
+
+            if len(edgeAttr) > 0:
+                for edge in edgeAttr:
+                    if edge[0] == "Normal Distribution":
+                        self.g.es[edge[3]] = [random.normal(edge[1], edge[2]) for i in self.g.ecount()]
+                    else:
+                        self.g.es[edge[3]] = [random.uniform(edge[1], edge[2]) for i in self.g.ecount()]
+            time.sleep(1.0/fps)
             self.update()
 
     def vertexDegree(self):
