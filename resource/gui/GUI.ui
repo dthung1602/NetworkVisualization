@@ -756,11 +756,13 @@ border-image: url(&quot;resource/gui/tool/add-attribute.png&quot;);
       </size>
      </property>
     </widget>
+
     <widget class="QToolButton" name="real_time_btn">
      <property name="geometry">
       <rect>
        <x>481</x>
        <y>6</y>
+
        <width>32</width>
        <height>32</height>
       </rect>
@@ -772,13 +774,17 @@ border-image: url(&quot;resource/gui/tool/add-attribute.png&quot;);
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
+
       <string notr="true">QToolButton{
 background-color: transparent;
 border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
+
 background: none;
 border-radius: 3px;
 background-repeat: none;
 }
+
+
 QToolButton:hover{
 background-color: #454545;
 border-radius: 3px;
@@ -788,6 +794,7 @@ QToolButton:pressed{
 background-color: #383838;
 border-radius: 3px;
 border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
+
 }</string>
      </property>
      <property name="text">
@@ -844,7 +851,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="sizePolicy">
