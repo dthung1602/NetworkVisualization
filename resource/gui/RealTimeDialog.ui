@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>354</width>
-    <height>484</height>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,11 +19,11 @@
      <x>0</x>
      <y>0</y>
      <width>361</width>
-     <height>571</height>
+     <height>431</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="vertexTab">
     <attribute name="title">
@@ -40,25 +40,56 @@
      </property>
      <layout class="QGridLayout" name="vertexGridLayout"/>
     </widget>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>420</y>
-       <width>93</width>
-       <height>28</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Generate</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="edgeTab">
     <attribute name="title">
      <string>Edge</string>
     </attribute>
    </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>FPS</string>
+    </attribute>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>80</y>
+       <width>281</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>40</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Change the random interval:</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="generate_btn">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>440</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Generate</string>
+   </property>
   </widget>
  </widget>
  <resources/>

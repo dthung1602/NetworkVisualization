@@ -55,6 +55,11 @@ class RandomDialog(QDialog):
                                      "padding: 2px; color: rgb(220,220,220); border-radius: 5px;}"
                                      "QLabel:hover{background-color: #242424;}")
         self.attrBack = []
+
+        self.randomArr = []
+        self.update = True
+
+
     def changeDist(self, opt):
         [
             self.normalDistribution,
@@ -133,36 +138,45 @@ class RandomDialog(QDialog):
     def generateNormalDistribution(self):
 
         print("generateNormalDistribution ", self.attr)
+        print(self.update)
         mean = float(self.meanEdit.text())
         stdDeviation = float(self.standardDeviationEdit.text())
 
+        print("generateNormalDistribution ", self.attr)
+        mean = float(self.meanEdit.text())
+        stdDeviation = float(self.standardDeviationEdit.text())
         if self.type == 'EDGE':
-            size = self.g.ecount()
-            randomArr = np.random.normal(mean, stdDeviation, size)
-            self.changeEdge(self.attr, randomArr)
+            if self.update:
+                size = self.g.ecount()
+                self.randomArr = np.random.normal(mean, stdDeviation, size)
+                self.changeEdge(self.attr, self.randomArr)
         else:
-            size = self.g.vcount()
-            randomArr = np.random.normal(mean, stdDeviation, size)
-            self.changeVertex(self.attr,randomArr)
+            if self.update:
+                size = self.g.vcount()
+                self.randomArr = np.random.normal(mean, stdDeviation, size)
+                self.changeVertex(self.attr, self.randomArr)
+
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(mean)
         self.attrBack.append(stdDeviation)
         print('Generate Norm ')
 
     def generateUniformDistribution(self):
-        min = float(self.minEdit.text())
-        max = float(self.maxEdit.text())
+        minValue = float(self.minEdit.text())
+        maxValue = float(self.maxEdit.text())
         if self.type == 'EDGE':
-            size = self.g.ecount()
-            randomArr = np.random.uniform(min, max, size)
-            self.changeEdge(self.attr, randomArr)
+            if self.update:
+                size = self.g.ecount()
+                self.randomArr = np.random.uniform(minValue, maxValue, size)
+                self.changeEdge(self.attr, self.randomArr)
         else:
-            size = self.g.vcount()
-            randomArr = np.random.uniform(min, max, size)
-            self.changeVertex(self.attr, randomArr)
+            if self.update:
+                size = self.g.vcount()
+                self.randomArr = np.random.uniform(minValue, maxValue, size)
+                self.changeVertex(self.attr, self.randomArr)
         self.attrBack.append("Uniform Distribution")
-        self.attrBack.append(min)
-        self.attrBack.append(max)
+        self.attrBack.append(minValue)
+        self.attrBack.append(maxValue)
 
     def changeEdge(self, attributeName, randomArr):
         count = 0
@@ -175,5 +189,6 @@ class RandomDialog(QDialog):
         for i in self.g.vs:
             i[attributeName] = randomArr[count]
             count = count + 1
+
     def getAttr(self):
         return self.attrBack

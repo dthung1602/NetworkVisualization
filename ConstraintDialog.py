@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QDialog, QComboBox, QLabel, QGridLayout, QPushButton
 from PyQt5.uic import loadUi
 from Canvas import Canvas
 from RandomDialog import RandomDialog
+from RenameDialog import RenameDialog
 
 
 class Constraint(QDialog):
@@ -70,17 +71,17 @@ class Constraint(QDialog):
             for i in edgeMissing:
                 label = QLabel(i)
                 self.grid.addWidget(label, count, 0)
-                buttonRandom = QPushButton('RN', self)
+                buttonRandom = QPushButton('Rename', self)
                 buttonRandom.setToolTip('This is rename dialog')
                 self.grid.addWidget(buttonRandom, count, 1)
-                buttonRandom.clicked.connect(self.openRenameDialog)
-                buttonRandom = QPushButton('RD', self)
+                buttonRandom.clicked.connect(self.openRenameDialog(i))
+                buttonRandom = QPushButton('Random', self)
                 buttonRandom.setToolTip('This is random dialog')
                 self.grid.addWidget(buttonRandom, count, 2)
                 buttonRandom.clicked.connect(self.openRandomDialog)
                 buttonRandom.setObjectName(i)
-                setattr(buttonRandom,'type','EDGE')
-                print(getattr(buttonRandom,"type"))
+                setattr(buttonRandom, 'type', 'EDGE')
+                print(getattr(buttonRandom, "type"))
                 count = count + 1
         count = 1
         if len(vertexMissing) > 0:
@@ -92,9 +93,13 @@ class Constraint(QDialog):
         print("Missing requirement attributes. Please choose input method")
 
     def openRandomDialog(self):
-        self.randomDialog = RandomDialog(self.canvas,getattr(self.sender(),"type"))
+        randomDialog = RandomDialog(self.canvas, getattr(self.sender(), "type"))
         self.setObjectName(self.sender().objectName())
-        self.randomDialog.exec()
+        randomDialog.exec()
 
-    def openRenameDialog(self):
-        print('REname')
+    def openRenameDialog(self, label):
+        def func():
+            renameDialog = RenameDialog(self.canvas, label)
+            renameDialog.exec()
+
+        return func

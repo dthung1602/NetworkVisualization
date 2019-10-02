@@ -38,7 +38,8 @@ class RealTimeDialog(QWidget):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
         self.checkBoxList = []
-        self.generateBtn = self.findChild(QPushButton, 'pushButton')
+        self.attr = []
+        self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.generateBtn.pressed.connect(self.realTimeEvent)
         # Vertex tab
         self.vertexGridLayout = self.findChild(QGridLayout, 'vertexGridLayout')
@@ -61,7 +62,6 @@ class RealTimeDialog(QWidget):
         for key in self.canvas.g.vs.attributes():
             value = self.canvas.g.vs[0][key]
             keyLabel = QLabel(key)
-            name = ""
             if isinstance(value, float) and key not in VertexKeyIgnore.ignoredFields:
                 self.vertexGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
@@ -77,7 +77,6 @@ class RealTimeDialog(QWidget):
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
                 self.vertexGridLayout.addWidget(secondValueLabel, count, 4)
-
                 count += 1
 
     # def addDistSelectOptions(self, column):
@@ -95,11 +94,15 @@ class RealTimeDialog(QWidget):
             print('unchecked')
 
     def openRandomDialog(self, name):
-        self.randomDialog = RandomDialog(self.canvas, "Vertex")
+        randomDialog = RandomDialog(self.canvas, "Vertex")
         self.setObjectName(name)
-        self.randomDialog.exec()
-        self.randomDialog.attrBack.append(name)
-        self.notify(self.randomDialog.attrBack)
+        setattr(randomDialog, "update", False)
+        randomDialog.exec()
+        randomDialog.attrBack.append(name)
+        self.attr.append(randomDialog.attrBack)
+        print("Self attr: ", self.attr)
+        self.notify(randomDialog.attrBack)
+        print(self.attr)
 
     def realTimeEvent(self):
         self.canvas.inRealTimeMode = True
@@ -107,28 +110,25 @@ class RealTimeDialog(QWidget):
 
     def notify(self, mes):
         print(mes)
-        name = mes.pop()
-        value2 = mes.pop()
-        value1 = mes.pop()
-        dist = mes.pop()
+        dist, value1, value2, name = mes
         for r in range(1, self.vertexGridLayout.rowCount()):
             for c in range(2, self.vertexGridLayout.columnCount()):
                 item = self.vertexGridLayout.itemAtPosition(r, c)
-                if not item == None:
+                if item is not None:
                     if dist == "Normal Distribution":
                         if (item.widget()).objectName() == (name + 'dist'):
                             (item.widget()).setText(dist)
                         if (item.widget()).objectName() == (name + 'value1'):
-                            (item.widget()).setText("Mean = " + (str)(value1))
+                            (item.widget()).setText("Mean = " + str(value1))
                         if (item.widget()).objectName() == (name + 'value2'):
-                            (item.widget()).setText("Std = " + (str)(value2))
+                            (item.widget()).setText("Std = " + str(value2))
                     else:
                         if (item.widget()).objectName() == (name + 'dist'):
                             (item.widget()).setText(dist)
                         if (item.widget()).objectName() == (name + 'value1'):
-                            (item.widget()).setText("Min = " + (str)(value1))
+                            (item.widget()).setText("Min = " + str(value1))
                         if (item.widget()).objectName() == (name + 'value2'):
-                            (item.widget()).setText("Max = " + (str)(value2))
+                            (item.widget()).setText("Max = " + str(value2))
 
 
 class VertexKeyIgnore(RealTimeDialog):
