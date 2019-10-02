@@ -31,7 +31,6 @@ class BuddyLabel(QLabel):
 
 
 class RealTimeDialog(QWidget):
-
     def __init__(self, canvas: Canvas):
         super().__init__()
         print('Real Time Dialog')
@@ -42,8 +41,9 @@ class RealTimeDialog(QWidget):
         self.checkBoxList = []
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
-        # self.generateBtn.pressed.connect()
-        # Vertex tab / Edge tab
+        self.generateBtn.pressed.connect(self.realTimeEvent)
+        # Vertex tab
+
         self.vertexGridLayout = self.findChild(QGridLayout, 'vertexGridLayout')
         self.edgeGridLayout = self.findChild(QGridLayout, 'edgeGridLayout')
         self.addVertexKey()
@@ -121,6 +121,10 @@ class RealTimeDialog(QWidget):
         print("Self attr: ", self.attr)
         self.notify(randomDialog.attrBack)
         print(self.attr)
+
+    def realTimeEvent(self):
+        self.canvas.inRealTimeMode = True
+        self.canvas.startRealTime(self.attr)
 
     def notify(self, mes):
         print(mes)
