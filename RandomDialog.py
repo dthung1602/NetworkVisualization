@@ -55,6 +55,7 @@ class RandomDialog(QDialog):
                                      "padding: 2px; color: rgb(220,220,220); border-radius: 5px;}"
                                      "QLabel:hover{background-color: #242424;}")
         self.attrBack = []
+
     def changeDist(self, opt):
         [
             self.normalDistribution,
@@ -132,7 +133,7 @@ class RandomDialog(QDialog):
 
     def generateNormalDistribution(self):
 
-        print("generateNormalDistribution ",self.attr)
+        print("generateNormalDistribution ", self.attr)
         mean = float(self.meanEdit.text())
         stdDeviation = float(self.standardDeviationEdit.text())
 
@@ -143,7 +144,7 @@ class RandomDialog(QDialog):
         else:
             size = self.g.vcount()
             randomArr = np.random.normal(mean, stdDeviation, size)
-            self.changeVertex(self.attr,randomArr)
+            self.changeVertex(self.attr, randomArr)
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(mean)
         self.attrBack.append(stdDeviation)
@@ -175,5 +176,6 @@ class RandomDialog(QDialog):
         for i in self.g.vs:
             i[attributeName] = randomArr[count]
             count = count + 1
+
     def getAttr(self):
         return self.attrBack
