@@ -14,6 +14,7 @@ from Stat import Stat
 from WeightDialog import WeightDialog
 from ConstraintDialog import Constraint
 from AddAttributesDialog import AddAttributesDialog
+from RealTimeDialog import *
 
 
 class Window(QMainWindow):
@@ -31,14 +32,17 @@ class Window(QMainWindow):
         self.statWindow = Stat(self.canvas)
         self.mainLayout.addWidget(self.canvas)
         self.weightDialog = WeightDialog(self.canvas)
-        self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
         self.constraint = Constraint(self.canvas)
         self.addAttributesDialog = AddAttributesDialog(self.canvas)
+        self.realTimeDialog = RealTimeDialog(self.canvas)
+        self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
+
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.mode = Canvas.MODE_EDIT
         self.viewMode = DARK_MODE
         self.canvas.setViewMode(DARK_MODE)
         self.bindMenuActions()
+
     def bindMenuActions(self):
         # -------------- Menu ----------------- #
         # Open_button
@@ -122,12 +126,16 @@ class Window(QMainWindow):
         # Add Attributes Dialog
         addAttributeBtn = self.findChild(QToolButton, 'add_attribute_btn')
         addAttributeBtn.pressed.connect(self.openAddAttributesDialog)
+        # Real Time Dialog
+        realTimeBtn = self.findChild(QToolButton, 'real_time_btn')
+        realTimeBtn.pressed.connect(self.openRealTimeDialog)
 
     def openAddAttributesDialog(self):
         self.addAttributesDialog.exec()
 
     def openConstraintDialog(self):
         self.constraint.exec()
+
     def switchViewMode(self):
         if self.viewMode == DARK_MODE:
             self.viewMode = LIGHT_MODE
@@ -255,6 +263,10 @@ class Window(QMainWindow):
     def openFilterDialog(self):
         print('Load filter dialog')
         self.filterWindow.show()
+
+    def openRealTimeDialog(self):
+        self.realTimeDialog.show()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
