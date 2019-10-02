@@ -14,6 +14,8 @@ from Stat import Stat
 from WeightDialog import WeightDialog
 from ConstraintDialog import Constraint
 from AddAttributesDialog import AddAttributesDialog
+from RealTimeDialog import *
+
 
 class Window(QMainWindow):
     def __init__(self):
@@ -31,8 +33,10 @@ class Window(QMainWindow):
         self.mainLayout.addWidget(self.canvas)
         self.weightDialog = WeightDialog(self.canvas)
         self.constraint = Constraint(self.canvas)
-        self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
         self.addAttributesDialog = AddAttributesDialog(self.canvas)
+        self.realTimeDialog = RealTimeDialog(self.canvas)
+        self.switchViewModeMenuItem = self.findChild(QAction, 'actionView_Mode')
+
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.mode = Canvas.MODE_EDIT
         self.viewMode = DARK_MODE
@@ -100,6 +104,9 @@ class Window(QMainWindow):
         # Generate graph
         graphBtn = self.findChild(QToolButton, 'graph_btn')
         graphBtn.pressed.connect(self.openGraphEvent)
+        # Real time
+        realTimeBtn = self.findChild(QToolButton, 'realTimeBtn')
+        realTimeBtn.pressed.connect(self.realTimeEvent)
         # --- Mode ---
         # shortest path
         findShortestPathBtn = self.findChild(QToolButton, 'findShortestPathBtn')
@@ -119,6 +126,9 @@ class Window(QMainWindow):
         # Add Attributes Dialog
         addAttributeBtn = self.findChild(QToolButton, 'add_attribute_btn')
         addAttributeBtn.pressed.connect(self.openAddAttributesDialog)
+        # Real Time Dialog
+        realTimeBtn = self.findChild(QToolButton, 'real_time_btn')
+        realTimeBtn.pressed.connect(self.openRealTimeDialog)
 
     def openAddAttributesDialog(self):
         self.addAttributesDialog.exec()
@@ -186,6 +196,10 @@ class Window(QMainWindow):
             painter.end()
             img.save(fileName)
 
+    def realTimeEvent(self):
+        self.canvas.inRealTimeMode = True
+        self.canvas.startRealTime(None)
+
     def minimizeWindow(self):
         if self.windowState() == Qt.WindowNoState or self.windowState() == Qt.WindowMaximized:
             # Minimize window
@@ -249,6 +263,9 @@ class Window(QMainWindow):
     def openFilterDialog(self):
         print('Load filter dialog')
         self.filterWindow.show()
+
+    def openRealTimeDialog(self):
+        self.realTimeDialog.show()
 
 
 if __name__ == "__main__":

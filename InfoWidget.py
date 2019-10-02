@@ -55,10 +55,13 @@ class InfoWidget(QWidget):
                                     "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
                                     "border-radius: 5px; }"
                                     "QLabel:hover{background-color: #242424;}")
+
             valueLabelEdit = QLineEdit()
+
             valueLabel = BuddyLabel(valueLabelEdit)
             self.valueLabelItems.append(valueLabel)
             self.valueLabelEditItems.append(valueLabelEdit)
+
             valueLabelEdit.setStyleSheet(valueLabelStyleSheet)
             valueLabel.setText(text)
             valueLabelEdit.setText(text)

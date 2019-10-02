@@ -1,6 +1,5 @@
 from math import *
 from random import choice
-
 from PyQt5.QtGui import *
 
 DARK_MODE = 'Dark mode'
@@ -8,6 +7,8 @@ LIGHT_MODE = 'Light mode'
 
 LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
 
+def randomColor():
+    return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
 
 def randomColor():
     return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
