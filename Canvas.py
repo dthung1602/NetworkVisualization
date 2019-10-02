@@ -10,6 +10,7 @@ import time
 from numpy import *
 from utils import *
 
+
 class Canvas(QWidget):
     HEIGHT = 500
     POINT_RADIUS = 8
@@ -34,6 +35,7 @@ class Canvas(QWidget):
     def __init__(self, gui):
         super().__init__(None)
         self.gui = gui
+
         self.mode = self.MODE_EDIT
 
         self.g = self.clusterToColor = None
@@ -50,6 +52,7 @@ class Canvas(QWidget):
         self.setGraph(self.DEFAULT_GRAPH)
         self.setViewMode(DARK_MODE)
         self.vertexDegree()
+
     def setMode(self, mode):
         self.mode = mode
         self.selectedPoints = []
@@ -82,9 +85,9 @@ class Canvas(QWidget):
             clusterToColor = {cluster: randomColor() for cluster in set(g.vs['cluster'])}
             g.vs['color'] = [clusterToColor[cluster] for cluster in g.vs['cluster']]
         self.resetViewRect()
+
     def resetViewRect(self):
         g = self.g
-
         # use translation to convert negative coordinates to non-negative
         mx = min(g.vs['x']) - 1
         my = min(g.vs['y']) - 1
@@ -159,6 +162,7 @@ class Canvas(QWidget):
 
     def updateViewRect(self):
         size = self.size()
+        print(self.size())
         w = size.width()
         h = size.height()
         viewRectWidth = w / self.zoom
@@ -314,7 +318,6 @@ class Canvas(QWidget):
         thread = threading.Thread(target=self.doRealTime, args=(arguments,), daemon=True)
         self.threading = thread
         thread.start()
-
 
     def doRealTime(self, arg):
         while self.inRealTimeMode:

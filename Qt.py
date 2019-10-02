@@ -22,6 +22,7 @@ class Window(QMainWindow):
         super().__init__()
 
         uic.loadUi('resource/gui/GUI.ui', self)
+
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black")
         self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)

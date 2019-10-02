@@ -36,9 +36,6 @@
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
-     <item>
-      <widget class="QWidget" name="widget_2" native="true"/>
-     </item>
     </layout>
    </widget>
    <widget class="Line" name="line_2">
