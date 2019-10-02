@@ -22,9 +22,11 @@ class RenameDialog(QDialog):
 
     def addSelectOptions(self):
         self.attribute.addItems(self.canvas.g.es.attributes())
+        #self.renameBtn.clicked.connect(self.rename)
         self.attribute.currentIndexChanged.connect(self.rename)
 
-    def rename(self, opt):
+    def rename(self):
+        opt = int(self.attribute.currentIndex())
         print("RENAME")
         key = self.canvas.g.es.attributes()[opt]
         print(key)

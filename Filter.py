@@ -76,6 +76,9 @@ class Filter(QWidget):
         self.selectClusterAttribute = self.findChild(QComboBox, 'selectVertex')
         self.applyClusterAttribute = self.findChild(QPushButton, 'applyVertexBtn')
 
+        self.selectEdgeAttribute = self.findChild(QComboBox, 'selectEdge')
+        self.applyEdgeAttribute = self.findChild(QPushButton, 'applyEdge')
+
         self.addSelectOptions()
         self.setShowLayoutWeight(0)
 
@@ -104,6 +107,10 @@ class Filter(QWidget):
         # Cluster Attribute Opt
         self.selectClusterAttribute.addItems(self.vertexAttr)
         self.applyClusterAttribute.pressed.connect(self.changeClusterAttribute)
+
+        # Edge Attribute Opt
+        self.selectEdgeAttribute.addItems(['-- None --'] + self.canvas.g.es.attributes())
+        self.applyEdgeAttribute.pressed.connect(self.changeEdgeAttribute)
 
     def setShowLayoutWeight(self, opt):
         visible = LAYOUT_OPTIONS[opt][1] in LAYOUT_WITH_WEIGHT
@@ -141,3 +148,6 @@ class Filter(QWidget):
     def changeClusterAttribute(self):
         attr = self.vertexAttr[self.selectClusterAttribute.currentIndex()]
         self.canvas.setAttributeCluster(attr)
+
+    def changeEdgeAttribute(self):
+        pass
