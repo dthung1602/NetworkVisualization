@@ -23,7 +23,6 @@ class BuddyLabel(QLabel):
         self.buddy = buddy
         self.buddy.hide()
 
-
     # When it's clicked, hide itself and show its buddy
     def mousePressEvent(self, event):
         self.hide()
@@ -37,7 +36,7 @@ class RealTimeDialog(QWidget):
         super().__init__()
         print('Real Time Dialog')
         self.canvas = canvas
-        self.randomDialog = RandomDialog(self.canvas)
+
         loadUi('resource/gui/RealTimeDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")

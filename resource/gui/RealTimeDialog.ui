@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>354</width>
-    <height>567</height>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,6 +39,19 @@
       </rect>
      </property>
      <layout class="QGridLayout" name="vertexGridLayout"/>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>420</y>
+       <width>93</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Generate</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="edgeTab">
