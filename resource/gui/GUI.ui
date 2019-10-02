@@ -36,9 +36,6 @@
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
-     <item>
-      <widget class="QWidget" name="widget_2" native="true"/>
-     </item>
     </layout>
    </widget>
    <widget class="Line" name="line_2">
@@ -851,7 +848,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="sizePolicy">
