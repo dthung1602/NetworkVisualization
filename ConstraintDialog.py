@@ -13,6 +13,17 @@ class Constraint(QDialog):
     def __init__(self, canvas: Canvas):
         super().__init__()
         print('graph')
+        self.labelStyleSheet = ("font-size: 15px; color: rgb(180,180,180); background-color: transparent;")
+        self.buttonStyleSheet = ("QPushButton{"
+                                 "color: rgb(200, 200, 200);"
+                                 "border-style: 2px solid rgb(200, 200, 200);"
+                                 "border-radius: 7px;"
+                                 "background-color: #383838; padding: 10px"
+                                 "}"
+                                 "QPushButton:hover{"
+                                 " background-color: #303030;"
+                                 "}"
+                                 )
         self.canvas = canvas
         self.g = canvas.g
         loadUi('resource/gui/ConstraintDialog.ui', self)
@@ -67,16 +78,22 @@ class Constraint(QDialog):
         self.label.setText("Warning")
         count = 1
         if len(edgeMissing) > 0:
-            self.grid.addWidget(QLabel("Missing attribute of edge"), 0, 0)
+            missLabel = QLabel("Missing attribute of edge")
+            missLabel.setStyleSheet(self.labelStyleSheet)
+            self.grid.addWidget(missLabel, 0, 0)
             for i in edgeMissing:
                 label = QLabel(i)
+                label.setStyleSheet(self.labelStyleSheet)
                 self.grid.addWidget(label, count, 0)
-                buttonRandom = QPushButton('Rename', self)
-                buttonRandom.setToolTip('This is rename dialog')
-                self.grid.addWidget(buttonRandom, count, 1)
-                buttonRandom.clicked.connect(self.openRenameDialog(i))
+                buttonRename = QPushButton('Rename', self)
+                buttonRename.setStyleSheet(self.buttonStyleSheet)
+                buttonRename.setToolTip('This is rename dialog')
+                self.grid.addWidget(buttonRename, count, 1)
+                buttonRename.clicked.connect(self.openRenameDialog(i))
+                # ========
                 buttonRandom = QPushButton('Random', self)
                 buttonRandom.setToolTip('This is random dialog')
+                buttonRandom.setStyleSheet(self.buttonStyleSheet)
                 self.grid.addWidget(buttonRandom, count, 2)
                 buttonRandom.clicked.connect(self.openRandomDialog)
                 buttonRandom.setObjectName(i)
