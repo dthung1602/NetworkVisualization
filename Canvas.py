@@ -349,17 +349,12 @@ class Canvas(QWidget):
         # tao thread, luu thread vao self.updateThread
         # trong thread, while true -> tao random -> self.update -> sleep
         # remember to delete daemon
-        vertexAttr = []
-        edgeAttr = []
-        fps = 3
-        for randomInput in randomInputs:
-            if randomInput[3] in self.g.vs.attributes():
-                vertexAttr.append(randomInput)
-            else:
-                edgeAttr.append(randomInput)
-
-        print("vertex's attribute ", vertexAttr)
-        print("edge's attributes ", edgeAttr)
+        vertexAttr = randomInputs[0]
+        edgeAttr = randomInputs[1]
+        fps = randomInputs[2]
+        print("Start Real Time")
+        print(randomInputs)
+        print("Vertex Attr = ",vertexAttr,"\nEdge Attr = ",edgeAttr,"\nfps = ",fps)
         thread = threading.Thread(target=self.doRealTime, args=(vertexAttr, edgeAttr, fps), daemon=True)
         self.threading = thread
         thread.start()
