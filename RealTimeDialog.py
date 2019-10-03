@@ -1,4 +1,4 @@
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
@@ -65,6 +65,10 @@ class RealTimeDialog(QWidget):
         for i in range(len(self.checkBoxList)):
             self.checkBoxList[i].stateChanged.connect(self.checkBoxEdited)
 
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        self.canvas.inRealTimeMode = False
+        super().closeEvent(a0)
+
     def addVertexKey(self):
         count = 1
         for key in self.canvas.g.vs.attributes():
@@ -120,7 +124,6 @@ class RealTimeDialog(QWidget):
 
     def sliderValueChange(self):
         self.fPs = self.slider.value()
-        print(self.fPs)
 
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
@@ -143,15 +146,11 @@ class RealTimeDialog(QWidget):
         self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
 
     def realTimeEvent(self):
-        try:
-            self.attr.append(self.vertexAttr)
-            self.attr.append(self.edgeAttr)
-            self.attr.append(self.fps)
-            print("Self.attr = ", self.attr)
-            self.canvas.inRealTimeMode = True
-            self.canvas.startRealTime(self.attr)
-        except Exception as e:
-            print(e)
+        self.attr.append(self.vertexAttr)
+        self.attr.append(self.edgeAttr)
+        self.attr.append(self.fps)
+        self.canvas.inRealTimeMode = True
+        self.canvas.startRealTime(self.attr)
 
     def notify(self, mes, type):
         dist, value1, value2, name = mes
@@ -175,7 +174,6 @@ class RealTimeDialog(QWidget):
                             if (item.widget()).objectName() == (name + 'value2'):
                                 (item.widget()).setText("Max = " + str(value2))
         else:
-            print(type)
             for r in range(1, self.edgeGridLayout.rowCount()):
                 for c in range(2, self.edgeGridLayout.columnCount()):
                     item = self.edgeGridLayout.itemAtPosition(r, c)

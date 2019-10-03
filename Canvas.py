@@ -373,7 +373,6 @@ class Canvas(QWidget):
                         self.g.es[edge[3]] = [random.normal(edge[1], edge[2]) for i in range(self.g.ecount())]
                     else:
                         self.g.es[edge[3]] = [random.uniform(edge[1], edge[2]) for i in range(self.g.ecount())]
-            self.setEdgeColor()
             time.sleep(1.0 / fps)
             self.update()
 
