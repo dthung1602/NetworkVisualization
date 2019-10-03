@@ -8,7 +8,6 @@ from Canvas import Canvas
 class WeightDialog(QDialog):
     def __init__(self, canvas: Canvas):
         super().__init__()
-        print('graph')
         self.canvas = canvas
         loadUi('resource/gui/WeightDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))

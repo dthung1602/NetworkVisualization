@@ -97,6 +97,8 @@ class Canvas(QWidget):
         self.vertexDegree()
 
         vsAttributes = g.vs.attributes()
+        if 'color' not in self.g.es.attributes():
+            self.g.es['color'] = [self.lineColor for i in range(self.g.ecount())]
         if 'x' not in vsAttributes or 'y' not in vsAttributes:
             self.setGraphLayout(self.DEFAULT_GRAPH_LAYOUT, None)
         if 'cluster' not in vsAttributes:
@@ -200,6 +202,7 @@ class Canvas(QWidget):
         self.g.vs['color'] = arrayToSpectrum(centrality)
 
     def setEdgeColor(self):
+
         self.g.es['color'] = arrayToSpectrum(self.g.es[self.selectedEdgeAttr])
         self.update()
 
@@ -285,48 +288,45 @@ class Canvas(QWidget):
         painter.end()
 
     def paint(self, painter):
-        try:
-            if self.viewMode == GEO_MODE:
-                painter.drawImage(self.SCREEN_RECT, self.backGroundImage, self.backgroundRect)
+        if self.viewMode == GEO_MODE:
+            painter.drawImage(self.SCREEN_RECT, self.backGroundImage, self.backgroundRect)
+        else:
+            painter.fillRect(self.SCREEN_RECT, QBrush(self.backgroundColor))
+
+        for edge in self.linesToDraw:
+            line = edge['line']
+            painter.setPen(QPen(edge['color'], 1.3, join=Qt.PenJoinStyle(0x80)))
+            if isinstance(line, QLineF):
+                painter.drawLine(line)
             else:
-                painter.fillRect(self.SCREEN_RECT, QBrush(self.backgroundColor))
+                painter.drawPath(line)
 
-            for edge in self.linesToDraw:
-                line = edge['line']
-                painter.setPen(QPen(edge['color'], 0.5, join=Qt.PenJoinStyle(0x80)))
-                if isinstance(line, QLineF):
-                    painter.drawLine(line)
-                else:
-                    painter.drawPath(line)
+        painter.setPen(QPen(self.backgroundColor, 0.5, join=Qt.PenJoinStyle(0x80)))
 
-            painter.setPen(QPen(self.backgroundColor, 0.5, join=Qt.PenJoinStyle(0x80)))
+        for v in self.pointsToDraw:
+            painter.setBrush(QBrush(v['color']))
+            painter.drawEllipse(
+                int(v['pos'].x() - self.POINT_RADIUS / 2.0),
+                int(v['pos'].y() - self.POINT_RADIUS / 2.0),
+                self.POINT_RADIUS, self.POINT_RADIUS
+            )
 
-            for v in self.pointsToDraw:
-                painter.setBrush(QBrush(v['color']))
-                painter.drawEllipse(
-                    int(v['pos'].x() - self.POINT_RADIUS / 2.0),
-                    int(v['pos'].y() - self.POINT_RADIUS / 2.0),
-                    self.POINT_RADIUS, self.POINT_RADIUS
-                )
+        painter.setPen(QPen(Qt.red, 4, join=Qt.PenJoinStyle(0x80)))
 
-            painter.setPen(QPen(Qt.red, 4, join=Qt.PenJoinStyle(0x80)))
+        for e in self.selectedLines:
+            line = e['line']
+            if isinstance(line, QLineF):
+                painter.drawLine(line)
+            else:
+                painter.drawPath(line)
 
-            for e in self.selectedLines:
-                line = e['line']
-                if isinstance(line, QLineF):
-                    painter.drawLine(line)
-                else:
-                    painter.drawPath(line)
-
-            for v in self.selectedPoints:
-                painter.setBrush(v['color'])
-                painter.drawEllipse(
-                    int(v['pos'].x() - self.SELECTED_POINT_RADIUS / 2),
-                    int(v['pos'].y() - self.SELECTED_POINT_RADIUS / 2),
-                    self.SELECTED_POINT_RADIUS, self.SELECTED_POINT_RADIUS
-                )
-        except Exception as exception:
-            print(exception)
+        for v in self.selectedPoints:
+            painter.setBrush(v['color'])
+            painter.drawEllipse(
+                int(v['pos'].x() - self.SELECTED_POINT_RADIUS / 2),
+                int(v['pos'].y() - self.SELECTED_POINT_RADIUS / 2),
+                self.SELECTED_POINT_RADIUS, self.SELECTED_POINT_RADIUS
+            )
 
     def findShortestPath(self):
         path = self.g.get_shortest_paths(self.selectedPoints[0], self.selectedPoints[1],
@@ -353,12 +353,18 @@ class Canvas(QWidget):
                 self.selectedPoints.append(self.g.vs[e.source])
         self.update()
 
-    def startRealTime(self, vertexAttr, edgeAttr, fps):
+    def startRealTime(self, randomInputs):
         # neu co thread cu, stop thread cu, tao thread moi
         # tao thread, luu thread vao self.updateThread
         # trong thread, while true -> tao random -> self.update -> sleep
         # remember to delete daemon
-        thread = threading.Thread(target=self.doRealTime, args=(vertexAttr, edgeAttr, fps))
+        vertexAttr = randomInputs[0]
+        edgeAttr = randomInputs[1]
+        fps = randomInputs[2]
+        print("Start Real Time")
+        print(randomInputs)
+        print("Vertex Attr = ", vertexAttr, "\nEdge Attr = ", edgeAttr, "\nfps = ", fps)
+        thread = threading.Thread(target=self.doRealTime, args=(vertexAttr, edgeAttr, fps), daemon=True)
         self.threading = thread
         thread.start()
 
@@ -367,17 +373,16 @@ class Canvas(QWidget):
             if len(vertexAttr) > 0:
                 for v in vertexAttr:
                     if v[0] == "Normal Distribution":
-                        self.g.vs[v[3]] = [random.normal(v[1], v[2]) for i in self.g.vcount()]
+                        self.g.vs[v[3]] = [random.normal(v[1], v[2]) for i in range(self.g.vcount())]
                     else:
-                        self.g.vs[v[3]] = [random.uniform(v[1], v[2]) for i in self.g.vcount()]
+                        self.g.vs[v[3]] = [random.uniform(v[1], v[2]) for i in range(self.g.vcount())]
 
             if len(edgeAttr) > 0:
                 for edge in edgeAttr:
                     if edge[0] == "Normal Distribution":
-                        self.g.es[edge[3]] = [random.normal(edge[1], edge[2]) for i in self.g.ecount()]
+                        self.g.es[edge[3]] = [random.normal(edge[1], edge[2]) for i in range(self.g.ecount())]
                     else:
-                        self.g.es[edge[3]] = [random.uniform(edge[1], edge[2]) for i in self.g.ecount()]
-                self.setEdgeColor()
+                        self.g.es[edge[3]] = [random.uniform(edge[1], edge[2]) for i in range(self.g.ecount())]
             time.sleep(1.0 / fps)
             self.update()
 

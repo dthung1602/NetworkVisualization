@@ -21,7 +21,6 @@ class BuddyLabel(QLabel):
 class AddAttributesDialog(QDialog):
     def __init__(self, canvas: Canvas):
         super().__init__()
-        print('graph')
         self.canvas = canvas
 
         loadUi('resource/gui/AddAttributesDialog.ui', self)

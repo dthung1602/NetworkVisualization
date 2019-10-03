@@ -26,7 +26,6 @@ class BuddyLabel(QLabel):
 class RandomDialog(QDialog):
     def __init__(self, canvas: Canvas, type):
         super().__init__()
-        print('Random Dialog')
         self.canvas = canvas
         self.type = type
         self.g = canvas.g
@@ -163,13 +162,6 @@ class RandomDialog(QDialog):
             layout.itemAt(i).widget().deleteLater()
 
     def generateNormalDistribution(self):
-
-        print("generateNormalDistribution ", self.attr)
-        print(self.update)
-        mean = float(self.meanEdit.text())
-        stdDeviation = float(self.standardDeviationEdit.text())
-
-        print("generateNormalDistribution ", self.attr)
         mean = float(self.meanEdit.text())
         stdDeviation = float(self.standardDeviationEdit.text())
         if self.type == 'EDGE':
@@ -186,7 +178,6 @@ class RandomDialog(QDialog):
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(mean)
         self.attrBack.append(stdDeviation)
-        print('Generate Norm ')
 
     def generateUniformDistribution(self):
         minValue = float(self.minEdit.text())

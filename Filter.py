@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QComboBox, QWidget, QPushButton, QLineEdit, QLabel
+from PyQt5.QtWidgets import QComboBox, QWidget, QPushButton, QLineEdit, QLabel, QTabWidget
 from PyQt5.uic import loadUi
 
 from Canvas import Canvas
@@ -48,7 +48,8 @@ class Filter(QWidget):
         loadUi('resource/gui/FilterDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black - Filter Dialog")
-
+        self.tab = self.findChild(QTabWidget, 'tabWidget')
+        self.tab.setCurrentIndex(0)
         self.vertexAttr = [opt for opt in self.canvas.g.vs.attributes()]
 
         self.edgeWeights = [opt for opt in self.canvas.g.es.attributes()]

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>408</width>
-    <height>839</height>
+    <height>256</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,7 +46,7 @@
       <rect>
        <x>10</x>
        <y>50</y>
-       <width>371</width>
+       <width>381</width>
        <height>31</height>
       </rect>
      </property>
@@ -96,7 +96,7 @@
       <rect>
        <x>10</x>
        <y>130</y>
-       <width>371</width>
+       <width>381</width>
        <height>31</height>
       </rect>
      </property>
@@ -144,9 +144,9 @@
     <widget class="QPushButton" name="applyClusterBtn">
      <property name="geometry">
       <rect>
-       <x>290</x>
+       <x>160</x>
        <y>190</y>
-       <width>89</width>
+       <width>101</width>
        <height>25</height>
       </rect>
      </property>
@@ -275,8 +275,8 @@
     <widget class="QPushButton" name="applyLayoutBtn">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>180</y>
+       <x>160</x>
+       <y>190</y>
        <width>89</width>
        <height>25</height>
       </rect>
@@ -355,8 +355,8 @@
     <widget class="QPushButton" name="applyFilterBtn">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>180</y>
+       <x>160</x>
+       <y>190</y>
        <width>89</width>
        <height>25</height>
       </rect>
@@ -499,7 +499,7 @@
     <widget class="QPushButton" name="applyCentralityBtn">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>220</x>
        <y>180</y>
        <width>89</width>
        <height>25</height>
@@ -525,7 +525,7 @@
     <widget class="QPushButton" name="cancelCentralityBtn">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>120</x>
        <y>180</y>
        <width>89</width>
        <height>25</height>
@@ -656,7 +656,7 @@
     <widget class="QPushButton" name="applyVertexBtn">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>160</x>
        <y>100</y>
        <width>89</width>
        <height>25</height>
@@ -737,7 +737,7 @@
     <widget class="QPushButton" name="applyEdge">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>160</x>
        <y>100</y>
        <width>89</width>
        <height>25</height>

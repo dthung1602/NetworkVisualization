@@ -76,7 +76,6 @@ class Window(QMainWindow):
         self.findChild(QAction, 'action_Minimize').triggered.connect(self.minimizeWindow)
 
         # -------------Toolbar---------------- #
-
         # Zoom in
         zoomInBtn = self.findChild(QToolButton, 'zoom_in_btn')
         zoomInBtn.pressed.connect(self.canvas.zoomInEvent)
@@ -145,9 +144,6 @@ class Window(QMainWindow):
 
     def openColorDialog(self):
         color = QColorDialog.getColor()
-
-        if color.isValid():
-            print(color.name())
 
     def deleteNodeEvent(self):
         self.canvas.deleteNode = True
@@ -249,11 +245,9 @@ class Window(QMainWindow):
         self.infoArea.addWidget(edgeInfo)
 
     def openGraphEvent(self):
-        print('Load stat dialog')
         self.statWindow.show()
 
     def openFilterDialog(self):
-        print('Load filter dialog')
         self.filterWindow.show()
 
     def openRealTimeDialog(self):

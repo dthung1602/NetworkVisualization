@@ -8,9 +8,7 @@ from Canvas import Canvas
 class RenameDialog(QDialog):
     def __init__(self, canvas: Canvas, newAttributeName):
         super().__init__()
-        print('Rename')
         self.newAttributeName = newAttributeName
-        print(self.newAttributeName)
         self.canvas = canvas
         loadUi('resource/gui/RenameDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
@@ -28,7 +26,6 @@ class RenameDialog(QDialog):
     def rename(self):
         opt = int(self.attribute.currentIndex())
         key = self.canvas.g.es.attributes()[opt]
-        print(key)
         self.canvas.g.es[self.newAttributeName] = self.canvas.g.es[key]
         del self.canvas.g.es[key]
         self.label.setText('"' + key + '"' + ' has been renamed to ' + '"' + self.newAttributeName + '"')
