@@ -134,7 +134,9 @@ class Window(QMainWindow):
         self.addAttributesDialog.exec()
 
     def openConstraintDialog(self):
+        print("checked")
         self.constraint.exec()
+        self.constraint.check()
 
     def changeViewModeTo(self, viewMode):
         def func():

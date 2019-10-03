@@ -9,14 +9,16 @@ class constraintAttr():
         self.g = graph
 
     def checkConstrainEdge(self):
-        currAttr = self.g.es.attributes()
+        currAttr = map(lambda x:x.upper(),(self.g).es.attributes())
+        print(currAttr)
         for i in currAttr:
             if i.upper() in self.attrEdge:
                 return True
         return False
 
     def checkConstrainVertex(self):
-        currAttr = (self.g).vs.attributes()
+        currAttr = map(lambda x:x.upper(),(self.g).vs.attributes())
+        print(currAttr)
         for i in currAttr:
             if i.upper() in self.attrNode:
                 return True
