@@ -6,24 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>417</width>
+    <width>452</width>
     <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #282828</string>
+  </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>-10</x>
+     <x>0</x>
      <y>0</y>
-     <width>431</width>
+     <width>451</width>
      <height>431</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QTabWidget:pane {}</string>
+   </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="vertexTab">
     <attribute name="title">
@@ -32,24 +38,37 @@
     <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>50</y>
+       <x>20</x>
+       <y>60</y>
        <width>411</width>
-       <height>351</height>
+       <height>341</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="vertexGridLayout"/>
+     <property name="styleSheet">
+      <string notr="true">background-color: #303030;</string>
+     </property>
+     <layout class="QGridLayout" name="vertexGridLayout">
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+     </layout>
     </widget>
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>20</x>
        <y>10</y>
        <width>411</width>
        <height>41</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #303030;</string>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
       <item>
        <widget class="QLabel" name="label_2">
         <property name="font">
@@ -57,6 +76,12 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
         </property>
         <property name="text">
          <string>Attribute:</string>
@@ -71,6 +96,12 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
+        </property>
         <property name="text">
          <string>Enable:</string>
         </property>
@@ -83,6 +114,12 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
         </property>
         <property name="text">
          <string>Dist. Type:</string>
@@ -97,6 +134,12 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
+        </property>
         <property name="text">
          <string>Min/Mean:</string>
         </property>
@@ -109,6 +152,12 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
         </property>
         <property name="text">
          <string>Max/Std:</string>
@@ -125,24 +174,37 @@
     <widget class="QWidget" name="gridLayoutWidget_4">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>50</y>
+       <x>20</x>
+       <y>60</y>
        <width>411</width>
-       <height>351</height>
+       <height>341</height>
       </rect>
      </property>
-     <layout class="QGridLayout" name="edgeGridLayout"/>
+     <property name="styleSheet">
+      <string notr="true">background-color: #303030; </string>
+     </property>
+     <layout class="QGridLayout" name="edgeGridLayout">
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+     </layout>
     </widget>
     <widget class="QWidget" name="horizontalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>20</x>
        <y>10</y>
        <width>411</width>
        <height>41</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #303030; </string>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
       <item>
        <widget class="QLabel" name="label_7">
         <property name="font">
@@ -150,6 +212,12 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
         </property>
         <property name="text">
          <string>Attribute:</string>
@@ -164,6 +232,12 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
+        </property>
         <property name="text">
          <string>Enable:</string>
         </property>
@@ -176,6 +250,12 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
         </property>
         <property name="text">
          <string>Dist. Type:</string>
@@ -190,6 +270,12 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
+        </property>
         <property name="text">
          <string>Min/Mean:</string>
         </property>
@@ -202,6 +288,12 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
         </property>
         <property name="text">
          <string>Max/Std:</string>
@@ -253,7 +345,10 @@
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">
+      <string notr="true">color: rgb(180,180,180);
+
+            
+                        
                             font-size: 15px;
                             background-color: transparent;
                         font-weight: bold</string>
@@ -272,7 +367,10 @@
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">      font-size: 15px;
+      <string notr="true">color: rgb(180,180,180);
+
+     
+                              font-size: 15px;
                             background-color: transparent;
                         font-weight: bold</string>
      </property>
@@ -285,11 +383,24 @@
   <widget class="QPushButton" name="generate_btn">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>440</y>
-     <width>93</width>
-     <height>28</height>
+     <x>162</x>
+     <y>442</y>
+     <width>121</width>
+     <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            }
+
+                            QPushButton:hover{
+                            background-color: #303030;
+                            }
+                        </string>
    </property>
    <property name="text">
     <string>Generate</string>

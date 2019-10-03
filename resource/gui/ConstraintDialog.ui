@@ -13,14 +13,23 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #282828</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>120</x>
      <y>20</y>
-     <width>55</width>
-     <height>16</height>
+     <width>321</width>
+     <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(180,180,180);
+                            font-size: 15px;
+                            background-color: transparent;
+                        </string>
    </property>
    <property name="text">
     <string/>
@@ -46,6 +55,19 @@
      <height>28</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            }
+
+                            QPushButton:hover{
+                            background-color: #303030;
+                            }
+                        </string>
+   </property>
    <property name="text">
     <string>OK</string>
    </property>
@@ -58,6 +80,19 @@
      <width>93</width>
      <height>28</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            }
+
+                            QPushButton:hover{
+                            background-color: #303030;
+                            }
+                        </string>
    </property>
    <property name="text">
     <string>Reset</string>

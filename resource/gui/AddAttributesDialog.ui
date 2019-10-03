@@ -25,6 +25,9 @@
      <height>231</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QTabWidget::pane{border:0px}</string>
+   </property>
    <property name="currentIndex">
     <number>1</number>
    </property>

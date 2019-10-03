@@ -37,6 +37,7 @@ class RealTimeDialog(QWidget):
         loadUi('resource/gui/RealTimeDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
+        self.labelStyleSheet = ("color: rgb(180,180,180); background-color: transparent;")
         self.checkBoxList = []
         self.vertexAttr = []
         self.edgeAttr = []
@@ -62,6 +63,7 @@ class RealTimeDialog(QWidget):
         self.selectDistribution = QComboBox()
         self.selectDistribution.addItems([opt for opt in DIST])
 
+
         for i in range(len(self.checkBoxList)):
             self.checkBoxList[i].stateChanged.connect(self.checkBoxEdited)
 
@@ -74,21 +76,26 @@ class RealTimeDialog(QWidget):
         for key in self.canvas.g.vs.attributes():
             value = self.canvas.g.vs[0][key]
             keyLabel = QLabel(key)
+            keyLabel.setStyleSheet(self.labelStyleSheet)
             if isinstance(value, float) and key not in VertexKeyIgnore.ignoredFields:
                 self.vertexGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
+                checkBox.setStyleSheet("QCheckBox{   border: none; color: red;}")
                 checkBox.setObjectName(key)
                 setattr(checkBox, "type", "VERTEX")
                 self.checkBoxList.append(checkBox)
                 self.vertexGridLayout.addWidget(checkBox, count, 1)
                 distLabel = QLabel("None")
                 distLabel.setObjectName(key + 'dist')
+                distLabel.setStyleSheet(self.labelStyleSheet)
                 self.vertexGridLayout.addWidget(distLabel, count, 2)
                 firstValueLabel = QLabel("None")
                 firstValueLabel.setObjectName(key + 'value1')
+                firstValueLabel.setStyleSheet(self.labelStyleSheet)
                 self.vertexGridLayout.addWidget(firstValueLabel, count, 3)
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
+                secondValueLabel.setStyleSheet(self.labelStyleSheet)
                 self.vertexGridLayout.addWidget(secondValueLabel, count, 4)
 
                 count += 1
@@ -104,6 +111,7 @@ class RealTimeDialog(QWidget):
         for key in self.canvas.g.es.attributes():
             value = self.canvas.g.es[0][key]
             keyLabel = QLabel(key)
+            keyLabel.setStyleSheet(self.labelStyleSheet)
             if isinstance(value, float) and key not in EdgeKeyIgnore.ignoredFields:
                 self.edgeGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
@@ -113,12 +121,15 @@ class RealTimeDialog(QWidget):
                 self.edgeGridLayout.addWidget(checkBox, count, 1)
                 distLabel = QLabel("None")
                 distLabel.setObjectName(key + 'dist')
+                distLabel.setStyleSheet(self.labelStyleSheet)
                 self.edgeGridLayout.addWidget(distLabel, count, 2)
                 firstValueLabel = QLabel("None")
                 firstValueLabel.setObjectName(key + 'value1')
+                firstValueLabel.setStyleSheet(self.labelStyleSheet)
                 self.edgeGridLayout.addWidget(firstValueLabel, count, 3)
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
+                secondValueLabel.setStyleSheet(self.labelStyleSheet)
                 self.edgeGridLayout.addWidget(secondValueLabel, count, 4)
                 count += 1
 
