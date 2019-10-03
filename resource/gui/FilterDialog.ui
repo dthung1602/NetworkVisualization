@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>408</width>
-    <height>839</height>
+    <height>256</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
                 </string>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="clusterTab">
     <attribute name="title">

@@ -77,6 +77,7 @@ class RealTimeDialog(QWidget):
             if isinstance(value, float) and key not in VertexKeyIgnore.ignoredFields:
                 self.vertexGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
+                checkBox.setStyleSheet("QCheckBox{   border: none; color: red;}")
                 checkBox.setObjectName(key)
                 setattr(checkBox, "type", "VERTEX")
                 self.checkBoxList.append(checkBox)
