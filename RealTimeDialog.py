@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton
+from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
 
 from Canvas import Canvas
@@ -38,9 +38,22 @@ class RealTimeDialog(QWidget):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
         self.checkBoxList = []
+        self.vertexAttr = []
+        self.edgeAttr = []
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.generateBtn.pressed.connect(self.realTimeEvent)
+
+        # FPS
+        self.fpsSlider = self.findChild(QSlider, 'fpsSlider')
+        self.fpsSlider.setMinimum(10)
+        self.fpsSlider.setMaximum(50)
+        self.fpsSlider.setValue(30)
+        self.fps = 30
+        self.fpsSlider.setTickPosition(QSlider.TicksBelow)
+        self.fpsSlider.setTickInterval(5)
+        self.fpsValueLabel = self.findChild(QLabel, 'fpsLabel')
+        self.fpsSlider.valueChanged.connect(self.changeFPSValue)
         # Vertex tab
         self.vertexGridLayout = self.findChild(QGridLayout, 'vertexGridLayout')
         self.edgeGridLayout = self.findChild(QGridLayout, 'edgeGridLayout')
@@ -61,6 +74,7 @@ class RealTimeDialog(QWidget):
                 self.vertexGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
                 checkBox.setObjectName(key)
+                setattr(checkBox, "type", "VERTEX")
                 self.checkBoxList.append(checkBox)
                 self.vertexGridLayout.addWidget(checkBox, count, 1)
                 distLabel = QLabel("None")
@@ -72,9 +86,13 @@ class RealTimeDialog(QWidget):
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
                 self.vertexGridLayout.addWidget(secondValueLabel, count, 4)
+
                 count += 1
 
-    # def addDistSelectOptions(self, column):
+    def changeFPSValue(self):
+        fpsValue = self.fpsSlider.value()
+        self.fpsValueLabel.setText('FPS Value = ' + str(fpsValue))
+        self.fps = fpsValue
 
     # self.selectDistribution.currentIndexChanged.connect(self.changeDist)
     def addEdgeKey(self):
@@ -86,6 +104,7 @@ class RealTimeDialog(QWidget):
                 self.edgeGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
                 checkBox.setObjectName(key)
+                setattr(checkBox, "type", "EDGE")
                 self.checkBoxList.append(checkBox)
                 self.edgeGridLayout.addWidget(checkBox, count, 1)
                 distLabel = QLabel("None")
@@ -99,6 +118,10 @@ class RealTimeDialog(QWidget):
                 self.edgeGridLayout.addWidget(secondValueLabel, count, 4)
                 count += 1
 
+    def sliderValueChange(self):
+        self.fPs = self.slider.value()
+        print(self.fPs)
+
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
             self.openRandomDialog(self.sender().objectName())
@@ -106,38 +129,71 @@ class RealTimeDialog(QWidget):
             print('unchecked')
 
     def openRandomDialog(self, name):
-        randomDialog = RandomDialog(self.canvas, "Vertex")
+        randomDialog = RandomDialog(self.canvas, getattr(self.sender(), "type"))
         self.setObjectName(name)
         setattr(randomDialog, "update", False)
         randomDialog.exec()
         randomDialog.attrBack.append(name)
-        self.attr.append(randomDialog.attrBack)
-        self.notify(randomDialog.attrBack)
+        if getattr(self.sender(), "type").upper() == "EDGE":
+            self.edgeAttr.append(randomDialog.attrBack)
+        else:
+            self.vertexAttr.append(randomDialog.attrBack)
+        print("Sender type : ", getattr(self.sender(), "type"))
+        self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+        self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
 
     def realTimeEvent(self):
-        self.canvas.inRealTimeMode = True
-        self.canvas.startRealTime(self.attr)
+        try:
+            self.attr.append(self.vertexAttr)
+            self.attr.append(self.edgeAttr)
+            self.attr.append(self.fps)
+            print("Self.attr = ", self.attr)
+            self.canvas.inRealTimeMode = True
+            self.canvas.startRealTime(self.attr)
+        except Exception as e:
+            print(e)
 
-    def notify(self, mes):
+    def notify(self, mes, type):
         dist, value1, value2, name = mes
-        for r in range(1, self.vertexGridLayout.rowCount()):
-            for c in range(2, self.vertexGridLayout.columnCount()):
-                item = self.vertexGridLayout.itemAtPosition(r, c)
-                if item is not None:
-                    if dist == "Normal Distribution":
-                        if (item.widget()).objectName() == (name + 'dist'):
-                            (item.widget()).setText(dist)
-                        if (item.widget()).objectName() == (name + 'value1'):
-                            (item.widget()).setText("Mean = " + str(value1))
-                        if (item.widget()).objectName() == (name + 'value2'):
-                            (item.widget()).setText("Std = " + str(value2))
-                    else:
-                        if (item.widget()).objectName() == (name + 'dist'):
-                            (item.widget()).setText(dist)
-                        if (item.widget()).objectName() == (name + 'value1'):
-                            (item.widget()).setText("Min = " + str(value1))
-                        if (item.widget()).objectName() == (name + 'value2'):
-                            (item.widget()).setText("Max = " + str(value2))
+        if type is "VERTEX":
+            for r in range(1, self.vertexGridLayout.rowCount()):
+                for c in range(2, self.vertexGridLayout.columnCount()):
+                    item = self.vertexGridLayout.itemAtPosition(r, c)
+                    if item is not None:
+                        if dist == "Normal Distribution":
+                            if (item.widget()).objectName() == (name + 'dist'):
+                                (item.widget()).setText(dist)
+                            if (item.widget()).objectName() == (name + 'value1'):
+                                (item.widget()).setText("Mean = " + str(value1))
+                            if (item.widget()).objectName() == (name + 'value2'):
+                                (item.widget()).setText("Std = " + str(value2))
+                        else:
+                            if (item.widget()).objectName() == (name + 'dist'):
+                                (item.widget()).setText(dist)
+                            if (item.widget()).objectName() == (name + 'value1'):
+                                (item.widget()).setText("Min = " + str(value1))
+                            if (item.widget()).objectName() == (name + 'value2'):
+                                (item.widget()).setText("Max = " + str(value2))
+        else:
+            print(type)
+            for r in range(1, self.edgeGridLayout.rowCount()):
+                for c in range(2, self.edgeGridLayout.columnCount()):
+                    item = self.edgeGridLayout.itemAtPosition(r, c)
+                    if item is not None:
+                        if dist == "Normal Distribution":
+                            if (item.widget()).objectName() == (name + 'dist'):
+                                (item.widget()).setText(dist)
+                            if (item.widget()).objectName() == (name + 'value1'):
+                                (item.widget()).setText("Mean = " + str(value1))
+                            if (item.widget()).objectName() == (name + 'value2'):
+                                (item.widget()).setText("Std = " + str(value2))
+                        else:
+                            if (item.widget()).objectName() == (name + 'dist'):
+                                (item.widget()).setText(dist)
+                            if (item.widget()).objectName() == (name + 'value1'):
+                                (item.widget()).setText("Min = " + str(value1))
+                            if (item.widget()).objectName() == (name + 'value2'):
+                                (item.widget()).setText("Max = " + str(value2))
 
 
 class VertexKeyIgnore(RealTimeDialog):
