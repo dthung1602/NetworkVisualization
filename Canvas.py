@@ -52,6 +52,8 @@ class Canvas(QWidget):
         self.addNode = self.deleteNode = self.addLine = self.deleteLine = None
         self.filterData = None
 
+        self.selectedEdgeAttr = None
+
         self.center = self.zoom = self.viewRect = self.backgroundRect = self.pointsToDraw = self.linesToDraw = None
         self.backgroundDragging = self.pointDragging = None
         self.selectedLines = self.selectedPoints = []
@@ -198,8 +200,15 @@ class Canvas(QWidget):
         self.g.vs['color'] = arrayToSpectrum(centrality)
 
     def setEdgeColor(self):
-        self.g.es['color'] = arrayToSpectrum(self.g.es['total_delay'])
+        self.g.es['color'] = arrayToSpectrum(self.g.es[self.selectedEdgeAttr])
         self.update()
+
+    def setSelectedEdgeAttr(self, attr):
+        self.selectedEdgeAttr = attr
+        try:
+            self.setEdgeColor()
+        except Exception as error:
+            print(error)
 
     def updateViewRect(self):
         viewRectWidth = self.WIDTH / self.zoom

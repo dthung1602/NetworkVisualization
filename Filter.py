@@ -78,7 +78,6 @@ class Filter(QWidget):
 
         self.selectEdgeAttribute = self.findChild(QComboBox, 'selectEdge')
         self.applyEdgeAttribute = self.findChild(QPushButton, 'applyEdge')
-
         self.addSelectOptions()
         self.setShowLayoutWeight(0)
 
@@ -110,12 +109,19 @@ class Filter(QWidget):
 
         # Edge Attribute Opt
         self.selectEdgeAttribute.addItems(['-- None --'] + self.canvas.g.es.attributes())
-        self.applyEdgeAttribute.pressed.connect(self.changeEdgeAttribute)
+        self.applyEdgeAttribute.pressed.connect(self.setEdgeAttr)
 
     def setShowLayoutWeight(self, opt):
         visible = LAYOUT_OPTIONS[opt][1] in LAYOUT_WITH_WEIGHT
         self.selectLayoutEdgeWeight.setVisible(visible)
         self.labelLayoutEdgeWeight.setVisible(visible)
+
+    def setEdgeAttr(self):
+        opt = self.selectEdgeAttribute.currentIndex()
+        attr = self.canvas.g.es.attributes()[opt-1]
+        print("the ATTTR ISSSSSSSSSSSs", attr)
+        self.canvas.setSelectedEdgeAttr(attr)
+
 
     def changeGraphLayout(self):
         layout = LAYOUT_OPTIONS[self.selectLayout.currentIndex()][1]
