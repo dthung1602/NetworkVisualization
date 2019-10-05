@@ -3,8 +3,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
 
-from Canvas import Canvas
-from RandomDialog import RandomDialog
+from canvas import Canvas
+from .RandomDialog import RandomDialog
 
 TITLE = [
     'No.',
@@ -37,7 +37,7 @@ class RealTimeDialog(QWidget):
         loadUi('resource/gui/RealTimeDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
-        self.labelStyleSheet = ("color: rgb(180,180,180); background-color: transparent;")
+        self.labelStyleSheet = "color: rgb(180,180,180); background-color: transparent;"
         self.checkBoxList = []
         self.vertexAttr = []
         self.edgeAttr = []
@@ -62,7 +62,6 @@ class RealTimeDialog(QWidget):
         self.addEdgeKey()
         self.selectDistribution = QComboBox()
         self.selectDistribution.addItems([opt for opt in DIST])
-
 
         for i in range(len(self.checkBoxList)):
             self.checkBoxList[i].stateChanged.connect(self.checkBoxEdited)

@@ -3,9 +3,9 @@ import re
 
 import matplotlib
 import matplotlib.backends.qt_editor.formlayout as formlayout
-
 from matplotlib import cm, colors as mcolors, markers, image as mimage
 from matplotlib.backends.qt_compat import QtGui
+
 
 def get_icon(name):
     basedir = os.path.join(matplotlib.rcParams['datapath'], 'images')
@@ -22,7 +22,8 @@ LINE_STYLES = {
 
 DRAW_STYLES = {
     'default': 'Default',
-    'steps-pre': 'Steps (Pre)', 'steps': 'Steps (Pre)',
+    'steps-pre': 'Steps (Pre)',
+    'steps': 'Steps (Pre)',
     'steps-mid': 'Steps (Mid)',
     'steps-post': 'Steps (Post)'
 }

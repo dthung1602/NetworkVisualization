@@ -2,7 +2,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QComboBox
 from PyQt5.uic import loadUi
 
-from Canvas import Canvas
+from canvas import Canvas
 
 
 class WeightDialog(QDialog):
@@ -21,6 +21,6 @@ class WeightDialog(QDialog):
 
     def changeWeight(self, opt):
         if opt != 0:
-            self.canvas.shortestPathWeight = self.canvas.g.es.attributes()[opt-1]
+            self.canvas.shortestPathWeight = self.canvas.g.es.attributes()[opt - 1]
         else:
             self.canvas.shortestPathWeight = None

@@ -2,7 +2,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QComboBox, QPushButton, QLabel
 from PyQt5.uic import loadUi
 
-from Canvas import Canvas
+from canvas import Canvas
 
 
 class RenameDialog(QDialog):
@@ -17,7 +17,7 @@ class RenameDialog(QDialog):
         self.renameBtn = self.findChild(QPushButton, 'pushButton')
         self.label = self.findChild(QLabel, 'label')
         self.label.setText('Choose an attribute to be renamed as "' + self.newAttributeName + '" ')
-        self.type = getattr(self.sender(),"type")
+        self.type = getattr(self.sender(), "type")
         self.addSelectOptions()
 
     def addSelectOptions(self):
@@ -29,15 +29,8 @@ class RenameDialog(QDialog):
             self.renameBtn.clicked.connect(self.rename)
 
     def rename(self):
-        if self.type=="EDGE":
-            opt = int(self.attribute.currentIndex())
-            key = self.canvas.g.es.attributes()[opt]
-            self.canvas.g.es[self.newAttributeName] = self.canvas.g.es[key]
-            del self.canvas.g.es[key]
-            self.label.setText('"' + key + '"' + ' has been renamed to ' + '"' + self.newAttributeName + '"')
-        if self.type=="VERTEX":
-            opt = int(self.attribute.currentIndex())
-            key = self.canvas.g.vs.attributes()[opt]
-            self.canvas.g.vs[self.newAttributeName] = self.canvas.g.vs[key]
-            del self.canvas.g.vs[key]
-            self.label.setText('"' + key + '"' + ' has been renamed to ' + '"' + self.newAttributeName + '"')
+        ev = self.canvas.g.es if self.type == 'EDGE' else self.canvas.g.vs
+        key = ev.attributes()[self.attribute.currentIndex()]
+        ev[self.newAttributeName] = ev[key]
+        del ev[key]
+        self.label.setText(f'"{key}" has been renamed to "{self.newAttributeName}"')

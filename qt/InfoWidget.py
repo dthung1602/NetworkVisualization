@@ -109,8 +109,7 @@ class InfoWidget(QWidget):
 
 class VertexInfoWidget(InfoWidget):
     title = 'VERTEX INFO'
-    ignoredFields = ['color', 'pos', 'de'
-                                     'gree']
+    ignoredFields = ['color', 'pos', 'degree']
 
 
 class EdgeInfoWidget(InfoWidget):

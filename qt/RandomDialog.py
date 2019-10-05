@@ -2,7 +2,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QComboBox, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PyQt5.uic import loadUi
 import numpy as np
-from Canvas import Canvas
+from canvas import Canvas
+from .utils import clearLayout
 
 DIST = [
     'Normal distribution',
@@ -85,10 +86,10 @@ class RandomDialog(QDialog):
         self.selectDistribution.currentIndexChanged.connect(self.changeDist)
 
     def default(self):
-        self.clearLayout(self.randomLayout)
+        clearLayout(self.randomLayout)
 
     def normalDistribution(self):
-        self.clearLayout(self.randomLayout)
+        clearLayout(self.randomLayout)
         meanLabel = QLabel('Mean: ')
         meanLabel.setStyleSheet(self.labelStyleSheet)
         self.mean.setStyleSheet(self.valueLabelStyleSheet)
@@ -117,7 +118,7 @@ class RandomDialog(QDialog):
         self.generateBtn.pressed.connect(self.generateNormalDistribution)
 
     def uniformDistribution(self):
-        self.clearLayout(self.randomLayout)
+        clearLayout(self.randomLayout)
         minLabel = QLabel('Min: ')
         minLabel.setStyleSheet(self.labelStyleSheet)
         self.minEdit.setStyleSheet(self.valueLabelStyleSheet)
@@ -155,11 +156,6 @@ class RandomDialog(QDialog):
                 label.show()
 
         return func
-
-    @staticmethod
-    def clearLayout(layout):
-        for i in reversed(range(layout.count())):
-            layout.itemAt(i).widget().deleteLater()
 
     def generateNormalDistribution(self):
         mean = float(self.meanEdit.text())

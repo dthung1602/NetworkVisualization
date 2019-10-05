@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import *
 from igraph import VertexDendrogram
 from numpy import *
 
-from utils import *
+from .utils import *
 
 
 class Canvas(QWidget):

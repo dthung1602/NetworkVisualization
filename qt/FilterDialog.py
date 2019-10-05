@@ -2,8 +2,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QComboBox, QWidget, QPushButton, QLineEdit, QLabel, QTabWidget
 from PyQt5.uic import loadUi
 
-from Canvas import Canvas
-from utils import LAYOUT_WITH_WEIGHT
+from canvas import Canvas
+from canvas.utils import LAYOUT_WITH_WEIGHT
 
 LAYOUT_OPTIONS = [
     ['Bipartite', 'layout_bipartite'],
@@ -40,7 +40,7 @@ CENTRALITY_OPTIONS = [
 ]
 
 
-class Filter(QWidget):
+class FilterDialog(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
         self.canvas = canvas
@@ -119,10 +119,8 @@ class Filter(QWidget):
 
     def setEdgeAttr(self):
         opt = self.selectEdgeAttribute.currentIndex()
-        attr = self.canvas.g.es.attributes()[opt-1]
-        print("the ATTTR ISSSSSSSSSSSs", attr)
+        attr = self.canvas.g.es.attributes()[opt - 1]
         self.canvas.setSelectedEdgeAttr(attr)
-
 
     def changeGraphLayout(self):
         layout = LAYOUT_OPTIONS[self.selectLayout.currentIndex()][1]
@@ -156,5 +154,3 @@ class Filter(QWidget):
         attr = self.vertexAttr[self.selectClusterAttribute.currentIndex()]
         self.canvas.setAttributeCluster(attr)
 
-    def changeEdgeAttribute(self):
-        pass

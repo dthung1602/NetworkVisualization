@@ -1,13 +1,15 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QComboBox, QLabel, QGridLayout, QPushButton
+from PyQt5.QtWidgets import QDialog, QLabel, QGridLayout, QPushButton
 from PyQt5.uic import loadUi
-from Canvas import Canvas
-from RandomDialog import RandomDialog
-from RenameDialog import RenameDialog
+
+from canvas import Canvas
+from .RandomDialog import RandomDialog
+from .RenameDialog import RenameDialog
+from .utils import clearLayout
 
 
-class Constraint(QDialog):
+class ConstraintDialog(QDialog):
     attrEdge = {"total delay", "link speed raw"}
     attrNode = {"latitude", "longitude"}
 
@@ -72,7 +74,7 @@ class Constraint(QDialog):
                 i[missingAttr] = None
 
     def notify(self, edgeMissing, vertexMissing):
-        self.clearLayout(self.grid)
+        clearLayout(self.grid)
         self.label.setText("Warning")
         self.label.setStyleSheet(self.labelStyleSheet)
         self.label.setAlignment(Qt.AlignCenter)
@@ -147,8 +149,3 @@ class Constraint(QDialog):
             self.check()
 
         return func
-
-    @staticmethod
-    def clearLayout(layout):
-        for i in reversed(range(layout.count())):
-            layout.itemAt(i).widget().deleteLater()

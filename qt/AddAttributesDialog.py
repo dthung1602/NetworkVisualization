@@ -1,8 +1,8 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QComboBox, QTextEdit, QVBoxLayout, QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PyQt5.uic import loadUi
 
-from Canvas import Canvas
+from canvas import Canvas
 
 
 class BuddyLabel(QLabel):

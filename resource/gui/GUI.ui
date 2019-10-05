@@ -275,50 +275,6 @@ border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
       </size>
      </property>
     </widget>
-    <widget class="QToolButton" name="color_picker_btn">
-     <property name="geometry">
-      <rect>
-       <x>179</x>
-       <y>6</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/color-picker.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Color picker tool&lt;/strong&gt;&lt;br/&gt;Pick a color or sample colors from an image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#color_picker_btn{
-background-color: transparent;
-border-image: url(&quot;resource/gui/tool/color-picker.png&quot;);
-background: none;
-border-radius: 3px;
-background-repeat: none;
-}
-#color_picker_btn:hover{
-background-color: #454545;
-border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/color-picker.png&quot;);
-}
-#color_picker_btn:pressed{
-background-color: #383838;
-border-radius: 3px;
-border-image: url(&quot;resource/gui/tool/color-picker.png&quot;);
-}</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
     <widget class="QToolButton" name="graph_btn">
      <property name="geometry">
       <rect>
@@ -848,7 +804,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="sizePolicy">
