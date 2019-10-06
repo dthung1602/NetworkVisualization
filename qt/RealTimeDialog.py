@@ -3,13 +3,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
 
-from canvas import Canvas
+from canvas import Canvas, RealTimeMode
 from .RandomDialog import RandomDialog
-
-TITLE = [
-    'No.',
-    'Key',
-]
 
 DIST = [
     'Normal distribution',
@@ -31,9 +26,11 @@ class BuddyLabel(QLabel):
 
 
 class RealTimeDialog(QWidget):
-    def __init__(self, canvas: Canvas):
+    def __init__(self, canvas: Canvas, realtimeMode: RealTimeMode):
         super().__init__()
         self.canvas = canvas
+        self.realtimeMode = realtimeMode
+
         loadUi('resource/gui/RealTimeDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
@@ -61,14 +58,14 @@ class RealTimeDialog(QWidget):
         self.addVertexKey()
         self.addEdgeKey()
         self.selectDistribution = QComboBox()
-        self.selectDistribution.addItems([opt for opt in DIST])
+        self.selectDistribution.addItems(DIST)
 
         for i in range(len(self.checkBoxList)):
             self.checkBoxList[i].stateChanged.connect(self.checkBoxEdited)
 
-    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        self.canvas.inRealTimeMode = False
-        super().closeEvent(a0)
+    def closeEvent(self, event):
+        self.canvas.removeMode(self.realtimeMode)
+        super().closeEvent(event)
 
     def addVertexKey(self):
         count = 1
@@ -132,9 +129,6 @@ class RealTimeDialog(QWidget):
                 self.edgeGridLayout.addWidget(secondValueLabel, count, 4)
                 count += 1
 
-    def sliderValueChange(self):
-        self.fPs = self.slider.value()
-
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
             self.openRandomDialog(self.sender().objectName())
@@ -156,11 +150,7 @@ class RealTimeDialog(QWidget):
         self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
 
     def realTimeEvent(self):
-        self.attr.append(self.vertexAttr)
-        self.attr.append(self.edgeAttr)
-        self.attr.append(self.fps)
-        self.canvas.inRealTimeMode = True
-        self.canvas.startRealTime(self.attr)
+        self.canvas.addMode(self.realtimeMode)
 
     def notify(self, mes, type):
         dist, value1, value2, name = mes

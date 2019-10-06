@@ -2,48 +2,21 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QComboBox, QWidget, QPushButton, QLineEdit, QLabel, QTabWidget
 from PyQt5.uic import loadUi
 
-from canvas import Canvas
-from canvas.utils import LAYOUT_WITH_WEIGHT
-
-LAYOUT_OPTIONS = [
-    ['Bipartite', 'layout_bipartite'],
-    ['Circle', 'layout_circle'],
-    ['Distributed Recursive', 'layout_drl'],
-    ['Fruchterman-Reingold', 'layout_fruchterman_reingold'],
-    ['Graphopt', 'layout_graphopt'],
-    ['Grid', 'layout_grid'],
-    ['Kamada-Kawai', 'layout_kamada_kawai'],
-    ['Large Graph', 'layout_lgl'],
-    ['MDS', 'layout_mds'],
-    ['Random', 'layout_random'],
-    ['Reingold-Tilford', 'layout_reingold_tilford'],
-    ['Reingold-Tilford Circular', 'layout_reingold_tilford_circular'],
-    ['Star', 'layout_star']
-]
-
-CLUSTERING_ALGO_OPTIONS = [
-    ['Fast Greedy', 'community_fastgreedy'],
-    ['Info Map', 'community_infomap'],
-    ['Leading eigenvector', 'community_leading_eigenvector'],
-    ['Label Propagation', 'community_label_propagation'],
-    ['Multilevel', 'community_multilevel'],
-    ['Optimal Modularity', 'community_optimal_modularity'],
-    ['Edge Betweenness', 'community_edge_betweenness'],
-    ['Spinglass', 'community_spinglass'],
-    ['Walktrap', 'community_walktrap']
-]
-
-CENTRALITY_OPTIONS = [
-    ['Closeness', 'closeness'],
-    ['Betweenness', 'betweenness'],
-    ['Eigenvector', 'evcent']
-]
+from canvas import *
 
 
 class FilterDialog(QWidget):
-    def __init__(self, canvas: Canvas):
+    def __init__(self, canvas: Canvas, layoutMode: LayoutMode, clusterMode: ClusterVerticesMode,
+                 centralityMode: CentralityMode, vertexAttrMode: VertexAttrColorMode,
+                 edgeAttrMode: EdgeAttrColorMode, filterEdgeMode: FilterEdgeMode):
         super().__init__()
         self.canvas = canvas
+        self.layoutMode = layoutMode
+        self.clusterMode = clusterMode
+        self.centralityMode = centralityMode
+        self.vertexAttrMode = vertexAttrMode
+        self.edgeAttrMode = edgeAttrMode
+        self.filterEdgeMode = filterEdgeMode
 
         loadUi('resource/gui/FilterDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
@@ -96,7 +69,7 @@ class FilterDialog(QWidget):
 
         # Filter Edge Opt
         self.selectFilterEdge.addItems(self.edgeWeights)
-        self.applyFilterBtn.pressed.connect(self.changeFilterEdge)
+        self.applyFilterBtn.pressed.connect(self.changeEdgeFilter)
 
         # Centrality
         self.selectCentrality.addItems([opt[0] for opt in CENTRALITY_OPTIONS])
@@ -119,38 +92,42 @@ class FilterDialog(QWidget):
 
     def setEdgeAttr(self):
         opt = self.selectEdgeAttribute.currentIndex()
-        attr = self.canvas.g.es.attributes()[opt - 1]
-        self.canvas.setSelectedEdgeAttr(attr)
+        attr = self.canvas.g.es.attributes()[opt - 1] if opt > 0 else None
+        self.edgeAttrMode.attr = attr
+        self.canvas.addMode(self.edgeAttrMode)
 
     def changeGraphLayout(self):
         layout = LAYOUT_OPTIONS[self.selectLayout.currentIndex()][1]
         i = self.selectLayoutEdgeWeight.currentIndex()
         weight = self.edgeWeights[i - 1] if i > 0 else None
-        self.canvas.setGraphLayout(layout, weight)
+        self.layoutMode.setLayout(layout, weight)
 
     def changeClusteringAlgo(self):
         algo = CLUSTERING_ALGO_OPTIONS[self.selectClusteringAlgo.currentIndex()][1]
         i = self.selectClusteringAlgoEdgeWeight.currentIndex()
         weight = self.edgeWeights[i - 1] if i > 0 else None
-        self.canvas.setClusteringAlgo(algo, weight)
+        self.clusterMode.clusterAlgo = algo
+        self.clusterMode.weight = weight
+        self.canvas.addMode(self.clusterMode)
 
-    def changeFilterEdge(self):
+    def changeEdgeFilter(self):
         attr = self.edgeWeights[self.selectFilterEdge.currentIndex()]
         left = float(self.filterLeft.text())
         right = float(self.filterRight.text())
-        self.canvas.setFilter(attr, left, right)
+        self.filterEdgeMode.setFilters(attr, left, right)
 
     def changeCentrality(self):
         centrality = CENTRALITY_OPTIONS[self.selectCentrality.currentIndex()][1]
         i = self.selectCentralityEdgeWeight.currentIndex()
         weight = self.edgeWeights[i - 1] if i > 0 else None
-        self.canvas.setCentrality(centrality, weight)
-        self.canvas.update()
+        self.centralityMode.centrality = centrality
+        self.centralityMode.weight = weight
+        self.canvas.addMode(self.centralityMode)
 
     def cancelCentrality(self):
-        self.changeClusteringAlgo()
+        self.changeClusteringAlgo()  # TODO
 
     def changeClusterAttribute(self):
         attr = self.vertexAttr[self.selectClusterAttribute.currentIndex()]
-        self.canvas.setAttributeCluster(attr)
-
+        self.vertexAttrMode.attr = attr
+        self.canvas.addMode(self.vertexAttrMode)

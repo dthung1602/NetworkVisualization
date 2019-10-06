@@ -1,4 +1,4 @@
-from math import *
+from math import sin, pi
 from random import choice
 
 from PyQt5.QtGui import *
@@ -11,7 +11,7 @@ LAYOUT_WITH_WEIGHT = ['layout_drl', 'layout_fruchterman_reingold']
 
 
 def randomColor():
-    return QBrush(QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256))))
+    return QColor(choice(range(0, 256)), choice(range(0, 256)), choice(range(0, 256)))
 
 
 def arrayToSpectrum(arr):
