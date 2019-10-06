@@ -71,14 +71,8 @@ class MainWindow(QMainWindow):
             self.edgeAttrColorMode,
             self.filterEdgeMode
         )
-        self.statDialog = StatDialog(self.canvas)
-        self.shortestPathWeightDialog = ShortestPathWeightDialog(self.canvas, self.shortestPathMode)
-        self.constraintDialog = ConstraintDialog(self.canvas)
-        self.addAttributesDialog = AddAttributesDialog(self.canvas)
-        self.realTimeDialog = RealTimeDialog(self.canvas, self.realTimeMode)
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
-        # self.canvas.setViewMode(DARK_MODE)
         self.bindMenuActions()
 
     def bindMenuActions(self):
@@ -128,16 +122,16 @@ class MainWindow(QMainWindow):
         zoomResetBtn.pressed.connect(self.canvas.zoomResetEvent)
         # Add vertex
         addVertexBtn = self.findChild(QToolButton, 'add_node_btn')
-        addVertexBtn.pressed.connect(self.addVertex)
+        addVertexBtn.pressed.connect(self.editMode.setAddVertex)
         # Delete Vertex
         deleteBtn = self.findChild(QToolButton, 'delete_node_btn')
-        deleteBtn.pressed.connect(self.deleteVertex)
+        deleteBtn.pressed.connect(self.editMode.setDeleteVertex)
         # Add Line
         addLineBtn = self.findChild(QToolButton, 'add_line_btn')
-        addLineBtn.pressed.connect(self.addLine)
+        addLineBtn.pressed.connect(self.editMode.setAddEdge)
         # Delete Line
         deleteLineBtn = self.findChild(QToolButton, 'delete_line_btn')
-        deleteLineBtn.pressed.connect(self.deleteLine)
+        deleteLineBtn.pressed.connect(self.editMode.setDeleteEdge)
 
         # --- Mode ---
         # shortest path
@@ -166,11 +160,12 @@ class MainWindow(QMainWindow):
         realTimeBtn.pressed.connect(self.openRealTimeDialog)
 
     def openAddAttributesDialog(self):
-        self.addAttributesDialog.exec()
+        AddAttributesDialog(self.canvas).exec()
 
     def openConstraintDialog(self):
-        self.constraintDialog.exec()
-        self.constraintDialog.check()
+        constraintDialog = ConstraintDialog(self.canvas)
+        constraintDialog.exec()
+        constraintDialog.check()
 
     def changeViewModeTo(self, viewModeClass):
         def func():
@@ -179,30 +174,6 @@ class MainWindow(QMainWindow):
             self.canvas.update()
 
         return func
-
-    def deleteVertex(self):
-        self.canvas.deleteNode = True
-        self.canvas.addNode = False
-        self.canvas.addLine = False
-        self.canvas.deleteLine = False
-
-    def deleteLine(self):
-        self.canvas.addNode = False
-        self.canvas.deleteNode = False
-        self.canvas.deleteLine = True
-        self.canvas.addLine = False
-
-    def addVertex(self):
-        self.canvas.addNode = True
-        self.canvas.deleteNode = False
-        self.canvas.addLine = False
-        self.canvas.deleteLine = False
-
-    def addLine(self):
-        self.canvas.addLine = True
-        self.canvas.deleteNode = False
-        self.canvas.addNode = False
-        self.canvas.deleteLine = False
 
     def newGraph(self):
         g = igraph.read('resource/graph/__empty__.graphml')
@@ -252,7 +223,7 @@ class MainWindow(QMainWindow):
                 self.canvas.g.write_gml(fileName)
 
     def activateFindShortestPathMode(self):
-        self.shortestPathWeightDialog.exec()
+        ShortestPathWeightDialog(self.canvas, self.shortestPathMode).exec()
         self.canvas.addMode(self.shortestPathMode)
 
     def activateEditGraphMode(self):
@@ -275,10 +246,10 @@ class MainWindow(QMainWindow):
         clearLayout(self.infoArea)
 
     def openStatDialog(self):
-        self.statDialog.show()
+        StatDialog(self.canvas).show()
 
     def openFilterDialog(self):
         self.filterDialog.show()
 
     def openRealTimeDialog(self):
-        self.realTimeDialog.show()
+        RealTimeDialog(self.canvas, self.realTimeMode).show()

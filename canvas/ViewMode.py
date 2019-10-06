@@ -29,11 +29,13 @@ class ViewMode(Mode, ABC):
         if 'cluster' not in g.vs.attributes():
             g.vs['color'] = [self.foregroundBrush] * g.vcount()
 
-    # def onUpdateGraph(self):
-    #     for e in self.canvas.g.es:
-    #         e['color'] = self.foregroundPen
-    #     for v in self.canvas.g.vs:
-    #         v['color'] = self.foregroundBrush
+    def onUpdateGraph(self):
+        for e in self.canvas.g.es:
+            if not e['color']:
+                e['color'] = self.foregroundPen
+        for v in self.canvas.g.vs:
+            if not v['color']:
+                v['color'] = self.foregroundBrush
 
     def onPaintBegin(self, painter: QPainter):
         painter.fillRect(self.canvas.SCREEN_RECT, self.backgroundBrush)

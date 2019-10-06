@@ -122,8 +122,6 @@ class RealTimeDialog(QWidget):
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
             self.openRandomDialog(self.sender().objectName())
-        else:
-            print('unchecked')
 
     def openRandomDialog(self, name):
         randomDialog = RandomDialog(self.canvas, getattr(self.sender(), "type"))
@@ -135,7 +133,6 @@ class RealTimeDialog(QWidget):
             self.edgeAttr.append(randomDialog.attrBack)
         else:
             self.vertexAttr.append(randomDialog.attrBack)
-        print("Sender type : ", getattr(self.sender(), "type"))
         self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
         self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
 

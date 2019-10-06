@@ -15,7 +15,8 @@ class InfoWidget(QWidget):
 
         self.dict = value.attributes()
         for f in self.ignoredFields:
-            del self.dict[f]
+            if f in self.dict:
+                del self.dict[f]
 
         # Title layout
         layout = QGridLayout(self)
@@ -71,13 +72,13 @@ class InfoWidget(QWidget):
             self.valueLabelEditItems[i].editingFinished.connect(self.saveInfo)
 
     def saveInfo(self):
-        for i, count in zip(self.value.attributes(), range(len(self.valueLabelItems))):
-            newValue = self.valueLabelItems[count].text()
+        for attr, i in zip(self.dict.keys(), range(len(self.valueLabelItems))):
+            newValue = self.valueLabelItems[i].text()
             try:
                 newValue = float(newValue)
             except ValueError:
                 pass
-            self.value[i] = newValue
+            self.value[attr] = newValue
 
         self.canvas.update()
 
