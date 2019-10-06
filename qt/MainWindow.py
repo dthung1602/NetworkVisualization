@@ -62,15 +62,7 @@ class MainWindow(QMainWindow):
             self.canvas.addMode(m)
         self.canvas.setGraph(DEFAULT_GRAPH)
 
-        self.filterDialog = FilterDialog(
-            self.canvas,
-            self.layoutMode,
-            self.clusterVerticesMode,
-            self.centralityMode,
-            self.vertexAttrColorMode,
-            self.edgeAttrColorMode,
-            self.filterEdgeMode
-        )
+        self.realTimeDialog = self.statDialog = self.filterDialog = None
 
         self.infoArea = self.findChild(QVBoxLayout, 'infoArea')
         self.bindMenuActions()
@@ -246,10 +238,21 @@ class MainWindow(QMainWindow):
         clearLayout(self.infoArea)
 
     def openStatDialog(self):
-        StatDialog(self.canvas).show()
+        self.statDialog = StatDialog(self.canvas)
+        self.statDialog.show()
 
     def openFilterDialog(self):
+        self.filterDialog = FilterDialog(
+            self.canvas,
+            self.layoutMode,
+            self.clusterVerticesMode,
+            self.centralityMode,
+            self.vertexAttrColorMode,
+            self.edgeAttrColorMode,
+            self.filterEdgeMode
+        )
         self.filterDialog.show()
 
     def openRealTimeDialog(self):
-        RealTimeDialog(self.canvas, self.realTimeMode).show()
+        self.realTimeDialog = RealTimeDialog(self.canvas, self.realTimeMode)
+        self.realTimeDialog.show()
