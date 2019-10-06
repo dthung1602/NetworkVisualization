@@ -39,7 +39,6 @@ class ConstraintDialog(QDialog):
     def checkConstrainEdge(self):
         attr = self.g.es.attributes()
         currAttr = [x.lower() for x in attr]
-        print("Edge attr : ", currAttr)
         missingAttr = []
         for i in self.attrEdge:
             if i not in currAttr:
@@ -59,9 +58,7 @@ class ConstraintDialog(QDialog):
         edgeMissing = self.checkConstrainEdge()
         vertexMissing = self.checkConstrainVertex()
         self.notify(edgeMissing, vertexMissing)
-        if len(edgeMissing) == 0 and len(vertexMissing) == 0:
-            return True
-        return False
+        return len(edgeMissing) == 0 and len(vertexMissing) == 0
 
     def link(self, missingAttr, linkAttr, type):
         if type.upper() == "EDGE":
@@ -105,7 +102,6 @@ class ConstraintDialog(QDialog):
                 setattr(buttonRandom, 'type', 'EDGE')
                 count = count + 1
         count = 1
-        print(vertexMissing)
         if len(vertexMissing) > 0:
             missLabel = QLabel("Missing attribute of vertex")
             missLabel.setStyleSheet(self.labelStyleSheet)

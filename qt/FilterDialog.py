@@ -125,7 +125,7 @@ class FilterDialog(QWidget):
         self.canvas.addMode(self.centralityMode)
 
     def cancelCentrality(self):
-        self.changeClusteringAlgo()  # TODO
+        self.changeClusteringAlgo()
 
     def changeClusterAttribute(self):
         attr = self.vertexAttr[self.selectClusterAttribute.currentIndex()]

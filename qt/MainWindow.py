@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Network Visualization - Team Black")
         self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
 
-        self.canvas = Canvas(1120, 760)
+        self.canvas = Canvas(1129, 760)
         self.findChild(QVBoxLayout, 'verticalLayout').addWidget(self.canvas)
 
         # Modes
@@ -62,7 +62,6 @@ class MainWindow(QMainWindow):
             self.canvas.addMode(m)
         self.canvas.setGraph(DEFAULT_GRAPH)
 
-        # TODO qwidget vs qdialog
         self.filterDialog = FilterDialog(
             self.canvas,
             self.layoutMode,

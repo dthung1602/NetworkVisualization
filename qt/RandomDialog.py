@@ -1,27 +1,15 @@
+import numpy as np
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QComboBox, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PyQt5.uic import loadUi
-import numpy as np
+
 from canvas import Canvas
-from .utils import clearLayout
+from .utils import BuddyLabel, clearLayout, textEdited
 
 DIST = [
     'Normal distribution',
     'Uniform distribution'
 ]
-
-
-class BuddyLabel(QLabel):
-    def __init__(self, buddy, parent=None):
-        super(BuddyLabel, self).__init__(parent)
-        self.buddy = buddy
-        self.buddy.hide()
-
-    # When it's clicked, hide itself and show its buddy
-    def mousePressEvent(self, event):
-        self.hide()
-        self.buddy.show()
-        self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click again
 
 
 class RandomDialog(QDialog):
@@ -109,12 +97,12 @@ class RandomDialog(QDialog):
         # acceptBtn = QPushButton('Generate', self)
         # acceptBtn.setStyleSheet(self.buttonStyleSheet)
         # self.randomLayout.addWidget(acceptBtn)
-        # self.meanEdit.self.textEdited(self.mean, self.meanEdit))
-        # acceptBtn.clicked.connect(self.textEdited(self.standardDeviation, self.standardDeviationEdit))
+        # self.meanEdit.textEdited(self.mean, self.meanEdit))
+        # acceptBtn.clicked.connect(textEdited(self.standardDeviation, self.standardDeviationEdit))
         # acceptBtn.clicked.connect(self.generateNormalDistribution)
-        self.meanEdit.editingFinished.connect(self.textEdited(self.mean, self.meanEdit))
+        self.meanEdit.editingFinished.connect(textEdited(self.mean, self.meanEdit))
         self.standardDeviationEdit.editingFinished.connect(
-            self.textEdited(self.standardDeviation, self.standardDeviationEdit))
+            textEdited(self.standardDeviation, self.standardDeviationEdit))
         self.generateBtn.pressed.connect(self.generateNormalDistribution)
 
     def uniformDistribution(self):
@@ -138,24 +126,10 @@ class RandomDialog(QDialog):
         # acceptBtn = QPushButton('Generate', self)
         # acceptBtn.setStyleSheet(self.buttonStyleSheet)
         # self.randomLayout.addWidget(acceptBtn)
-        self.minEdit.editingFinished.connect(self.textEdited(self.min, self.minEdit))
-        self.maxEdit.editingFinished.connect(self.textEdited(self.max, self.maxEdit))
+        self.minEdit.editingFinished.connect(textEdited(self.min, self.minEdit))
+        self.maxEdit.editingFinished.connect(textEdited(self.max, self.maxEdit))
         self.generateBtn.pressed.connect(self.generateUniformDistribution)
         # acceptBtn.clicked.connect(self.generateUniformDistribution)
-
-    @staticmethod
-    def textEdited(label, edit):
-        def func():
-            if edit.text():
-                label.setText(str(edit.text()))
-                edit.hide()
-                label.show()
-            else:
-                # If the input is left empty, revert back to the label showing
-                edit.hide()
-                label.show()
-
-        return func
 
     def generateNormalDistribution(self):
         mean = float(self.meanEdit.text())

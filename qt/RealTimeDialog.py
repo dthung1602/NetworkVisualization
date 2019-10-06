@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
@@ -10,19 +10,9 @@ DIST = [
     'Normal distribution',
     'Uniform distribution'
 ]
+VERTEX_IGNORED_KEYS = ['hyperedge']
 
-
-class BuddyLabel(QLabel):
-    def __init__(self, buddy, parent=None):
-        super(BuddyLabel, self).__init__(parent)
-        self.buddy = buddy
-        self.buddy.hide()
-
-    # When it's clicked, hide itself and show its buddy
-    def mousePressEvent(self, event):
-        self.hide()
-        self.buddy.show()
-        self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click again
+EDGE_IGNORED_KEYS = ['b_delay', 't_delay', 'p_delay', 'key', 'zorder', 'edge_weight']
 
 
 class RealTimeDialog(QWidget):
@@ -73,7 +63,7 @@ class RealTimeDialog(QWidget):
             value = self.canvas.g.vs[0][key]
             keyLabel = QLabel(key)
             keyLabel.setStyleSheet(self.labelStyleSheet)
-            if isinstance(value, float) and key not in VertexKeyIgnore.ignoredFields:
+            if isinstance(value, float) and key not in VERTEX_IGNORED_KEYS:
                 self.vertexGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
                 checkBox.setStyleSheet("QCheckBox{   border: none; color: red;}")
@@ -108,7 +98,7 @@ class RealTimeDialog(QWidget):
             value = self.canvas.g.es[0][key]
             keyLabel = QLabel(key)
             keyLabel.setStyleSheet(self.labelStyleSheet)
-            if isinstance(value, float) and key not in EdgeKeyIgnore.ignoredFields:
+            if isinstance(value, float) and key not in EDGE_IGNORED_KEYS:
                 self.edgeGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
                 checkBox.setObjectName(key)
@@ -150,6 +140,9 @@ class RealTimeDialog(QWidget):
         self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
 
     def realTimeEvent(self):
+        self.realtimeMode.vertexAttr = self.vertexAttr
+        self.realtimeMode.edgeAttr = self.edgeAttr
+        self.realtimeMode.fps = self.fps
         self.canvas.addMode(self.realtimeMode)
 
     def notify(self, mes, type):
@@ -192,11 +185,3 @@ class RealTimeDialog(QWidget):
                                 (item.widget()).setText("Min = " + str(value1))
                             if (item.widget()).objectName() == (name + 'value2'):
                                 (item.widget()).setText("Max = " + str(value2))
-
-
-class VertexKeyIgnore(RealTimeDialog):
-    ignoredFields = ['hyperedge']
-
-
-class EdgeKeyIgnore(RealTimeDialog):
-    ignoredFields = ['b_delay', 't_delay', 'p_delay', 'key', 'zorder', 'edge_weight']

@@ -1,18 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QLineEdit, QHBoxLayout
 
-
-class BuddyLabel(QLabel):
-    def __init__(self, buddy, parent=None):
-        super(BuddyLabel, self).__init__(parent)
-        self.buddy = buddy
-        self.buddy.hide()
-
-    # When it's clicked, hide itself and show its buddy
-    def mousePressEvent(self, event):
-        self.hide()
-        self.buddy.show()
-        self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click again
+from .utils import BuddyLabel, textEdited
 
 
 class InfoWidget(QWidget):
@@ -77,23 +66,9 @@ class InfoWidget(QWidget):
 
         # Update info
         for i in range(len(self.valueLabelEditItems)):
-            func = self.textEdited(self.valueLabelItems[i], self.valueLabelEditItems[i])
+            func = textEdited(self.valueLabelItems[i], self.valueLabelEditItems[i])
             self.valueLabelEditItems[i].editingFinished.connect(func)
             self.valueLabelEditItems[i].editingFinished.connect(self.saveInfo)
-
-    @staticmethod
-    def textEdited(label, edit):
-        def func():
-            if edit.text():
-                label.setText(str(edit.text()))
-                edit.hide()
-                label.show()
-            else:
-                # If the input is left empty, revert back to the label showing
-                edit.hide()
-                label.show()
-
-        return func
 
     def saveInfo(self):
         for i, count in zip(self.value.attributes(), range(len(self.valueLabelItems))):
@@ -114,4 +89,4 @@ class VertexInfoWidget(InfoWidget):
 
 class EdgeInfoWidget(InfoWidget):
     title = 'EDGE INFO'
-    ignoredFields = ['line']
+    ignoredFields = ['color', 'edge_color', 'line']

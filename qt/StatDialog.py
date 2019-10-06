@@ -18,7 +18,7 @@ SELECT_PLOT = [
 ]
 
 
-class StatDialog(QWidget):  # todo window/widget?
+class StatDialog(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
         self.canvas = canvas
