@@ -32,16 +32,16 @@ class RealTimeMode(Mode):
             if len(self.vertexAttr) > 0:
                 for v in self.vertexAttr:
                     if v[0] == "Normal Distribution":
-                        g.vs[v[3]] = random.normal(v[1], v[2], g.vcount())
+                        g.vs[v[2]] = [abs(random.normal(i, v[1])) for i in g.vs[v[2]]]
                     else:
-                        g.vs[v[3]] = random.uniform(v[1], v[2], g.vcount())
+                        g.vs[v[2]] = [abs(random.uniform(i - v[1], i + v[1])) for i in g.vs[v[2]]]
 
             if len(self.edgeAttr) > 0:
                 for edge in self.edgeAttr:
                     if edge[0] == "Normal Distribution":
-                        g.es[edge[3]] = random.normal(edge[1], edge[2], g.ecount())
+                        g.es[edge[2]] = [abs(random.normal(i, edge[1])) for i in g.es[edge[2]]]
                     else:
-                        g.es[edge[3]] = random.uniform(edge[1], edge[2], g.ecount())
+                        g.es[edge[2]] = [abs(random.uniform(i - edge[1], i + edge[1])) for i in g.es[edge[2]]]
 
             self.canvas.notifyGraphUpdated()
             self.canvas.update()
