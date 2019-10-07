@@ -2,14 +2,16 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QComboBox
 from PyQt5.uic import loadUi
 
-from Canvas import Canvas
+from canvas import Canvas, ShortestPathMode
 
 
-class WeightDialog(QDialog):
-    def __init__(self, canvas: Canvas):
+class ShortestPathWeightDialog(QDialog):
+    def __init__(self, canvas: Canvas, shortestPathMode: ShortestPathMode):
         super().__init__()
         self.canvas = canvas
-        loadUi('resource/gui/WeightDialog.ui', self)
+        self.shortestPathMode = shortestPathMode
+
+        loadUi('resource/gui/ShortestPathWeightDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black - Input Weight")
         self.selectWeight = self.findChild(QComboBox, 'selectWeight')
@@ -20,7 +22,4 @@ class WeightDialog(QDialog):
         self.selectWeight.currentIndexChanged.connect(self.changeWeight)
 
     def changeWeight(self, opt):
-        if opt != 0:
-            self.canvas.shortestPathWeight = self.canvas.g.es.attributes()[opt-1]
-        else:
-            self.canvas.shortestPathWeight = None
+        self.shortestPathMode.weight = None if opt == 0 else self.canvas.g.es.attributes()[opt - 1]

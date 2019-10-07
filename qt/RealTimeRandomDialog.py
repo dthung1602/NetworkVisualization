@@ -1,8 +1,10 @@
+import numpy as np
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QComboBox, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PyQt5.uic import loadUi
-import numpy as np
-from Canvas import Canvas
+
+from canvas import Canvas
+from .utils import BuddyLabel, clearLayout, textEdited
 
 DIST = [
     'Normal distribution',
@@ -10,20 +12,7 @@ DIST = [
 ]
 
 
-class BuddyLabel(QLabel):
-    def __init__(self, buddy, parent=None):
-        super(BuddyLabel, self).__init__(parent)
-        self.buddy = buddy
-        self.buddy.hide()
-
-    # When it's clicked, hide itself and show its buddy
-    def mousePressEvent(self, event):
-        self.hide()
-        self.buddy.show()
-        self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click again
-
-
-class RandomDialog(QDialog):
+class RealTimeRandomDialog(QDialog):
     def __init__(self, canvas: Canvas, type):
         super().__init__()
         self.canvas = canvas
@@ -87,17 +76,10 @@ class RandomDialog(QDialog):
         self.selectDistribution.currentIndexChanged.connect(self.changeDist)
 
     def default(self):
-        self.clearLayout(self.randomLayout)
+        clearLayout(self.randomLayout)
 
     def normalDistribution(self):
-        self.clearLayout(self.randomLayout)
-        meanLabel = QLabel('Mean: ')
-        meanLabel.setStyleSheet(self.labelStyleSheet)
-        self.mean.setStyleSheet(self.valueLabelStyleSheet)
-        self.meanEdit.setStyleSheet(self.valueLabelStyleSheet)
-        self.randomLayout.addWidget(meanLabel)
-        self.randomLayout.addWidget(self.mean)
-        self.randomLayout.addWidget(self.meanEdit)
+        clearLayout(self.randomLayout)
 
         stdevLabel = QLabel('Standard Deviation: ')
         stdevLabel.setStyleSheet(self.labelStyleSheet)
@@ -107,26 +89,12 @@ class RandomDialog(QDialog):
         self.randomLayout.addWidget(self.standardDeviation)
         self.randomLayout.addWidget(self.standardDeviationEdit)
 
-        # acceptBtn = QPushButton('Generate', self)
-        # acceptBtn.setStyleSheet(self.buttonStyleSheet)
-        # self.randomLayout.addWidget(acceptBtn)
-        # self.meanEdit.self.textEdited(self.mean, self.meanEdit))
-        # acceptBtn.clicked.connect(self.textEdited(self.standardDeviation, self.standardDeviationEdit))
-        # acceptBtn.clicked.connect(self.generateNormalDistribution)
-        self.meanEdit.editingFinished.connect(self.textEdited(self.mean, self.meanEdit))
         self.standardDeviationEdit.editingFinished.connect(
-            self.textEdited(self.standardDeviation, self.standardDeviationEdit))
+            textEdited(self.standardDeviation, self.standardDeviationEdit))
         self.generateBtn.pressed.connect(self.generateNormalDistribution)
 
     def uniformDistribution(self):
-        self.clearLayout(self.randomLayout)
-        minLabel = QLabel('Min: ')
-        minLabel.setStyleSheet(self.labelStyleSheet)
-        self.minEdit.setStyleSheet(self.valueLabelStyleSheet)
-        self.min.setStyleSheet(self.valueLabelStyleSheet)
-        self.randomLayout.addWidget(minLabel)
-        self.randomLayout.addWidget(self.min)
-        self.randomLayout.addWidget(self.minEdit)
+        clearLayout(self.randomLayout)
 
         maxLabel = QLabel('Max: ')
         maxLabel.setStyleSheet(self.labelStyleSheet)
@@ -136,32 +104,9 @@ class RandomDialog(QDialog):
         self.randomLayout.addWidget(self.max)
         self.randomLayout.addWidget(self.maxEdit)
 
-        # acceptBtn = QPushButton('Generate', self)
-        # acceptBtn.setStyleSheet(self.buttonStyleSheet)
-        # self.randomLayout.addWidget(acceptBtn)
-        self.minEdit.editingFinished.connect(self.textEdited(self.min, self.minEdit))
-        self.maxEdit.editingFinished.connect(self.textEdited(self.max, self.maxEdit))
+        self.maxEdit.editingFinished.connect(textEdited(self.max, self.maxEdit))
         self.generateBtn.pressed.connect(self.generateUniformDistribution)
         # acceptBtn.clicked.connect(self.generateUniformDistribution)
-
-    @staticmethod
-    def textEdited(label, edit):
-        def func():
-            if edit.text():
-                label.setText(str(edit.text()))
-                edit.hide()
-                label.show()
-            else:
-                # If the input is left empty, revert back to the label showing
-                edit.hide()
-                label.show()
-
-        return func
-
-    @staticmethod
-    def clearLayout(layout):
-        for i in reversed(range(layout.count())):
-            layout.itemAt(i).widget().deleteLater()
 
     def generateNormalDistribution(self):
         mean = float(self.meanEdit.text())

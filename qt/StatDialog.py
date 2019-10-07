@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import igraph as ig
-from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QComboBox, QSizePolicy
 from PyQt5.uic import loadUi
@@ -9,19 +7,18 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
-from Canvas import Canvas
-
+from canvas import Canvas
+from .utils import clearLayout
 # import figureOption
 
 SELECT_PLOT = [
     ['Edge Weight'],
     ['Edge Speed Raw'],
     ['Degree Histogram'],
-
 ]
 
 
-class Stat(QWidget):
+class StatDialog(QWidget):
     def __init__(self, canvas: Canvas):
         super().__init__()
         self.canvas = canvas
@@ -56,24 +53,19 @@ class Stat(QWidget):
         self.changeGraphLayout(i)
 
     def edgeWeightPlot(self):
-        self.clearLayout(self.layout)
+        clearLayout(self.layout)
         w = WidgetPlot(0, self.styleOpt, self.canvas)
         self.layout.addWidget(w)
 
     def edgeSpeedPlot(self):
-        self.clearLayout(self.layout)
+        clearLayout(self.layout)
         w = WidgetPlot(1, self.styleOpt, self.canvas)
         self.layout.addWidget(w)
 
     def degreeHistogram(self):
-        self.clearLayout(self.layout)
+        clearLayout(self.layout)
         w = WidgetPlot(2, self.styleOpt, self.canvas)
         self.layout.addWidget(w)
-
-    @staticmethod
-    def clearLayout(layout):
-        for i in reversed(range(layout.count())):
-            layout.itemAt(i).widget().deleteLater()
 
 
 class WidgetPlot(QWidget):
@@ -137,4 +129,3 @@ class Plot(FigureCanvas):
         ax1.set_ylabel('Number of Vertex')
         n, bins, patches = ax1.hist(weightArr, num_bins)
         return fig
-

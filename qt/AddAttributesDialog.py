@@ -1,21 +1,9 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QComboBox, QTextEdit, QVBoxLayout, QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PyQt5.uic import loadUi
 
-from Canvas import Canvas
-
-
-class BuddyLabel(QLabel):
-    def __init__(self, buddy, parent=None):
-        super(BuddyLabel, self).__init__(parent)
-        self.buddy = buddy
-        self.buddy.hide()
-
-    # When it's clicked, hide itself and show its buddy
-    def mousePressEvent(self, event):
-        self.hide()
-        self.buddy.show()
-        self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click again
+from canvas import Canvas
+from .utils import BuddyLabel, textEdited
 
 
 class AddAttributesDialog(QDialog):
@@ -48,7 +36,7 @@ class AddAttributesDialog(QDialog):
         self.layout.addWidget(self.value)
         self.layout.addWidget(self.valueEdit)
 
-        self.button.clicked.connect(self.textEdited(self.value, self.valueEdit))
+        self.button.clicked.connect(textEdited(self.value, self.valueEdit))
         self.button.clicked.connect(self.saveVertexInfo)
 
         # ------------Edge-----------------
@@ -68,22 +56,8 @@ class AddAttributesDialog(QDialog):
         self.layout2.addWidget(self.value2)
         self.layout2.addWidget(self.valueEdit2)
 
-        self.button2.clicked.connect(self.textEdited(self.value2, self.valueEdit2))
+        self.button2.clicked.connect(textEdited(self.value2, self.valueEdit2))
         self.button2.clicked.connect(self.saveEdgeInfo)
-
-    @staticmethod
-    def textEdited(label, edit):
-        def func():
-            if edit.text():
-                label.setText(str(edit.text()))
-                edit.hide()
-                label.show()
-            else:
-                # If the input is left empty, revert back to the label showing
-                edit.hide()
-                label.show()
-
-        return func
 
     def saveVertexInfo(self):
         valueEdited = str(self.valueEdit.text())

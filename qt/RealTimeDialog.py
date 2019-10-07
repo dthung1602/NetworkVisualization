@@ -1,43 +1,30 @@
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
 
-from Canvas import Canvas
-from RandomDialog import RandomDialog
-
-TITLE = [
-    'No.',
-    'Key',
-]
+from canvas import Canvas, RealTimeMode
+from .RealTimeRandomDialog import RealTimeRandomDialog
 
 DIST = [
     'Normal distribution',
     'Uniform distribution'
 ]
+VERTEX_IGNORED_KEYS = ['hyperedge']
 
-
-class BuddyLabel(QLabel):
-    def __init__(self, buddy, parent=None):
-        super(BuddyLabel, self).__init__(parent)
-        self.buddy = buddy
-        self.buddy.hide()
-
-    # When it's clicked, hide itself and show its buddy
-    def mousePressEvent(self, event):
-        self.hide()
-        self.buddy.show()
-        self.buddy.setFocus()  # Set focus on buddy so user doesn't have to click again
+EDGE_IGNORED_KEYS = ['b_delay', 't_delay', 'p_delay', 'key', 'zorder', 'edge_weight']
 
 
 class RealTimeDialog(QWidget):
-    def __init__(self, canvas: Canvas):
+    def __init__(self, canvas: Canvas, realtimeMode: RealTimeMode):
         super().__init__()
         self.canvas = canvas
+        self.realtimeMode = realtimeMode
+
         loadUi('resource/gui/RealTimeDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
-        self.labelStyleSheet = ("color: rgb(180,180,180); background-color: transparent;")
+        self.labelStyleSheet = "color: rgb(180,180,180); background-color: transparent;"
         self.checkBoxList = []
         self.vertexAttr = []
         self.edgeAttr = []
@@ -61,14 +48,15 @@ class RealTimeDialog(QWidget):
         self.addVertexKey()
         self.addEdgeKey()
         self.selectDistribution = QComboBox()
-        self.selectDistribution.addItems([opt for opt in DIST])
+
+        self.selectDistribution.addItems(DIST)
 
         for i in range(len(self.checkBoxList)):
             self.checkBoxList[i].stateChanged.connect(self.checkBoxEdited)
 
-    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        self.canvas.inRealTimeMode = False
-        super().closeEvent(a0)
+    def closeEvent(self, event):
+        self.canvas.removeMode(self.realtimeMode)
+        super().closeEvent(event)
 
     def addVertexKey(self):
         count = 1
@@ -76,7 +64,7 @@ class RealTimeDialog(QWidget):
             value = self.canvas.g.vs[0][key]
             keyLabel = QLabel(key)
             keyLabel.setStyleSheet(self.labelStyleSheet)
-            if isinstance(value, float) and key not in VertexKeyIgnore.ignoredFields:
+            if isinstance(value, float) and key not in VERTEX_IGNORED_KEYS:
                 self.vertexGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
                 checkBox.setStyleSheet("QCheckBox{   border: none; color: red;}")
@@ -111,7 +99,7 @@ class RealTimeDialog(QWidget):
             value = self.canvas.g.es[0][key]
             keyLabel = QLabel(key)
             keyLabel.setStyleSheet(self.labelStyleSheet)
-            if isinstance(value, float) and key not in EdgeKeyIgnore.ignoredFields:
+            if isinstance(value, float) and key not in EDGE_IGNORED_KEYS:
                 self.edgeGridLayout.addWidget(keyLabel, count, 0)
                 checkBox = QCheckBox(self)
                 checkBox.setObjectName(key)
@@ -132,17 +120,12 @@ class RealTimeDialog(QWidget):
                 self.edgeGridLayout.addWidget(secondValueLabel, count, 4)
                 count += 1
 
-    def sliderValueChange(self):
-        self.fPs = self.slider.value()
-
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
             self.openRandomDialog(self.sender().objectName())
-        else:
-            print('unchecked')
 
     def openRandomDialog(self, name):
-        randomDialog = RandomDialog(self.canvas, getattr(self.sender(), "type"))
+        randomDialog = RealTimeRandomDialog(self.canvas, getattr(self.sender(), "type"))
         self.setObjectName(name)
         setattr(randomDialog, "update", False)
         randomDialog.exec()
@@ -151,16 +134,14 @@ class RealTimeDialog(QWidget):
             self.edgeAttr.append(randomDialog.attrBack)
         else:
             self.vertexAttr.append(randomDialog.attrBack)
-        print("Sender type : ", getattr(self.sender(), "type"))
         self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
         self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
 
     def realTimeEvent(self):
-        self.attr.append(self.vertexAttr)
-        self.attr.append(self.edgeAttr)
-        self.attr.append(self.fps)
-        self.canvas.inRealTimeMode = True
-        self.canvas.startRealTime(self.attr)
+        self.realtimeMode.vertexAttr = self.vertexAttr
+        self.realtimeMode.edgeAttr = self.edgeAttr
+        self.realtimeMode.fps = self.fps
+        self.canvas.addMode(self.realtimeMode)
         self.notiLabel.setText("Real Time Mode: ON!")
 
     def notify(self, mes, type):
@@ -203,11 +184,3 @@ class RealTimeDialog(QWidget):
                                 (item.widget()).setText("Min = " + str(value1))
                             if (item.widget()).objectName() == (name + 'value2'):
                                 (item.widget()).setText("Max = " + str(value2))
-
-
-class VertexKeyIgnore(RealTimeDialog):
-    ignoredFields = ['hyperedge']
-
-
-class EdgeKeyIgnore(RealTimeDialog):
-    ignoredFields = ['b_delay', 't_delay', 'p_delay', 'key', 'zorder', 'edge_weight']
