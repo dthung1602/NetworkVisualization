@@ -88,16 +88,20 @@ class WidgetPlot(QWidget):
 
 class Plot(FigureCanvas):
     def __init__(self, ev, attr: str, style: str):
-        evStr = 'vertex' if isinstance(ev, VertexSeq) else 'edge'
+        evStr = 'vertices' if isinstance(ev, VertexSeq) else 'edges'
 
         with plt.style.context(style):
-            weightArr = np.array(list(filter(lambda x: isinstance(x, str) or not (isnan(x) or isinf(x)), ev[attr])))
-            fig, ax1 = plt.subplots()
-            num_bins = 15
-            ax1.set_title(attr + ' distribution')
-            ax1.set_xlabel('Number of ' + evStr)
-            ax1.set_ylabel(attr)
-            ax1.hist(weightArr, num_bins)
+            weightArr = list(filter(lambda x: isinstance(x, str) or not (isnan(x) or isinf(x)), ev[attr]))
+            fig, ax = plt.subplots()
+            num_bins = 20
+            ax.set_title(attr + ' distribution')
+            ax.set_ylabel('Number of ' + evStr)
+            ax.set_xlabel(attr)
+            if weightArr and isinstance(weightArr[0], float):
+                meanLine= ax.axvline(np.mean(weightArr), color='r', linestyle='--')
+                medianLine = ax.axvline(np.median(weightArr), color='b', linestyle='-')
+                plt.legend([meanLine, medianLine], ['Mean', 'Median'])
+            ax.hist(weightArr, num_bins)
 
         FigureCanvas.__init__(self, fig)
         self.setParent(None)
