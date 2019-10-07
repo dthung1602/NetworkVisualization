@@ -3,7 +3,7 @@ from math import isnan, isinf
 import matplotlib.pyplot as plt
 import numpy as np
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QComboBox, QSizePolicy
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QComboBox, QSizePolicy, QTabWidget
 from PyQt5.uic import loadUi
 from igraph import VertexSeq
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -22,6 +22,8 @@ class StatDialog(QWidget):
         self.setWindowTitle("Network Visualization - Team Black - Statistics")
 
         self.layout = self.findChild(QVBoxLayout, 'verticalLayout')
+        self.tabWidget = self.findChild(QTabWidget, 'tabWidget')
+        self.tabWidget.setCurrentIndex(0)
         self.selectStyle = self.findChild(QComboBox, 'selectStyle')
         self.selectEV = self.findChild(QComboBox, 'selectEV')
         self.selectAttr = self.findChild(QComboBox, 'selectAttr')

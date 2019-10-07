@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>544</width>
-    <height>338</height>
+    <height>358</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,16 +19,18 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>30</x>
      <y>20</y>
-     <width>321</width>
-     <height>20</height>
+     <width>491</width>
+     <height>71</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">color: rgb(180,180,180);
                             font-size: 15px;
-                            background-color: transparent;
+background-color: rgb(57, 57, 57);
+                            border: 1px solid rgb(166, 166, 166);
+border-radius: 15px;
                         </string>
    </property>
    <property name="text">
@@ -39,64 +41,16 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>50</y>
+     <y>110</y>
      <width>471</width>
-     <height>221</height>
+     <height>211</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout"/>
-  </widget>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>420</x>
-     <y>300</y>
-     <width>93</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton{
-                            color: rgb(200, 200, 200);
-                            border-style: 2px solid rgb(200, 200, 200);
-                            border-radius: 7px;
-                            background-color: #383838;
-                            }
-
-                            QPushButton:hover{
-                            background-color: #303030;
-                            }
-                        </string>
-   </property>
-   <property name="text">
-    <string>OK</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>300</y>
-     <width>93</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton{
-                            color: rgb(200, 200, 200);
-                            border-style: 2px solid rgb(200, 200, 200);
-                            border-radius: 7px;
-                            background-color: #383838;
-                            }
-
-                            QPushButton:hover{
-                            background-color: #303030;
-                            }
-                        </string>
-   </property>
-   <property name="text">
-    <string>Reset</string>
-   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="verticalSpacing">
+     <number>20</number>
+    </property>
+   </layout>
   </widget>
  </widget>
  <resources/>

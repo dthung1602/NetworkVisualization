@@ -22,15 +22,21 @@ class AddAttributesDialog(QDialog):
         self.label = QLabel('Attribute name: ')
         self.label.setStyleSheet("color: rgb(180,180,180); font-size: 15px; background-color: transparent;")
         self.layout.addWidget(self.label)
-        valueLabelStyleSheet = ("QLabel {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
+        valueLabelStyleSheet = ("QLabel {  font-size: 12px; border: 1px solid rgb(150, 150, 150); "
                                 "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
                                 "border-radius: 5px; }"
-                                "QLabel:hover{background-color: #242424;}")
+                                "QLabel:hover{background-color: #242424;}"
+                                "QLineEdit {  font-size: 12px; border: 1px solid rgb(150, 150, 150); "
+                                "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
+                                "border-radius: 5px; }"
+                                "QLineEdit:hover{background-color: #242424;}")
 
         self.valueEdit = QLineEdit()
         self.valueEdit.setStyleSheet(valueLabelStyleSheet)
+        self.valueEdit.setFixedHeight(30)
         self.value = BuddyLabel(self.valueEdit)
-
+        self.value.setFixedHeight(30)
+        
         self.value.setStyleSheet(valueLabelStyleSheet)
 
         self.layout.addWidget(self.value)
@@ -49,7 +55,9 @@ class AddAttributesDialog(QDialog):
 
         self.valueEdit2 = QLineEdit()
         self.valueEdit2.setStyleSheet(valueLabelStyleSheet)
+        self.valueEdit2.setFixedHeight(30)
         self.value2 = BuddyLabel(self.valueEdit2)
+        self.value2.setFixedHeight(30)
 
         self.value2.setStyleSheet(valueLabelStyleSheet)
 

@@ -33,4 +33,6 @@ class RenameDialog(QDialog):
         key = ev.attributes()[self.attribute.currentIndex()]
         ev[self.newAttributeName] = ev[key]
         del ev[key]
-        #self.label.setText(f'"{key}" has been renamed to "{self.newAttributeName}"')
+        self.label.setText(f'"{key}" has been renamed to "{self.newAttributeName}"')
+        self.renameBtn.setText("Close")
+        self.renameBtn.clicked.connect(self.close)
