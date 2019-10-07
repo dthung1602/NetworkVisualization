@@ -9,14 +9,8 @@ from igraph import VertexSeq
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
-from canvas import Canvas
+from canvas import Canvas, CENTRALITY_OPTIONS
 from .utils import clearLayout
-
-SELECT_PLOT = [
-    ['Edge Weight'],
-    ['Edge Speed Raw'],
-    ['Degree Histogram'],
-]
 
 
 class StatDialog(QWidget):
@@ -25,17 +19,20 @@ class StatDialog(QWidget):
         self.canvas = canvas
         loadUi('resource/gui/StatDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
-        self.setWindowTitle("Network Visualization - Team Black - Graph Generator")
+        self.setWindowTitle("Network Visualization - Team Black - Statistics")
 
         self.layout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.selectStyle = self.findChild(QComboBox, 'selectStyle')
         self.selectEV = self.findChild(QComboBox, 'selectEV')
         self.selectAttr = self.findChild(QComboBox, 'selectAttr')
+        self.centralityAttr = self.findChild(QComboBox, 'centralityAttr')
+        self.centralityWeight = self.findChild(QComboBox, 'centralityWeight')
 
         self.styleOpt = 'bmh'
         self.ev = canvas.g.vs
         self.changeEV(0)
         self.comparableAttr = self.getComparableAttr()
+        self.floatCentralityAttr = self.getFloatCentralityAttr()
 
         self.addSelectOptions()
 
@@ -49,11 +46,21 @@ class StatDialog(QWidget):
         self.selectStyle.addItems([opt for opt in plt.style.available])
         self.selectStyle.currentIndexChanged.connect(self.changeStyle)
 
+        # Centrality
+        self.centralityAttr.addItems([opt[0] for opt in CENTRALITY_OPTIONS])
+        self.centralityAttr.currentIndexChanged.connect(self.recalculateCentrality)
+        self.centralityWeight.addItems(self.floatCentralityAttr)
+        self.centralityWeight.currentIndexChanged.connect(self.recalculateCentrality)
+
     def getComparableAttr(self):
         def isStrOrFloat(v):
             return isinstance(v, str) or isinstance(v, float)
 
         return [attr for attr in self.ev.attributes() if isStrOrFloat(self.ev[0][attr])]
+
+    def getFloatCentralityAttr(self):
+        es = self.canvas.g.es
+        return [attr for attr in es.attributes() if isinstance(es[0][attr], float)]
 
     def changeEV(self, opt):
         self.ev = getattr(self.canvas.g, ['vs', 'es'][opt])
@@ -65,7 +72,8 @@ class StatDialog(QWidget):
     def changeAttr(self, opt):
         attr = self.comparableAttr[opt]
         clearLayout(self.layout)
-        w = WidgetPlot(self.ev, attr, self.styleOpt, self.canvas)
+        ev = 'Vertices' if isinstance(self.ev, VertexSeq) else 'Edges'
+        w = WidgetPlot(ev, attr, self.ev[attr], self.styleOpt)
         self.layout.addWidget(w)
 
     def changeStyle(self, opt):
@@ -73,32 +81,37 @@ class StatDialog(QWidget):
         i = int(self.selectAttr.currentIndex())
         self.changeAttr(i)
 
+    def recalculateCentrality(self, opt):
+        centrality = CENTRALITY_OPTIONS[self.centralityAttr.currentIndex()]
+        weight = self.floatCentralityAttr[self.centralityWeight.currentIndex()]
+        values = getattr(self.canvas.g, centrality[1])(weights=weight)
+        clearLayout(self.layout)
+        w = WidgetPlot('Vertices', centrality[0], values, self.styleOpt)
+        self.layout.addWidget(w)
+
 
 class WidgetPlot(QWidget):
-    def __init__(self, ev, attr: str, style: str, canvas: Canvas):
+    def __init__(self, ev, attr, values, style):
         super().__init__()
-        self.canvas = canvas
-        self.layout = QVBoxLayout()
-        self.setLayout(self.layout)
-        self.plot = Plot(ev, attr, style)
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        self.plot = Plot(ev, attr, values, style)
         self.toolbar = NavigationToolbar(self.plot, self)
-        self.layout.addWidget(self.toolbar)
-        self.layout.addWidget(self.plot)
+        layout.addWidget(self.toolbar)
+        layout.addWidget(self.plot)
 
 
 class Plot(FigureCanvas):
-    def __init__(self, ev, attr: str, style: str):
-        evStr = 'vertices' if isinstance(ev, VertexSeq) else 'edges'
-
+    def __init__(self, ev, attr, values, style):
         with plt.style.context(style):
-            weightArr = list(filter(lambda x: isinstance(x, str) or not (isnan(x) or isinf(x)), ev[attr]))
+            weightArr = list(filter(lambda x: isinstance(x, str) or not (isnan(x) or isinf(x)), values))
             fig, ax = plt.subplots()
-            num_bins = 20
+            num_bins = 30
             ax.set_title(attr + ' distribution')
-            ax.set_ylabel('Number of ' + evStr)
+            ax.set_ylabel('Number of ' + ev)
             ax.set_xlabel(attr)
             if weightArr and isinstance(weightArr[0], float):
-                meanLine= ax.axvline(np.mean(weightArr), color='r', linestyle='--')
+                meanLine = ax.axvline(np.mean(weightArr), color='r', linestyle='--')
                 medianLine = ax.axvline(np.median(weightArr), color='b', linestyle='-')
                 plt.legend([meanLine, medianLine], ['Mean', 'Median'])
             ax.hist(weightArr, num_bins)
