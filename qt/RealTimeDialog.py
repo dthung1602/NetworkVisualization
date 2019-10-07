@@ -136,9 +136,12 @@ class RealTimeDialog(QWidget):
                 self.edgeAttr.append(randomDialog.attrBack)
             else:
                 self.vertexAttr.append(randomDialog.attrBack)
-            self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+            if randomDialog.attrBack == 3 :
+                self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+
         except Exception as e:
             print(e.__traceback__.tb_lineno, " ", e)
+
     def realTimeEvent(self):
         self.realtimeMode.vertexAttr = self.vertexAttr
         self.realtimeMode.edgeAttr = self.edgeAttr
