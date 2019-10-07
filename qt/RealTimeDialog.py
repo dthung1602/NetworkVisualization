@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, 
 from PyQt5.uic import loadUi
 
 from canvas import Canvas, RealTimeMode
-from .RandomDialog import RandomDialog
+from .RealTimeRandomDialog import RealTimeRandomDialog
 
 DIST = [
     'Normal distribution',
@@ -31,7 +31,7 @@ class RealTimeDialog(QWidget):
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.generateBtn.pressed.connect(self.realTimeEvent)
-
+        self.notiLabel = self.findChild(QLabel, 'notiLabel')
         # FPS
         self.fpsSlider = self.findChild(QSlider, 'fpsSlider')
         self.fpsSlider.setMinimum(10)
@@ -48,6 +48,7 @@ class RealTimeDialog(QWidget):
         self.addVertexKey()
         self.addEdgeKey()
         self.selectDistribution = QComboBox()
+
         self.selectDistribution.addItems(DIST)
 
         for i in range(len(self.checkBoxList)):
@@ -124,26 +125,30 @@ class RealTimeDialog(QWidget):
             self.openRandomDialog(self.sender().objectName())
 
     def openRandomDialog(self, name):
-        randomDialog = RandomDialog(self.canvas, getattr(self.sender(), "type"))
-        self.setObjectName(name)
-        setattr(randomDialog, "update", False)
-        randomDialog.exec()
-        randomDialog.attrBack.append(name)
-        if getattr(self.sender(), "type").upper() == "EDGE":
-            self.edgeAttr.append(randomDialog.attrBack)
-        else:
-            self.vertexAttr.append(randomDialog.attrBack)
-        self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
-        self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
 
+        try:
+            randomDialog = RealTimeRandomDialog(self.canvas, getattr(self.sender(), "type"))
+            self.setObjectName(name)
+            setattr(randomDialog, "update", False)
+            randomDialog.exec()
+            randomDialog.attrBack.append(name)
+            if getattr(self.sender(), "type").upper() == "EDGE":
+                self.edgeAttr.append(randomDialog.attrBack)
+            else:
+                self.vertexAttr.append(randomDialog.attrBack)
+            self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+        except Exception as e:
+            print(e.__traceback__.tb_lineno, " ", e)
     def realTimeEvent(self):
         self.realtimeMode.vertexAttr = self.vertexAttr
         self.realtimeMode.edgeAttr = self.edgeAttr
         self.realtimeMode.fps = self.fps
+        print("Real time event : ",self.vertexAttr, " ",self.edgeAttr," ",self.fps)
         self.canvas.addMode(self.realtimeMode)
+        self.notiLabel.setText("Real Time Mode: ON!")
 
     def notify(self, mes, type):
-        dist, value1, value2, name = mes
+        dist, value2, name = mes
         if type is "VERTEX":
             for r in range(1, self.vertexGridLayout.rowCount()):
                 for c in range(2, self.vertexGridLayout.columnCount()):
@@ -152,17 +157,13 @@ class RealTimeDialog(QWidget):
                         if dist == "Normal Distribution":
                             if (item.widget()).objectName() == (name + 'dist'):
                                 (item.widget()).setText(dist)
-                            if (item.widget()).objectName() == (name + 'value1'):
-                                (item.widget()).setText("Mean = " + str(value1))
                             if (item.widget()).objectName() == (name + 'value2'):
                                 (item.widget()).setText("Std = " + str(value2))
                         else:
                             if (item.widget()).objectName() == (name + 'dist'):
                                 (item.widget()).setText(dist)
-                            if (item.widget()).objectName() == (name + 'value1'):
-                                (item.widget()).setText("Min = " + str(value1))
                             if (item.widget()).objectName() == (name + 'value2'):
-                                (item.widget()).setText("Max = " + str(value2))
+                                (item.widget()).setText("Interval = " + str(value2))
         else:
             for r in range(1, self.edgeGridLayout.rowCount()):
                 for c in range(2, self.edgeGridLayout.columnCount()):
@@ -171,14 +172,10 @@ class RealTimeDialog(QWidget):
                         if dist == "Normal Distribution":
                             if (item.widget()).objectName() == (name + 'dist'):
                                 (item.widget()).setText(dist)
-                            if (item.widget()).objectName() == (name + 'value1'):
-                                (item.widget()).setText("Mean = " + str(value1))
                             if (item.widget()).objectName() == (name + 'value2'):
                                 (item.widget()).setText("Std = " + str(value2))
                         else:
                             if (item.widget()).objectName() == (name + 'dist'):
                                 (item.widget()).setText(dist)
-                            if (item.widget()).objectName() == (name + 'value1'):
-                                (item.widget()).setText("Min = " + str(value1))
                             if (item.widget()).objectName() == (name + 'value2'):
-                                (item.widget()).setText("Max = " + str(value2))
+                                (item.widget()).setText("Interval = " + str(value2))
