@@ -11,8 +11,8 @@ from utils import *
 
 
 class Canvas(QWidget):
-    WIDTH = 1120
-    HEIGHT = 760
+    WIDTH = 1129
+    HEIGHT = 769
 
     SCREEN_RECT_LINE = [
         QLineF(0, 0, WIDTH, 0),
