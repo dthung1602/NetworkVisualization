@@ -44,7 +44,7 @@ class RealTimeDialog(QWidget):
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.generateBtn.pressed.connect(self.realTimeEvent)
-
+        self.notiLabel = self.findChild(QLabel, 'notiLabel')
         # FPS
         self.fpsSlider = self.findChild(QSlider, 'fpsSlider')
         self.fpsSlider.setMinimum(10)
@@ -62,7 +62,6 @@ class RealTimeDialog(QWidget):
         self.addEdgeKey()
         self.selectDistribution = QComboBox()
         self.selectDistribution.addItems([opt for opt in DIST])
-
 
         for i in range(len(self.checkBoxList)):
             self.checkBoxList[i].stateChanged.connect(self.checkBoxEdited)
@@ -162,6 +161,7 @@ class RealTimeDialog(QWidget):
         self.attr.append(self.fps)
         self.canvas.inRealTimeMode = True
         self.canvas.startRealTime(self.attr)
+        self.notiLabel.setText("Real Time Mode: ON!")
 
     def notify(self, mes, type):
         dist, value1, value2, name = mes

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>374</width>
-    <height>261</height>
+    <height>309</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>220</y>
+     <y>270</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -101,6 +101,35 @@
                             padding-right: 10px;
                             }
                         </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="notiLabel">
+   <property name="geometry">
+    <rect>
+     <x>39</x>
+     <y>219</y>
+     <width>301</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

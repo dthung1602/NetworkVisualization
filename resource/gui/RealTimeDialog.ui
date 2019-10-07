@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>452</width>
-    <height>489</height>
+    <height>518</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -383,8 +383,8 @@
   <widget class="QPushButton" name="generate_btn">
    <property name="geometry">
     <rect>
-     <x>162</x>
-     <y>442</y>
+     <x>170</x>
+     <y>470</y>
      <width>121</width>
      <height>31</height>
     </rect>
@@ -404,6 +404,32 @@
    </property>
    <property name="text">
     <string>Generate</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="notiLabel">
+   <property name="geometry">
+    <rect>
+     <x>153</x>
+     <y>437</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(180,180,180);
+
+                            background-color: transparent;
+                        </string>
+   </property>
+   <property name="text">
+    <string>Real Time Mode: OFF</string>
    </property>
   </widget>
  </widget>

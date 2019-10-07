@@ -37,6 +37,8 @@ class RandomDialog(QDialog):
         self.selectDistribution = self.findChild(QComboBox, 'distBox')
         self.randomLayout = self.findChild(QVBoxLayout, 'randomLayout')
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
+        self.notiLabel = self.findChild(QLabel, 'notiLabel')
+        self.notiLabel.setWordWrap(True)
         self.addDistSelectOptions()
         self.labelStyleSheet = ("color: rgb(180,180,180);"
                                 "font-size: 15px;"
@@ -175,6 +177,8 @@ class RandomDialog(QDialog):
                 self.randomArr = np.random.normal(mean, stdDeviation, size)
                 self.changeVertex(self.attr, self.randomArr)
 
+        self.notiLabel.setText(
+            f"Generated Normal Distribution with \n Mean = {mean}, Standard Deviation = {stdDeviation}")
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(mean)
         self.attrBack.append(stdDeviation)
@@ -192,6 +196,8 @@ class RandomDialog(QDialog):
                 size = self.g.vcount()
                 self.randomArr = np.random.uniform(minValue, maxValue, size)
                 self.changeVertex(self.attr, self.randomArr)
+        self.notiLabel.setText(
+            f"Generated Uniform Distribution with \n Min = {minValue}, Max = {maxValue}")
         self.attrBack.append("Uniform Distribution")
         self.attrBack.append(minValue)
         self.attrBack.append(maxValue)
