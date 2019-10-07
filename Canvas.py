@@ -86,7 +86,7 @@ class Canvas(QWidget):
             self.lineColor = Qt.black
             self.g.es['color'] = [Qt.black] * self.g.ecount()
         elif self.backGroundImage is None:
-            self.backGroundImage = QImage('resource/gui/map.jpg')
+            self.backGroundImage = QImage('resource/gui/maptovl.png')
             self.lineColor = Qt.red
         self.resetViewRect()
 
