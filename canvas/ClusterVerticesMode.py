@@ -2,7 +2,7 @@ from igraph import VertexDendrogram
 
 from .Mode import Mode
 from .utils import randomColor
-from PyQt5.QtGui import QBrush
+
 CLUSTERING_ALGO_OPTIONS = [
     ['Fast Greedy', 'community_fastgreedy'],
     ['Info Map', 'community_infomap'],
@@ -56,4 +56,3 @@ class ClusterVerticesMode(Mode):
         clusterToColor = {str(id(cl)): randomColor() for cl in clusters}
         g.vs['cluster'] = [getClusterId(v) for v in g.vs]
         g.vs['color'] = [clusterToColor[v['cluster']] for v in g.vs]
-
