@@ -55,9 +55,14 @@ class RealTimeRandomDialog(QDialog):
         self.maxEdit = QLineEdit()
         self.max = BuddyLabel(self.maxEdit)
 
-        self.valueLabelStyleSheet = ("QLabel {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
-                                     "padding: 2px; color: rgb(220,220,220); border-radius: 5px;}"
-                                     "QLabel:hover{background-color: #242424;}")
+        self.valueLabelStyleSheet = ("QLabel {  height: font-size: 11px; border: 1px solid rgb(150, 150, 150); "
+                                    "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
+                                    "border-radius: 5px; }"
+                                    "QLabel:hover{background-color: #242424;}"
+                                    "QLineEdit {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
+                                    "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
+                                    "border-radius: 5px; }"
+                                    "QLineEdit:hover{background-color: #242424;}")
         self.attrBack = []
 
         self.randomArr = []

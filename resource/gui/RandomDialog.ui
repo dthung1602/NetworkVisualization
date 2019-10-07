@@ -22,7 +22,7 @@
      <x>40</x>
      <y>90</y>
      <width>301</width>
-     <height>121</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="randomLayout"/>
@@ -131,6 +131,17 @@
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>160</y>
+     <width>301</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="randomLayout2"/>
   </widget>
  </widget>
  <resources/>

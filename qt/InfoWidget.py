@@ -20,11 +20,13 @@ class InfoWidget(QWidget):
 
         # Title layout
         layout = QGridLayout(self)
+        layout.setAlignment(Qt.AlignTop)
         topLabelStyleSheet = (
             "font-size: 15px; font-weight: Bold; QLabel; "
             "padding: 2px; color: rgb(220,220,220); background-color: #383838; border-radius: 15px")
 
         self.topLabel = QLabel(self.title)
+        self.topLabel.setFixedHeight(45)
         self.topLabel.setAlignment(Qt.AlignCenter)
         self.topLabel.setStyleSheet(topLabelStyleSheet)
         layout.addWidget(self.topLabel, 0, 0, 1, 2)
@@ -41,10 +43,15 @@ class InfoWidget(QWidget):
                                    "color: rgb(220,220,220); border-radius: 5px; padding-left: 3px; }")
             layout.addWidget(keyLabel, count, 0)
 
-            valueLabelStyleSheet = ("QLabel {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
+            valueLabelStyleSheet = ("QLabel {  font-size: 12px; border: 1px solid rgb(150, 150, 150); "
                                     "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
                                     "border-radius: 5px; }"
-                                    "QLabel:hover{background-color: #242424;}")
+                                    "QLabel:hover{background-color: #242424;}"
+                                    "QLineEdit {  font-size: 12px; border: 1px solid rgb(150, 150, 150); "
+                                    "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
+                                    "border-radius: 5px; }"
+                                    "QLineEdit:hover{background-color: #242424;}"
+                                    )
 
             valueLabelEdit = QLineEdit()
 
@@ -53,13 +60,15 @@ class InfoWidget(QWidget):
             self.valueLabelEditItems.append(valueLabelEdit)
 
             valueLabelEdit.setStyleSheet(valueLabelStyleSheet)
+            valueLabelEdit.setFixedHeight(30)
             valueLabel.setText(text)
+            valueLabel.setFixedHeight(30)
             valueLabelEdit.setText(text)
             valueLabel.setWordWrap(True)
             valueLabel.setStyleSheet(valueLabelStyleSheet)
-            hLayout = QHBoxLayout()
-            hLayout.addWidget(valueLabelEdit)
-            hLayout.addWidget(valueLabel)
+            #hLayout = QHBoxLayout()
+            #hLayout.addWidget(valueLabelEdit)
+            #hLayout.addWidget(valueLabel)
             layout.addWidget(valueLabel, count, 1)
             layout.addWidget(valueLabelEdit, count, 1)
             count = count + 1
