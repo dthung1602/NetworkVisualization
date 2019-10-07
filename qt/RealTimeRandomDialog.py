@@ -52,8 +52,8 @@ class RealTimeRandomDialog(QDialog):
         self.minEdit = QLineEdit()
         self.min = BuddyLabel(self.minEdit)
 
-        self.maxEdit = QLineEdit()
-        self.max = BuddyLabel(self.maxEdit)
+        self.intervalEdit = QLineEdit()
+        self.interval = BuddyLabel(self.intervalEdit)
 
         self.valueLabelStyleSheet = ("QLabel {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
                                      "padding: 2px; color: rgb(220,220,220); border-radius: 5px;}"
@@ -94,59 +94,41 @@ class RealTimeRandomDialog(QDialog):
         self.generateBtn.pressed.connect(self.generateNormalDistribution)
 
     def uniformDistribution(self):
-        clearLayout(self.randomLayout)
 
-        maxLabel = QLabel('Max: ')
-        maxLabel.setStyleSheet(self.labelStyleSheet)
-        self.max.setStyleSheet(self.valueLabelStyleSheet)
-        self.maxEdit.setStyleSheet(self.valueLabelStyleSheet)
-        self.randomLayout.addWidget(maxLabel)
-        self.randomLayout.addWidget(self.max)
-        self.randomLayout.addWidget(self.maxEdit)
+        try:
+            clearLayout(self.randomLayout)
 
-        self.maxEdit.editingFinished.connect(textEdited(self.max, self.maxEdit))
-        self.generateBtn.pressed.connect(self.generateUniformDistribution)
-        # acceptBtn.clicked.connect(self.generateUniformDistribution)
+            maxLabel = QLabel('Interval: ')
+            maxLabel.setStyleSheet(self.labelStyleSheet)
+            self.interval.setStyleSheet(self.valueLabelStyleSheet)
+            self.intervalEdit.setStyleSheet(self.valueLabelStyleSheet)
+            self.randomLayout.addWidget(maxLabel)
+            self.randomLayout.addWidget(self.interval)
+            self.randomLayout.addWidget(self.intervalEdit)
+
+            self.intervalEdit.editingFinished.connect(textEdited(self.interval, self.intervalEdit))
+            self.generateBtn.pressed.connect(self.generateUniformDistribution)
+        except Exception as e:
+            print(e.__traceback__.tb_lineno, " ", e)
 
     def generateNormalDistribution(self):
-        mean = float(self.meanEdit.text())
         stdDeviation = float(self.standardDeviationEdit.text())
-        if self.type == 'EDGE':
-            if self.update:
-                size = self.g.ecount()
-                self.randomArr = np.random.normal(mean, stdDeviation, size)
-                self.changeEdge(self.attr, self.randomArr)
-        else:
-            if self.update:
-                size = self.g.vcount()
-                self.randomArr = np.random.normal(mean, stdDeviation, size)
-                self.changeVertex(self.attr, self.randomArr)
-
+        print(stdDeviation)
         self.notiLabel.setText(
-            f"Generated Normal Distribution with \n Mean = {mean}, Standard Deviation = {stdDeviation}")
+            "Generated Normal Distribution with \n Standard Deviation = "+str(stdDeviation))
         self.attrBack.append("Normal Distribution")
-        self.attrBack.append(mean)
         self.attrBack.append(stdDeviation)
 
     def generateUniformDistribution(self):
-        minValue = float(self.minEdit.text())
-        maxValue = float(self.maxEdit.text())
-        if self.type == 'EDGE':
-            if self.update:
-                size = self.g.ecount()
-                self.randomArr = np.random.uniform(minValue, maxValue, size)
-                self.changeEdge(self.attr, self.randomArr)
-        else:
-            if self.update:
-                size = self.g.vcount()
-                self.randomArr = np.random.uniform(minValue, maxValue, size)
-                self.changeVertex(self.attr, self.randomArr)
-        self.notiLabel.setText(
-            f"Generated Uniform Distribution with \n Min = {minValue}, Max = {maxValue}")
-        self.attrBack.append("Uniform Distribution")
-        self.attrBack.append(minValue)
-        self.attrBack.append(maxValue)
 
+        try:
+            val = float(self.intervalEdit.text())
+            print("Interval = ",val)
+            self.notiLabel.setText("Generated Uniform Distribution with \n interval = "+str(val))
+            self.attrBack.append("Uniform Distribution")
+            self.attrBack.append(val)
+        except Exception as e:
+            print(e.__traceback__.tb_lineno," ",e)
     def changeEdge(self, attributeName, randomArr):
         count = 0
         for i in self.g.es:

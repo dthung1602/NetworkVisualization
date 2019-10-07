@@ -148,7 +148,7 @@ class RandomDialog(QDialog):
                 self.changeVertex(self.attr, self.randomArr)
 
         self.notiLabel.setText(
-            f"Generated Normal Distribution with \n Mean = {mean}, Standard Deviation = {stdDeviation}")
+            "Generated Normal Distribution with \n Mean = "+{mean}+" Standard Deviation = "+{stdDeviation})
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(mean)
         self.attrBack.append(stdDeviation)
@@ -167,7 +167,7 @@ class RandomDialog(QDialog):
                 self.randomArr = np.random.uniform(minValue, maxValue, size)
                 self.changeVertex(self.attr, self.randomArr)
         self.notiLabel.setText(
-            f"Generated Uniform Distribution with \n Min = {minValue}, Max = {maxValue}")
+            "Generated Uniform Distribution with \n Min = "+{minValue}+" Max = "+{maxValue})
         self.attrBack.append("Uniform Distribution")
         self.attrBack.append(minValue)
         self.attrBack.append(maxValue)
