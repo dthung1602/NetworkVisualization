@@ -29,7 +29,7 @@
     <string notr="true">QTabWidget::pane{border:0px}</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -57,7 +57,7 @@ background-color: transparent;</string>
      <property name="geometry">
       <rect>
        <x>140</x>
-       <y>130</y>
+       <y>140</y>
        <width>93</width>
        <height>28</height>
       </rect>
@@ -127,7 +127,7 @@ background-color: transparent;</string>
      <property name="geometry">
       <rect>
        <x>140</x>
-       <y>130</y>
+       <y>140</y>
        <width>93</width>
        <height>28</height>
       </rect>

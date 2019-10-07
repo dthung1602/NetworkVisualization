@@ -25,6 +25,7 @@ class RandomDialog(QDialog):
         self.distLayout = self.findChild(QVBoxLayout, 'distLayout')
         self.selectDistribution = self.findChild(QComboBox, 'distBox')
         self.randomLayout = self.findChild(QVBoxLayout, 'randomLayout')
+        self.randomLayout2 = self.findChild(QVBoxLayout, 'randomLayout2')
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.notiLabel = self.findChild(QLabel, 'notiLabel')
         self.notiLabel.setWordWrap(True)
@@ -56,8 +57,13 @@ class RandomDialog(QDialog):
         self.max = BuddyLabel(self.maxEdit)
 
         self.valueLabelStyleSheet = ("QLabel {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
-                                     "padding: 2px; color: rgb(220,220,220); border-radius: 5px;}"
-                                     "QLabel:hover{background-color: #242424;}")
+                                    "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
+                                    "border-radius: 5px; }"
+                                    "QLabel:hover{background-color: #242424;}"
+                                    "QLineEdit {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
+                                    "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
+                                    "border-radius: 5px; }"
+                                    "QLineEdit:hover{background-color: #242424;}")
         self.attrBack = []
 
         self.randomArr = []
@@ -90,11 +96,11 @@ class RandomDialog(QDialog):
 
         stdevLabel = QLabel('Standard Deviation: ')
         stdevLabel.setStyleSheet(self.labelStyleSheet)
-        self.randomLayout.addWidget(stdevLabel)
         self.standardDeviationEdit.setStyleSheet(self.valueLabelStyleSheet)
         self.standardDeviation.setStyleSheet(self.valueLabelStyleSheet)
-        self.randomLayout.addWidget(self.standardDeviation)
-        self.randomLayout.addWidget(self.standardDeviationEdit)
+        self.randomLayout2.addWidget(stdevLabel)
+        self.randomLayout2.addWidget(self.standardDeviation)
+        self.randomLayout2.addWidget(self.standardDeviationEdit)
 
         # acceptBtn = QPushButton('Generate', self)
         # acceptBtn.setStyleSheet(self.buttonStyleSheet)
@@ -121,9 +127,9 @@ class RandomDialog(QDialog):
         maxLabel.setStyleSheet(self.labelStyleSheet)
         self.max.setStyleSheet(self.valueLabelStyleSheet)
         self.maxEdit.setStyleSheet(self.valueLabelStyleSheet)
-        self.randomLayout.addWidget(maxLabel)
-        self.randomLayout.addWidget(self.max)
-        self.randomLayout.addWidget(self.maxEdit)
+        self.randomLayout2.addWidget(maxLabel)
+        self.randomLayout2.addWidget(self.max)
+        self.randomLayout2.addWidget(self.maxEdit)
 
         # acceptBtn = QPushButton('Generate', self)
         # acceptBtn.setStyleSheet(self.buttonStyleSheet)

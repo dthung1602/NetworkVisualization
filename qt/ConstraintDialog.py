@@ -30,9 +30,10 @@ class ConstraintDialog(QDialog):
         self.g = canvas.g
         loadUi('resource/gui/ConstraintDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
-        self.setWindowTitle("Warning")
+        self.setWindowTitle("Checking constraints")
         self.label = self.findChild(QLabel, 'label')
         self.grid = self.findChild(QGridLayout, 'gridLayout')
+        self.grid.setAlignment(Qt.AlignTop)
         self.check()
         self.name = ""
 
@@ -72,12 +73,13 @@ class ConstraintDialog(QDialog):
 
     def notify(self, edgeMissing, vertexMissing):
         clearLayout(self.grid)
-        self.label.setText("Warning")
-        self.label.setStyleSheet(self.labelStyleSheet)
+        self.label.setText(
+            'Choose "Rename" if the attribute already exists with another name \n '
+            'Choose "Random" to generate data for a missing attribute')
         self.label.setAlignment(Qt.AlignCenter)
         count = 1
         if len(edgeMissing) > 0:
-            missLabel = QLabel("Missing attribute of edge")
+            missLabel = QLabel("Missing attribute of edge:")
             missLabel.setStyleSheet(self.labelStyleSheet)
             self.grid.addWidget(missLabel, 0, 0, 1, 3)
             missLabel.setAlignment(Qt.AlignCenter)
@@ -103,7 +105,7 @@ class ConstraintDialog(QDialog):
                 count = count + 1
         count = 1
         if len(vertexMissing) > 0:
-            missLabel = QLabel("Missing attribute of vertex")
+            missLabel = QLabel("Missing attribute of vertex:")
             missLabel.setStyleSheet(self.labelStyleSheet)
             missLabel.setAlignment(Qt.AlignCenter)
             self.grid.addWidget(missLabel, 0, 3, 1, 3)

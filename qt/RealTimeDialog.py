@@ -146,7 +146,6 @@ class RealTimeDialog(QWidget):
         self.realtimeMode.vertexAttr = self.vertexAttr
         self.realtimeMode.edgeAttr = self.edgeAttr
         self.realtimeMode.fps = self.fps
-        print("Real time event : ",self.vertexAttr, " ",self.edgeAttr," ",self.fps)
         self.canvas.addMode(self.realtimeMode)
         self.notiLabel.setText("Real Time Mode: ON!")
 

@@ -24,6 +24,9 @@ class CentralityMode(Mode):
     def onSetGraph(self):
         self.applyCentrality()
 
+    def onUpdateGraph(self):
+        self.applyCentrality()
+
     def applyCentrality(self):
         centrality = getattr(self.canvas.g, self.centrality)(weights=self.weight)
         self.canvas.g.vs['color'] = arrayToSpectrum(centrality)

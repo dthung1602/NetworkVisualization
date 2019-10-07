@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1366</width>
-    <height>835</height>
+    <height>836</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -103,7 +103,7 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;strong&gt;Add a node&lt;/strong&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/add-node.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Add a Node&lt;/strong&gt;&lt;br/&gt;Click anywhere on the graph&lt;br/&gt; view to create a new node&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -143,7 +143,7 @@ border-image: url(&quot;resource/gui/tool/add.png&quot;);
     <widget class="QToolButton" name="zoom_in_btn">
      <property name="geometry">
       <rect>
-       <x>222</x>
+       <x>190</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -190,7 +190,7 @@ border-image: url(&quot;resource/gui/tool/zoom-in.png&quot;);
     <widget class="QToolButton" name="zoom_out_btn">
      <property name="geometry">
       <rect>
-       <x>265</x>
+       <x>233</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -234,7 +234,7 @@ border-image: url(&quot;resource/gui/tool/zoom-out.png&quot;);
     <widget class="QToolButton" name="zoom_reset_btn">
      <property name="geometry">
       <rect>
-       <x>308</x>
+       <x>276</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -278,14 +278,14 @@ border-image: url(&quot;resource/gui/tool/zoom-reset.png&quot;);
     <widget class="QToolButton" name="graph_btn">
      <property name="geometry">
       <rect>
-       <x>351</x>
+       <x>333</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export graphs&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/graph.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Statistical Graphs&lt;/strong&gt;&lt;br/&gt;Export statistical histograms/charts&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -364,7 +364,7 @@ border-image: url(&quot;resource/gui/tool/shortestpath.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;strong&gt;Delete a node&lt;/strong&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/add-node.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Delete a Node&lt;/strong&gt;&lt;br/&gt;Click on a node to remove it from the graph&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -455,7 +455,7 @@ border-image: url(&quot;resource/gui/tool/edit.png&quot;);
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Add a line&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/add-line.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Add a Line&lt;/strong&gt;&lt;br/&gt;Click on the first node and click on the&lt;br/&gt; second node to connect these&lt;br/&gt; two nodes with a line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -511,7 +511,7 @@ border-image: url(&quot;resource/gui/tool/addline.png&quot;);
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Delete a line&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/delete-line.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Delete a Line&lt;/strong&gt;&lt;br/&gt;Click on a line to remove it from the graph&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -627,7 +627,7 @@ border-image: url(&quot;resource/gui/tool/filter.png&quot;);
     <widget class="QToolButton" name="constraint_btn">
      <property name="geometry">
       <rect>
-       <x>394</x>
+       <x>376</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -671,7 +671,7 @@ border-image: url(&quot;resource/gui/tool/constraint.png&quot;);
     <widget class="QToolButton" name="add_attribute_btn">
      <property name="geometry">
       <rect>
-       <x>438</x>
+       <x>419</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -715,7 +715,7 @@ border-image: url(&quot;resource/gui/tool/add-attribute.png&quot;);
     <widget class="QToolButton" name="real_time_btn">
      <property name="geometry">
       <rect>
-       <x>481</x>
+       <x>462</x>
        <y>6</y>
        <width>32</width>
        <height>32</height>
@@ -758,6 +758,38 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
        <width>16</width>
        <height>16</height>
       </size>
+     </property>
+    </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>0</y>
+       <width>16</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #535353</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="Line" name="line_4">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>0</y>
+       <width>16</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </widget>
@@ -804,7 +836,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="sizePolicy">
