@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
-
+import re
 from canvas import Canvas, RealTimeMode
 from .RealTimeRandomDialog import RealTimeRandomDialog
 
@@ -122,12 +122,36 @@ class RealTimeDialog(QWidget):
                 count += 1
 
     def checkBoxEdited(self, state):
-        if state == QtCore.Qt.Checked:
-            self.openRandomDialog(self.sender().objectName())
-        else:
-            self.count-=1
+
+        try:
+            if state == QtCore.Qt.Checked:
+                self.openRandomDialog(self.sender().objectName())
+            else:
+                if getattr(self.sender(), "type") == "VERTEX":
+                    row = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[0]
+                    col = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[1]
+                    dist = self.vertexGridLayout.itemAtPosition(row, col + 1).widget().text()
+                    value = self.vertexGridLayout.itemAtPosition(row, col + 3).widget().text()
+                    res = float(re.findall("\d+\.\d+", value)[0])
+                    vertexToRemove = [dist, res, self.sender().objectName()]
+                    self.vertexAttr.remove(vertexToRemove)
+                    print(self.vertexAttr)
+                    print(vertexToRemove)
+                else:
+                    row = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[0]
+                    col = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[1]
+                    dist = self.vertexGridLayout.itemAtPosition(row, col + 1).widget().text()
+                    value = self.vertexGridLayout.itemAtPosition(row, col + 3).widget().text()
+                    res = float(re.findall("\d+\.\d+", value)[0])
+                    vertexToRemove = [dist, res, self.sender().objectName()]
+                    self.edgeAttr.remove(vertexToRemove)
+                    print(self.edgeAttr)
+                    print(vertexToRemove)
+                self.count -= 1
             if self.count == 0:
                 self.generateBtn.setEnabled(False)
+        except Exception as e:
+            print(e.__traceback__.tb_lineno, " ", e)
 
     def openRandomDialog(self, name):
 
@@ -139,15 +163,22 @@ class RealTimeDialog(QWidget):
             randomDialog.attrBack.append(name)
             if getattr(self.sender(), "type").upper() == "EDGE":
                 self.edgeAttr.append(randomDialog.attrBack)
+                if len(randomDialog.attrBack) == 3:
+                    self.count += 1
+                    self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+                else:
+                    self.count -= 1
             else:
                 self.vertexAttr.append(randomDialog.attrBack)
-            if len(randomDialog.attrBack) == 3 :
-                self.count+=1
-                self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
-                if self.count>0:
-                    self.generateBtn.setEnabled(True)
-            else:
-                self.count-=1
+                if len(randomDialog.attrBack) == 3:
+                    self.count += 1
+                    self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+                else:
+                    self.count -= 1
+            if self.count > 0:
+                print("Checkin")
+                self.generateBtn.setEnabled(True)
+            print(self.count)
         except Exception as e:
             print(e.__traceback__.tb_lineno, " ", e)
 
@@ -155,6 +186,8 @@ class RealTimeDialog(QWidget):
         self.realtimeMode.vertexAttr = self.vertexAttr
         self.realtimeMode.edgeAttr = self.edgeAttr
         self.realtimeMode.fps = self.fps
+        print("Vertex Attr : ",self.vertexAttr)
+        print("Edge Attr : ",self.edgeAttr)
         self.canvas.addMode(self.realtimeMode)
         self.notiLabel.setText("Real Time Mode: ON!")
 
