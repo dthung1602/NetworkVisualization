@@ -6,21 +6,51 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>786</width>
-    <height>678</height>
+    <width>898</width>
+    <height>746</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(247, 247, 247)</string>
+  </property>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>861</width>
+     <height>431</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-size: 15px;
+background-color: rgb(235, 235, 235);
+border: 1px solid darkgray;
+border-radius: 10px;
+padding: 15px;</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;© 2019 VGU-CS2016 TEAMBLACK and its licensors. All rights reserved.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;Project: Optimization and Visualization of Communication Network Infrastructures&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Licensors: &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Duong Thanh Hung, Nguyen Truong Thanh Hung, Trinh Pham Trung Hieu, Nguyen Thanh Long, Le Hong Thang&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;NetVisual, the NetVisual logo, and RedTurtle mascot are either registered trademarks or trademarks of TEAMBLACK Systems Incorporated in Vietnam and/or other countries. The original Turtle mascot is credited to Prof.Martin Kappes's website.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;NetVisual UI is designed on QT Designer, Riverbank Computing Limited, The Qt Company.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Libraries and Packages include technology are used under GNU General Public License.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;Notices, terms and conditions pertaining to third party software are located at              &lt;a href=&quot; https://github.com/dthung1602/NetworkVisualization/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/dthung1602/NetworkVisualization/&lt;/span&gt;&lt;/a&gt; and incorporated by reference herein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>400</x>
-     <y>310</y>
-     <width>401</width>
+     <x>440</x>
+     <y>400</y>
+     <width>551</width>
      <height>371</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:transparent
+</string>
    </property>
    <property name="text">
     <string/>

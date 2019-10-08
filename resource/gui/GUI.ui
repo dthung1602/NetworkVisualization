@@ -899,7 +899,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="actionAbout_NetVisual"/>
+    <addaction name="actionAboutUs"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
@@ -950,7 +950,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
     <string>&amp;Minimize</string>
    </property>
   </action>
-  <action name="actionAbout_NetVisual">
+  <action name="actionAboutUs">
    <property name="text">
     <string>About &amp;NetVisual</string>
    </property>
