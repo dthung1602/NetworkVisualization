@@ -20,7 +20,7 @@ class RealTimeDialog(QWidget):
         super().__init__()
         self.canvas = canvas
         self.realtimeMode = realtimeMode
-
+        self.count = 0
         loadUi('resource/gui/RealTimeDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Real Time Visualization Tool")
@@ -30,6 +30,7 @@ class RealTimeDialog(QWidget):
         self.edgeAttr = []
         self.attr = []
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
+        self.generateBtn.setEnabled(False)
         self.generateBtn.pressed.connect(self.realTimeEvent)
         self.notiLabel = self.findChild(QLabel, 'notiLabel')
         # FPS
@@ -123,6 +124,10 @@ class RealTimeDialog(QWidget):
     def checkBoxEdited(self, state):
         if state == QtCore.Qt.Checked:
             self.openRandomDialog(self.sender().objectName())
+        else:
+            self.count-=1
+            if self.count == 0:
+                self.generateBtn.setEnabled(False)
 
     def openRandomDialog(self, name):
 
@@ -136,9 +141,13 @@ class RealTimeDialog(QWidget):
                 self.edgeAttr.append(randomDialog.attrBack)
             else:
                 self.vertexAttr.append(randomDialog.attrBack)
-            if randomDialog.attrBack == 3 :
+            if len(randomDialog.attrBack) == 3 :
+                self.count+=1
                 self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
-
+                if self.count>0:
+                    self.generateBtn.setEnabled(True)
+            else:
+                self.count-=1
         except Exception as e:
             print(e.__traceback__.tb_lineno, " ", e)
 
@@ -150,6 +159,7 @@ class RealTimeDialog(QWidget):
         self.notiLabel.setText("Real Time Mode: ON!")
 
     def notify(self, mes, type):
+        print(mes)
         dist, value2, name = mes
         if type is "VERTEX":
             for r in range(1, self.vertexGridLayout.rowCount()):
