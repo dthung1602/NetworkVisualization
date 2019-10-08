@@ -2,7 +2,7 @@ from abc import ABC
 from math import radians, pi, log, tan, isnan
 
 from PyQt5.QtCore import Qt, QRectF
-from PyQt5.QtGui import QPainter, QBrush, QPen, QImage
+from PyQt5.QtGui import QPainter, QBrush, QPen, QImage, QColor
 
 from .Mode import Mode
 
@@ -26,6 +26,17 @@ class ViewMode(Mode, ABC):
         g = self.canvas.g
         if 'color' not in g.es.attributes():
             g.es['color'] = [self.foregroundPen] * g.ecount()
+        override = False
+        if 'color' in g.vs.attributes() and g.vcount() > 0 and isinstance(g.vs[0]['color'], str):
+            g.vs['cluster'] = g.vs['color']
+            g.vs['color'] = [QBrush(QColor(c)) for c in g.vs['color']]
+            override = True
+        if 'color' in g.es.attributes() and g.ecount() > 0 and isinstance(g.es[0]['color'], str):
+            g.es['cluster'] = g.es['color']
+            g.es['color'] = [QPen(QColor(c)) for c in g.es['color']]
+            override = True
+        if override:
+            return True
         if 'cluster' not in g.vs.attributes():
             g.vs['color'] = [self.foregroundBrush] * g.vcount()
 

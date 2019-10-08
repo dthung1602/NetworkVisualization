@@ -77,6 +77,9 @@ class StatDialog(QWidget):
         self.findChild(QLabel, 'density').setText(str(g.density())[:6])
 
     def getComparableAttr(self):
+        if len(self.ev) == 0:
+            return []
+
         def isStrOrFloat(v):
             return isinstance(v, str) or isinstance(v, float)
 
@@ -84,6 +87,8 @@ class StatDialog(QWidget):
 
     def getFloatCentralityAttr(self):
         es = self.canvas.g.es
+        if len(es) == 0:
+            return []
         return [attr for attr in es.attributes() if isinstance(es[0][attr], float)]
 
     def changeEV(self, opt):

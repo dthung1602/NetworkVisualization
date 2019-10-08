@@ -81,6 +81,7 @@ class Canvas(QWidget):
                 break
         self.notifyGraphUpdated()
         self.resetViewRect()
+        self.update()
 
     def notifyGraphUpdated(self):
         for mode in self.modes:

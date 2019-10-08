@@ -1,14 +1,17 @@
 import igraph
+from PIL import Image
 from PyQt5 import uic
 from PyQt5.QtCore import *
+from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QPainter, QPixmap
 from PyQt5.QtWidgets import *
+from igraph import Graph
 
 from canvas import *
+from .AboutUsDialog import AboutUsDialog
 from .AddAttributesDialog import AddAttributesDialog
 from .ConstraintDialog import ConstraintDialog
 from .FilterDialog import FilterDialog
-from .AboutUsDialog import AboutUsDialog
 from .InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from .RealTimeDialog import *
 from .ShortestPathWeightDialog import ShortestPathWeightDialog
@@ -74,6 +77,9 @@ class MainWindow(QMainWindow):
         # Open_button
         openBtn = self.findChild(QAction, 'action_Open')
         openBtn.triggered.connect(self.openFileNameDialog)
+        # Open_Image
+        openImageBtn = self.findChild(QAction, 'actionOpen_Image')
+        openImageBtn.triggered.connect(self.openImageToGraphDialog)
         # Save_Image_button
         saveImageBtn = self.findChild(QAction, 'actionSave_Image')
         saveImageBtn.triggered.connect(self.saveImageDialog)
@@ -204,6 +210,45 @@ class MainWindow(QMainWindow):
         if fileName:
             self.canvas.setGraph(fileName)
 
+    def openImageToGraphDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(
+            self, "Open Image", "./resource/graph",
+            "All Files (*);;Python Files (*.py)", options=options
+        )
+        if fileName:
+            img = Image.open(fileName, "r")
+            w, h = img.size
+            MAX_WIDTH = 160
+            if w > MAX_WIDTH:
+                wpercent = (MAX_WIDTH * 1.0 / w)
+                hsize = int(h * wpercent)
+                img = img.resize((MAX_WIDTH, hsize), Image.ANTIALIAS)
+                w, h = img.size
+            data = img.load()
+            graph = Graph()
+            for i in range(h):
+                for j in range(w):
+                    if img.mode == 'RGBA':
+                        r, g, b, a = data[j, i]
+                        color = QColor(r, g, b).name()
+                        if a > 0:
+                            graph.add_vertex(
+                                x=j,
+                                y=i,
+                                color=color
+                            )
+                    elif img.mode == 'RGB':
+                        r, g, b = data[j, i]
+                        color = QColor(r, g, b).name()
+                        graph.add_vertex(
+                            x=j,
+                            y=i,
+                            color=color
+                        )
+            self.canvas.setGraph(graph)
+
     def saveFileDialog(self):
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getSaveFileName(
@@ -211,11 +256,18 @@ class MainWindow(QMainWindow):
             "All Files (*);;GraphML Files (*.graphml);;GML Files (*.gml)", options=options
         )
 
+        # process graph before saving
+        g = self.canvas.g.copy()
+        g.vs['color'] = [c.name() if isinstance(c, QColor) else c.color().name() for c in g.vs['color']]
+        g.es['color'] = [c.name() if isinstance(c, QColor) else c.color().name() for c in g.es['color']]
+        del g.es['line']
+        del g.vs['pos']
+
         if fileName:
             if ".graphml" in fileName:
-                self.canvas.g.write_graphml(fileName)
+                g.write_graphml(fileName)
             elif ".gml" in fileName:
-                self.canvas.g.write_gml(fileName)
+                g.write_gml(fileName)
 
     def activateFindShortestPathMode(self):
         ShortestPathWeightDialog(self.canvas, self.shortestPathMode).exec()
@@ -264,5 +316,3 @@ class MainWindow(QMainWindow):
     def openRealTimeDialog(self):
         self.realTimeDialog = RealTimeDialog(self.canvas, self.realTimeMode)
         self.realTimeDialog.show()
-
-
