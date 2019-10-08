@@ -81,9 +81,9 @@ class LayoutMode(Mode):
                 v['x'] = c[0]
                 v['y'] = c[1]
         self.canvas.resetViewRect()
-        self.canvas.update()
 
     def setLayout(self, layoutName, weights=None):
         self.layoutName = layoutName
         self.weights = weights
         self.applyLayout()
+        self.canvas.update()

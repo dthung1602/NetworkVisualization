@@ -1,7 +1,7 @@
 import igraph
 from PyQt5 import uic
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QPainter, QPixmap
+from PyQt5.QtGui import QPainter, QPixmap, QColor
 from PyQt5.QtWidgets import *
 
 from canvas import *
@@ -208,11 +208,18 @@ class MainWindow(QMainWindow):
             "All Files (*);;GraphML Files (*.graphml);;GML Files (*.gml)", options=options
         )
 
+        # process graph before saving
+        g = self.canvas.g.copy()
+        g.vs['color'] = [c.name() if isinstance(c, QColor) else c.color().name() for c in g.vs['color']]
+        g.es['color'] = [c.name() if isinstance(c, QColor) else c.color().name() for c in g.es['color']]
+        del g.es['line']
+        del g.vs['pos']
+
         if fileName:
             if ".graphml" in fileName:
-                self.canvas.g.write_graphml(fileName)
+                g.write_graphml(fileName)
             elif ".gml" in fileName:
-                self.canvas.g.write_gml(fileName)
+                g.write_gml(fileName)
 
     def activateFindShortestPathMode(self):
         ShortestPathWeightDialog(self.canvas, self.shortestPathMode).exec()
