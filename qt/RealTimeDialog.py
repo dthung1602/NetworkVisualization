@@ -162,19 +162,15 @@ class RealTimeDialog(QWidget):
             randomDialog.exec()
             randomDialog.attrBack.append(name)
             if getattr(self.sender(), "type").upper() == "EDGE":
-                self.edgeAttr.append(randomDialog.attrBack)
                 if len(randomDialog.attrBack) == 3:
+                    self.edgeAttr.append(randomDialog.attrBack)
                     self.count += 1
                     self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
-                else:
-                    self.count -= 1
             else:
-                self.vertexAttr.append(randomDialog.attrBack)
                 if len(randomDialog.attrBack) == 3:
+                    self.vertexAttr.append(randomDialog.attrBack)
                     self.count += 1
                     self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
-                else:
-                    self.count -= 1
             if self.count > 0:
                 print("Checkin")
                 self.generateBtn.setEnabled(True)
