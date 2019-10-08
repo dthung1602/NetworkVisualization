@@ -836,7 +836,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <x>0</x>
      <y>0</y>
      <width>1366</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -855,6 +855,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
     </property>
     <addaction name="actionNew"/>
     <addaction name="action_Open"/>
+    <addaction name="actionOpen_Image"/>
     <addaction name="action_Save"/>
     <addaction name="actionSave_Image"/>
     <addaction name="action_Close"/>
@@ -1016,6 +1017,14 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
   <action name="actionGeographical_Mode">
    <property name="text">
     <string>Geographical Mode</string>
+   </property>
+  </action>
+  <action name="actionOpen_Image">
+   <property name="text">
+    <string>Open Image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
    </property>
   </action>
  </widget>
