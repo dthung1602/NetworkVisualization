@@ -10,8 +10,8 @@ from .utils import clearLayout
 
 
 class ConstraintDialog(QDialog):
-    attrEdge = {"total delay", "link speed raw"}
-    attrNode = {"latitude", "longitude"}
+    attrEdge = {"total delay", "link speed raw", "bit error rate", "jitter"}
+    attrNode = {"latitude", "longitude", "drop packet %"}
 
     def __init__(self, canvas: Canvas):
         super().__init__()
@@ -33,7 +33,7 @@ class ConstraintDialog(QDialog):
         self.setWindowTitle("Checking constraints")
         self.label = self.findChild(QLabel, 'label')
         self.grid = self.findChild(QGridLayout, 'gridLayout')
-        self.grid.setAlignment(Qt.AlignTop)
+        #self.grid.setAlignment(Qt.AlignTop)
         self.check()
         self.name = ""
 
@@ -84,13 +84,14 @@ class ConstraintDialog(QDialog):
             self.grid.addWidget(missLabel, 0, 0, 1, 3)
             missLabel.setAlignment(Qt.AlignCenter)
             for i in edgeMissing:
-                label = QLabel(i)
+                label = QLabel(i + ":")
                 label.setStyleSheet(self.labelStyleSheet)
                 label.setAlignment(Qt.AlignCenter)
                 self.grid.addWidget(label, count, 0)
                 buttonRename = QPushButton('Rename', self)
                 buttonRename.setStyleSheet(self.buttonStyleSheet)
                 buttonRename.setToolTip('This is rename dialog')
+                buttonRename.setFixedWidth(70)
                 self.grid.addWidget(buttonRename, count, 1)
                 setattr(buttonRename, "type", "EDGE")
                 buttonRename.clicked.connect(self.openRenameDialog(i))
@@ -98,6 +99,7 @@ class ConstraintDialog(QDialog):
                 buttonRandom = QPushButton('Random', self)
                 buttonRandom.setToolTip('This is random dialog')
                 buttonRandom.setStyleSheet(self.buttonStyleSheet)
+                buttonRandom.setFixedWidth(70)
                 self.grid.addWidget(buttonRandom, count, 2)
                 buttonRandom.clicked.connect(self.openRandomDialog)
                 buttonRandom.setObjectName(i)
@@ -110,12 +112,13 @@ class ConstraintDialog(QDialog):
             missLabel.setAlignment(Qt.AlignCenter)
             self.grid.addWidget(missLabel, 0, 3, 1, 3)
             for i in vertexMissing:
-                label = QLabel(i)
+                label = QLabel(i + ":")
                 label.setStyleSheet(self.labelStyleSheet)
                 label.setAlignment(Qt.AlignCenter)
                 self.grid.addWidget(label, count, 3)
                 buttonRename = QPushButton('Rename', self)
                 buttonRename.setStyleSheet(self.buttonStyleSheet)
+                buttonRename.setFixedWidth(70)
                 buttonRename.setToolTip('This is rename dialog')
                 self.grid.addWidget(buttonRename, count, 4)
                 setattr(buttonRename, "type", "VERTEX")
@@ -124,6 +127,7 @@ class ConstraintDialog(QDialog):
                 buttonRandom = QPushButton('Random', self)
                 buttonRandom.setToolTip('This is random dialog')
                 buttonRandom.setStyleSheet(self.buttonStyleSheet)
+                buttonRandom.setFixedWidth(70)
                 self.grid.addWidget(buttonRandom, count, 5)
                 buttonRandom.clicked.connect(self.openRandomDialog)
                 buttonRandom.setObjectName(i)

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
+    <width>450</width>
     <height>256</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
                 </string>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="clusterTab">
     <attribute name="title">
@@ -44,7 +44,7 @@
     <widget class="QComboBox" name="selectClusteringAlgo">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>50</y>
        <width>381</width>
        <height>31</height>
@@ -75,7 +75,7 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>20</y>
        <width>211</width>
        <height>21</height>
@@ -94,7 +94,7 @@
     <widget class="QComboBox" name="selectClusteringAlgoEdgeWeight">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>130</y>
        <width>381</width>
        <height>31</height>
@@ -125,7 +125,7 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>100</y>
        <width>211</width>
        <height>21</height>
@@ -144,7 +144,7 @@
     <widget class="QPushButton" name="applyClusterBtn">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>190</x>
        <y>190</y>
        <width>101</width>
        <height>25</height>
@@ -175,7 +175,7 @@
     <widget class="QComboBox" name="selectLayout">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>50</y>
        <width>381</width>
        <height>31</height>
@@ -206,7 +206,7 @@
     <widget class="QLabel" name="layoutLabel">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>20</y>
        <width>211</width>
        <height>21</height>
@@ -225,7 +225,7 @@
     <widget class="QComboBox" name="selectLayoutEdgeWeight">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>130</y>
        <width>381</width>
        <height>31</height>
@@ -256,7 +256,7 @@
     <widget class="QLabel" name="labelLayoutEdgeWeight">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>100</y>
        <width>211</width>
        <height>21</height>
@@ -275,7 +275,7 @@
     <widget class="QPushButton" name="applyLayoutBtn">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>190</x>
        <y>190</y>
        <width>89</width>
        <height>25</height>
@@ -305,7 +305,7 @@
     <widget class="QComboBox" name="selectFilterEdge">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>50</y>
        <width>381</width>
        <height>31</height>
@@ -336,7 +336,7 @@
     <widget class="QLabel" name="filterLabel">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>20</y>
        <width>211</width>
        <height>21</height>
@@ -355,7 +355,7 @@
     <widget class="QPushButton" name="applyFilterBtn">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>190</x>
        <y>190</y>
        <width>89</width>
        <height>25</height>
@@ -381,7 +381,7 @@
     <widget class="QLineEdit" name="filterLeft">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>130</y>
        <width>201</width>
        <height>25</height>
@@ -403,7 +403,7 @@
     <widget class="QLineEdit" name="filterRight">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>250</x>
        <y>130</y>
        <width>171</width>
        <height>25</height>
@@ -425,7 +425,7 @@
     <widget class="QLabel" name="filterLabel_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>100</y>
        <width>301</width>
        <height>21</height>
@@ -449,7 +449,7 @@
     <widget class="QComboBox" name="selectCentrality">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>50</y>
        <width>381</width>
        <height>25</height>
@@ -480,7 +480,7 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>20</y>
        <width>81</width>
        <height>17</height>
@@ -499,7 +499,7 @@
     <widget class="QPushButton" name="applyCentralityBtn">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>250</x>
        <y>180</y>
        <width>89</width>
        <height>25</height>
@@ -525,7 +525,7 @@
     <widget class="QPushButton" name="cancelCentralityBtn">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>150</x>
        <y>180</y>
        <width>89</width>
        <height>25</height>
@@ -551,7 +551,7 @@
     <widget class="QComboBox" name="selectCentralityEdgeWeight">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>120</y>
        <width>381</width>
        <height>25</height>
@@ -582,7 +582,7 @@
     <widget class="QLabel" name="labelCentralityEdgeWeight">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>86</y>
        <width>121</width>
        <height>21</height>
@@ -606,8 +606,8 @@
     <widget class="QLabel" name="vertexLabel">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>20</y>
+       <x>50</x>
+       <y>40</y>
        <width>151</width>
        <height>16</height>
       </rect>
@@ -625,8 +625,8 @@
     <widget class="QComboBox" name="selectVertex">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>50</y>
+       <x>50</x>
+       <y>70</y>
        <width>371</width>
        <height>31</height>
       </rect>
@@ -656,8 +656,8 @@
     <widget class="QPushButton" name="applyVertexBtn">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>100</y>
+       <x>190</x>
+       <y>120</y>
        <width>89</width>
        <height>25</height>
       </rect>
@@ -687,8 +687,8 @@
     <widget class="QComboBox" name="selectEdge">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>50</y>
+       <x>50</x>
+       <y>70</y>
        <width>371</width>
        <height>31</height>
       </rect>
@@ -718,8 +718,8 @@
     <widget class="QLabel" name="edgeLabel">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>20</y>
+       <x>50</x>
+       <y>40</y>
        <width>151</width>
        <height>16</height>
       </rect>
@@ -737,8 +737,8 @@
     <widget class="QPushButton" name="applyEdge">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>100</y>
+       <x>190</x>
+       <y>120</y>
        <width>89</width>
        <height>25</height>
       </rect>

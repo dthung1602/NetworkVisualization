@@ -43,6 +43,15 @@ class RealTimeRandomDialog(QDialog):
                                  "}"
                                  )
 
+        self.valueLabelStyleSheet = ("QLabel { font-size: 11px; border: 1px solid rgb(150, 150, 150); "
+                                     "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
+                                     "border-radius: 5px; }"
+                                     "QLabel:hover {background-color: #242424;}"
+                                     "QLineEdit {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
+                                     "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
+                                     "border-radius: 5px; }"
+                                     "QLineEdit:hover{background-color: #242424;}")
+
         self.meanEdit = QLineEdit()
         self.mean = BuddyLabel(self.meanEdit)
 
@@ -55,14 +64,7 @@ class RealTimeRandomDialog(QDialog):
         self.intervalEdit = QLineEdit()
         self.interval = BuddyLabel(self.intervalEdit)
 
-        self.valueLabelStyleSheet = ("QLabel {  height: font-size: 11px; border: 1px solid rgb(150, 150, 150); "
-                                    "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
-                                    "border-radius: 5px; }"
-                                    "QLabel:hover{background-color: #242424;}"
-                                    "QLineEdit {  font-size: 11px; border: 1px solid rgb(150, 150, 150); "
-                                    "padding: 2px; color: rgb(220,220,220); background-color: #383838;"
-                                    "border-radius: 5px; }"
-                                    "QLineEdit:hover{background-color: #242424;}")
+
         self.attrBack = []
 
         self.randomArr = []
@@ -120,7 +122,7 @@ class RealTimeRandomDialog(QDialog):
         stdDeviation = float(self.standardDeviationEdit.text())
         print(stdDeviation)
         self.notiLabel.setText(
-            "Generated Normal Distribution with \n Standard Deviation = "+str(stdDeviation))
+            "Generated Normal Distribution with \n Standard Deviation = " + str(stdDeviation))
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(stdDeviation)
 
@@ -128,12 +130,13 @@ class RealTimeRandomDialog(QDialog):
 
         try:
             val = float(self.intervalEdit.text())
-            print("Interval = ",val)
-            self.notiLabel.setText("Generated Uniform Distribution with \n interval = "+str(val))
+            print("Interval = ", val)
+            self.notiLabel.setText("Generated Uniform Distribution with \n interval = " + str(val))
             self.attrBack.append("Uniform Distribution")
             self.attrBack.append(val)
         except Exception as e:
-            print(e.__traceback__.tb_lineno," ",e)
+            print(e.__traceback__.tb_lineno, " ", e)
+
     def changeEdge(self, attributeName, randomArr):
         count = 0
         for i in self.g.es:

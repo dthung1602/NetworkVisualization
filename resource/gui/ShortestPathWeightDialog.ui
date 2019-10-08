@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>233</height>
+    <width>440</width>
+    <height>276</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
   <widget class="QLabel" name="filterLabel">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>70</y>
+     <x>70</x>
+     <y>100</y>
      <width>211</width>
      <height>21</height>
     </rect>
@@ -37,8 +37,8 @@ background-color: transparent;</string>
   <widget class="QComboBox" name="selectWeight">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>100</y>
+     <x>70</x>
+     <y>130</y>
      <width>301</width>
      <height>31</height>
     </rect>
@@ -62,6 +62,65 @@ QComboBox::down-arrow {
     height: 9px;
 	padding-right: 10px;
 }</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>200</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            }
+
+                            QPushButton:hover{
+                            background-color: #303030;
+                            }
+                        </string>
+   </property>
+   <property name="text">
+    <string>Find</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>381</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(180,180,180);
+font-size: 15px;
+background-color: rgb(57, 57, 57);
+font-weight: bold;
+border: 1px solid rgb(166, 166, 166);
+border-radius: 5px;
+                        </string>
+   </property>
+   <property name="text">
+    <string>Choose an edge attribute to be the weight 
+of the shortest path:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>
