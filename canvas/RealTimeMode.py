@@ -28,6 +28,7 @@ class RealTimeMode(Mode):
 
     def doRealTime(self):
         g = self.canvas.g
+        print("Do real time " ,self.vertexAttr)
         while self.inRealtimeMode:
             if len(self.vertexAttr) > 0:
                 for v in self.vertexAttr:
