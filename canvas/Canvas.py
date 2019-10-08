@@ -1,5 +1,5 @@
 from math import sqrt
-from typing import Union, List
+from typing import Union
 
 import igraph
 from PyQt5.QtCore import *
@@ -106,8 +106,11 @@ class Canvas(QWidget):
         self.update()
 
     def removeMode(self, mode: Mode):
-        self.modes.remove(mode)
-        mode.onUnset()
+        if mode in self.modes:
+            self.modes.remove(mode)
+            mode.onUnset()
+            return True
+        return False
 
     def resetViewRect(self):
         for mode in self.modes:
