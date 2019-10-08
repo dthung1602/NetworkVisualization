@@ -127,7 +127,7 @@ class RealTimeDialog(QWidget):
             if state == QtCore.Qt.Checked:
                 self.openRandomDialog(self.sender().objectName())
             else:
-                if (getattr(self.sender(), "VERTEX")):
+                if getattr(self.sender(), "type") == "VERTEX":
                     row = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[0]
                     col = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[1]
                     dist = self.vertexGridLayout.itemAtPosition(row, col + 1).widget().text()
@@ -167,14 +167,14 @@ class RealTimeDialog(QWidget):
                     self.count += 1
                     self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
                 else:
-                    self.count-=1
+                    self.count -= 1
             else:
                 self.vertexAttr.append(randomDialog.attrBack)
                 if len(randomDialog.attrBack) == 3:
                     self.count += 1
                     self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
                 else:
-                    self.count-=1
+                    self.count -= 1
             if self.count > 0:
                 print("Checkin")
                 self.generateBtn.setEnabled(True)
@@ -186,6 +186,8 @@ class RealTimeDialog(QWidget):
         self.realtimeMode.vertexAttr = self.vertexAttr
         self.realtimeMode.edgeAttr = self.edgeAttr
         self.realtimeMode.fps = self.fps
+        print("Vertex Attr : ",self.vertexAttr)
+        print("Edge Attr : ",self.edgeAttr)
         self.canvas.addMode(self.realtimeMode)
         self.notiLabel.setText("Real Time Mode: ON!")
 
