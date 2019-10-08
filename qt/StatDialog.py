@@ -3,7 +3,7 @@ from math import isnan, isinf
 import matplotlib.pyplot as plt
 import numpy as np
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QComboBox, QSizePolicy, QTabWidget
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QComboBox, QSizePolicy, QTabWidget, QLabel
 from PyQt5.uic import loadUi
 from igraph import VertexSeq
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -21,22 +21,29 @@ class StatDialog(QWidget):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("Network Visualization - Team Black - Statistics")
 
-        self.layout = self.findChild(QVBoxLayout, 'verticalLayout')
         self.tabWidget = self.findChild(QTabWidget, 'tabWidget')
         self.tabWidget.setCurrentIndex(0)
-        self.selectStyle = self.findChild(QComboBox, 'selectStyle')
+
+        self.simpleAttrGraph = self.findChild(QVBoxLayout, 'simpleAttrGraph')
+        self.selectStyleSA = self.findChild(QComboBox, 'selectStyleSA')
         self.selectEV = self.findChild(QComboBox, 'selectEV')
         self.selectAttr = self.findChild(QComboBox, 'selectAttr')
+        self.styleSA = 'bmh'
+        self.ev = canvas.g.vs
+
+        self.computedAttrGraph = self.findChild(QVBoxLayout, 'computedAttrGraph')
+        self.selectStyleCA = self.findChild(QComboBox, 'selectStyleCA')
         self.centralityAttr = self.findChild(QComboBox, 'centralityAttr')
         self.centralityWeight = self.findChild(QComboBox, 'centralityWeight')
-
-        self.styleOpt = 'bmh'
-        self.ev = canvas.g.vs
-        self.changeEV(0)
         self.comparableAttr = self.getComparableAttr()
+        self.styleCA = 'bmh'
         self.floatCentralityAttr = self.getFloatCentralityAttr()
 
         self.addSelectOptions()
+
+        self.changeEV(0)
+        self.recalculateCentrality(None)
+        self.calculateSummary()
 
     def addSelectOptions(self):
         # Edge / vertex
@@ -45,14 +52,29 @@ class StatDialog(QWidget):
         # Attr
         self.selectAttr.currentIndexChanged.connect(self.changeAttr)
         # Graph Style Opt
-        self.selectStyle.addItems([opt for opt in plt.style.available])
-        self.selectStyle.currentIndexChanged.connect(self.changeStyle)
+        self.selectStyleSA.addItems(plt.style.available)
+        self.selectStyleSA.currentIndexChanged.connect(self.changeStyleSA)
 
         # Centrality
         self.centralityAttr.addItems([opt[0] for opt in CENTRALITY_OPTIONS])
         self.centralityAttr.currentIndexChanged.connect(self.recalculateCentrality)
+        # Centrality weight
         self.centralityWeight.addItems(self.floatCentralityAttr)
         self.centralityWeight.currentIndexChanged.connect(self.recalculateCentrality)
+        # Graph Style Opt
+        self.selectStyleCA.addItems(plt.style.available)
+        self.selectStyleCA.currentIndexChanged.connect(self.changeStyleCA)
+
+    def calculateSummary(self):
+        g = self.canvas.g
+        componentCount = len(g.components().subgraphs())
+        self.findChild(QLabel, 'totalE').setText(str(g.ecount()))
+        self.findChild(QLabel, 'totalV').setText(str(g.vcount()))
+        self.findChild(QLabel, 'componentCount').setText(str(componentCount))
+        self.findChild(QLabel, 'isConnected').setText(str(componentCount == 1))
+        self.findChild(QLabel, 'isMultigraph').setText(str(g.has_multiple()))
+        self.findChild(QLabel, 'avgDegree').setText(str(np.mean(g.degree()))[:6])
+        self.findChild(QLabel, 'density').setText(str(g.density())[:6])
 
     def getComparableAttr(self):
         def isStrOrFloat(v):
@@ -73,13 +95,13 @@ class StatDialog(QWidget):
 
     def changeAttr(self, opt):
         attr = self.comparableAttr[opt]
-        clearLayout(self.layout)
+        clearLayout(self.simpleAttrGraph)
         ev = 'Vertices' if isinstance(self.ev, VertexSeq) else 'Edges'
-        w = WidgetPlot(ev, attr, self.ev[attr], self.styleOpt)
-        self.layout.addWidget(w)
+        w = WidgetPlot(ev, attr, self.ev[attr], self.styleSA)
+        self.simpleAttrGraph.addWidget(w)
 
-    def changeStyle(self, opt):
-        self.styleOpt = plt.style.available[opt]
+    def changeStyleSA(self, opt):
+        self.styleSA = plt.style.available[opt]
         i = int(self.selectAttr.currentIndex())
         self.changeAttr(i)
 
@@ -87,9 +109,13 @@ class StatDialog(QWidget):
         centrality = CENTRALITY_OPTIONS[self.centralityAttr.currentIndex()]
         weight = self.floatCentralityAttr[self.centralityWeight.currentIndex()]
         values = getattr(self.canvas.g, centrality[1])(weights=weight)
-        clearLayout(self.layout)
-        w = WidgetPlot('Vertices', centrality[0], values, self.styleOpt)
-        self.layout.addWidget(w)
+        clearLayout(self.computedAttrGraph)
+        w = WidgetPlot('Vertices', centrality[0], values, self.styleCA)
+        self.computedAttrGraph.addWidget(w)
+
+    def changeStyleCA(self, opt):
+        self.styleCA = plt.style.available[opt]
+        self.recalculateCentrality(None)
 
 
 class WidgetPlot(QWidget):
