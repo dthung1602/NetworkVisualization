@@ -8,6 +8,7 @@ from canvas import *
 from .AddAttributesDialog import AddAttributesDialog
 from .ConstraintDialog import ConstraintDialog
 from .FilterDialog import FilterDialog
+from .AboutUsDialog import AboutUsDialog
 from .InfoWidget import EdgeInfoWidget, VertexInfoWidget
 from .RealTimeDialog import *
 from .ShortestPathWeightDialog import ShortestPathWeightDialog
@@ -85,7 +86,9 @@ class MainWindow(QMainWindow):
         # New
         newBtn = self.findChild(QAction, 'actionNew')
         newBtn.triggered.connect(self.newGraph)
-
+        # About Us
+        aboutUsBtn = self.findChild(QAction, 'actionAboutUs')
+        aboutUsBtn.triggered.connect(self.aboutUsDialog)
         # View
         # Zoom in
         self.findChild(QAction, 'actionZoom_In').triggered.connect(self.canvas.zoomInEvent)
@@ -253,6 +256,13 @@ class MainWindow(QMainWindow):
         )
         self.filterDialog.show()
 
+    @staticmethod
+    def aboutUsDialog():
+        aboutUsWindow = AboutUsDialog()
+        aboutUsWindow.exec()
+
     def openRealTimeDialog(self):
         self.realTimeDialog = RealTimeDialog(self.canvas, self.realTimeMode)
         self.realTimeDialog.show()
+
+
