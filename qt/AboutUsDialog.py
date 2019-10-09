@@ -1,8 +1,10 @@
+import os
+
 from PyQt5.QtCore import QPropertyAnimation, QPointF, QUrl
 from PyQt5.QtGui import QIcon, QPainterPath, QMovie
+from PyQt5.QtMultimedia import *
 from PyQt5.QtWidgets import QDialog, QLabel
 from PyQt5.uic import loadUi
-from PyQt5.QtMultimedia import *
 
 
 class AboutUsDialog(QDialog):
@@ -13,7 +15,8 @@ class AboutUsDialog(QDialog):
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
         self.setWindowTitle("About Us")
         self.media = QMediaPlaylist()
-        url = QUrl.fromLocalFile('resource/media/music.mp3')
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        url = QUrl.fromLocalFile(os.path.join(dir_path, '../resource/media/music.mp3'))
         self.media.addMedia(QMediaContent(url))
         self.media.setPlaybackMode(QMediaPlaylist.Loop)
 
@@ -45,8 +48,8 @@ class AboutUsDialog(QDialog):
         path = QPainterPath()
         path.moveTo(-70, 410)
         for i in range(self.step):
-            path.quadTo(QPointF(self.xRange / self.step * i - 70 + (self.xRange / self.step / 2), 390),
-                        QPointF((self.xRange / self.step) * i - 70 + (self.xRange / self.step), 410))
+            path.quadTo(QPointF(self.xRange / self.step * i - 70 + (self.xRange / self.step / 2), 410),
+                        QPointF((self.xRange / self.step) * i - 70 + (self.xRange / self.step), 430))
         vals = [p / 100 for p in range(0, 101)]
         self.anim.setDuration(self.duration)
         for i in vals:
@@ -61,8 +64,8 @@ class AboutUsDialog(QDialog):
         path2 = QPainterPath()
         path2.moveTo(500, 410)
         for i in range(self.step):
-            path2.quadTo(QPointF(500 - (self.xRange / self.step) * i - (self.xRange / self.step / 2), 390),
-                         QPointF(500 - (self.xRange / self.step) * i - (self.xRange / self.step), 410))
+            path2.quadTo(QPointF(500 - (self.xRange / self.step) * i - (self.xRange / self.step / 2), 410),
+                         QPointF(500 - (self.xRange / self.step) * i - (self.xRange / self.step), 430))
         vals = [p / 100 for p in range(0, 101)]
         self.anim2.setDuration(self.duration)
         for i in vals:

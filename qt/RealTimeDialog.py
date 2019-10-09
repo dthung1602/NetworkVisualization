@@ -1,8 +1,10 @@
+import re
+
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLabel, QGridLayout, QWidget, QCheckBox, QComboBox, QPushButton, QSlider
 from PyQt5.uic import loadUi
-import re
+
 from canvas import Canvas, RealTimeMode
 from .RealTimeRandomDialog import RealTimeRandomDialog
 
@@ -10,9 +12,10 @@ DIST = [
     'Normal distribution',
     'Uniform distribution'
 ]
-VERTEX_IGNORED_KEYS = ['hyperedge']
 
-EDGE_IGNORED_KEYS = ['b_delay', 't_delay', 'p_delay', 'key', 'zorder', 'edge_weight']
+VERTEX_IGNORED_KEYS = ['id', 'key']
+
+EDGE_IGNORED_KEYS = ['id', 'key']
 
 
 class RealTimeDialog(QWidget):
@@ -93,7 +96,6 @@ class RealTimeDialog(QWidget):
         self.fpsValueLabel.setText('FPS Value = ' + str(fpsValue))
         self.fps = fpsValue
 
-    # self.selectDistribution.currentIndexChanged.connect(self.changeDist)
     def addEdgeKey(self):
         count = 1
         for key in self.canvas.g.es.attributes():
@@ -122,73 +124,58 @@ class RealTimeDialog(QWidget):
                 count += 1
 
     def checkBoxEdited(self, state):
-
-        try:
-            if state == QtCore.Qt.Checked:
-                self.openRandomDialog(self.sender().objectName())
+        if state == QtCore.Qt.Checked:
+            self.openRandomDialog(self.sender().objectName())
+        else:
+            if getattr(self.sender(), "type") == "VERTEX":
+                row = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[0]
+                col = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[1]
+                dist = self.vertexGridLayout.itemAtPosition(row, col + 1).widget().text()
+                value = self.vertexGridLayout.itemAtPosition(row, col + 3).widget().text()
+                res = float(re.findall("\d+\.\d+", value)[0])
+                vertexToRemove = [dist, res, self.sender().objectName()]
+                self.vertexAttr.remove(vertexToRemove)
+                print(self.vertexAttr)
+                print(vertexToRemove)
             else:
-                if getattr(self.sender(), "type") == "VERTEX":
-                    row = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[0]
-                    col = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[1]
-                    dist = self.vertexGridLayout.itemAtPosition(row, col + 1).widget().text()
-                    value = self.vertexGridLayout.itemAtPosition(row, col + 3).widget().text()
-                    res = float(re.findall("\d+\.\d+", value)[0])
-                    vertexToRemove = [dist, res, self.sender().objectName()]
-                    self.vertexAttr.remove(vertexToRemove)
-                    print(self.vertexAttr)
-                    print(vertexToRemove)
-                else:
-                    row = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[0]
-                    col = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[1]
-                    dist = self.vertexGridLayout.itemAtPosition(row, col + 1).widget().text()
-                    value = self.vertexGridLayout.itemAtPosition(row, col + 3).widget().text()
-                    res = float(re.findall("\d+\.\d+", value)[0])
-                    vertexToRemove = [dist, res, self.sender().objectName()]
-                    self.edgeAttr.remove(vertexToRemove)
-                    print(self.edgeAttr)
-                    print(vertexToRemove)
-                self.count -= 1
-            if self.count == 0:
-                self.generateBtn.setEnabled(False)
-        except Exception as e:
-            print(e.__traceback__.tb_lineno, " ", e)
+                row = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[0]
+                col = self.vertexGridLayout.getItemPosition(self.vertexGridLayout.indexOf(self.sender()))[1]
+                dist = self.vertexGridLayout.itemAtPosition(row, col + 1).widget().text()
+                value = self.vertexGridLayout.itemAtPosition(row, col + 3).widget().text()
+                res = float(re.findall("\d+\.\d+", value)[0])
+                vertexToRemove = [dist, res, self.sender().objectName()]
+                self.edgeAttr.remove(vertexToRemove)
+            self.count -= 1
+        if self.count == 0:
+            self.generateBtn.setEnabled(False)
 
     def openRandomDialog(self, name):
-
-        try:
-            randomDialog = RealTimeRandomDialog(self.canvas, getattr(self.sender(), "type"))
-            self.setObjectName(name)
-            setattr(randomDialog, "update", False)
-            randomDialog.exec()
-            randomDialog.attrBack.append(name)
-            if getattr(self.sender(), "type").upper() == "EDGE":
-                if len(randomDialog.attrBack) == 3:
-                    self.edgeAttr.append(randomDialog.attrBack)
-                    self.count += 1
-                    self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
-            else:
-                if len(randomDialog.attrBack) == 3:
-                    self.vertexAttr.append(randomDialog.attrBack)
-                    self.count += 1
-                    self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
-            if self.count > 0:
-                print("Checkin")
-                self.generateBtn.setEnabled(True)
-            print(self.count)
-        except Exception as e:
-            print(e.__traceback__.tb_lineno, " ", e)
+        randomDialog = RealTimeRandomDialog(self.canvas, getattr(self.sender(), "type"))
+        self.setObjectName(name)
+        setattr(randomDialog, "update", False)
+        randomDialog.exec()
+        randomDialog.attrBack.append(name)
+        if getattr(self.sender(), "type").upper() == "EDGE":
+            if len(randomDialog.attrBack) == 3:
+                self.edgeAttr.append(randomDialog.attrBack)
+                self.count += 1
+                self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+        else:
+            if len(randomDialog.attrBack) == 3:
+                self.vertexAttr.append(randomDialog.attrBack)
+                self.count += 1
+                self.notify(randomDialog.attrBack, getattr(self.sender(), "type"))
+        if self.count > 0:
+            self.generateBtn.setEnabled(True)
 
     def realTimeEvent(self):
         self.realtimeMode.vertexAttr = self.vertexAttr
         self.realtimeMode.edgeAttr = self.edgeAttr
         self.realtimeMode.fps = self.fps
-        print("Vertex Attr : ",self.vertexAttr)
-        print("Edge Attr : ",self.edgeAttr)
         self.canvas.addMode(self.realtimeMode)
         self.notiLabel.setText("Real Time Mode: ON!")
 
     def notify(self, mes, type):
-        print(mes)
         dist, value2, name = mes
         if type is "VERTEX":
             for r in range(1, self.vertexGridLayout.rowCount()):

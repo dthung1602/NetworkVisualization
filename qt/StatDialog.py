@@ -75,6 +75,8 @@ class StatDialog(QWidget):
         self.findChild(QLabel, 'isMultigraph').setText(str(g.has_multiple()))
         self.findChild(QLabel, 'avgDegree').setText(str(np.mean(g.degree()))[:6])
         self.findChild(QLabel, 'density').setText(str(g.density())[:6])
+        self.findChild(QLabel, 'diameter').setText(str(g.diameter()))
+        self.findChild(QLabel, 'radius').setText(str(g.radius()))
 
     def getComparableAttr(self):
         if len(self.ev) == 0:
@@ -142,7 +144,10 @@ class Plot(FigureCanvas):
             num_bins = 30
             ax.set_title(attr + ' distribution')
             ax.set_ylabel('Number of ' + ev)
-            ax.set_xlabel(attr)
+            if isinstance(values[0], str):
+                labels = sorted(list(set(values)))
+                ax.set_xticklabels(labels, rotation=90)
+                num_bins = len(labels)
             if weightArr and isinstance(weightArr[0], float):
                 meanLine = ax.axvline(np.mean(weightArr), color='r', linestyle='--')
                 medianLine = ax.axvline(np.median(weightArr), color='b', linestyle='-')

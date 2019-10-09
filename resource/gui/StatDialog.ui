@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1069</width>
-    <height>639</height>
+    <height>769</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>-6</x>
      <y>0</y>
      <width>1081</width>
-     <height>641</height>
+     <height>771</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -211,6 +211,58 @@
       <string># components:</string>
      </property>
     </widget>
+    <widget class="QLabel" name="diameter">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>140</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>140</y>
+       <width>101</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Diameter:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_17">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>140</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Radius:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="radius">
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>140</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="simpleAttrTab">
     <attribute name="title">
@@ -354,7 +406,7 @@ QComboBox::down-arrow {
        <x>1</x>
        <y>50</y>
        <width>1081</width>
-       <height>561</height>
+       <height>691</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="simpleAttrGraph">
@@ -490,7 +542,7 @@ QComboBox::down-arrow {
        <x>1</x>
        <y>50</y>
        <width>1081</width>
-       <height>561</height>
+       <height>691</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="computedAttrGraph">
