@@ -18,7 +18,7 @@ from .ShortestPathWeightDialog import ShortestPathWeightDialog
 from .StatDialog import StatDialog
 from .utils import clearLayout
 
-DEFAULT_GRAPH = 'resource/graph/NREN-delay.graphml'
+DEFAULT_GRAPH = 'resource/graph/NREN.graphml'
 
 
 class MainWindow(QMainWindow):
