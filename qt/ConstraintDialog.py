@@ -10,8 +10,8 @@ from .utils import clearLayout
 
 
 class ConstraintDialog(QDialog):
-    attrEdge = {"total delay", "link speed raw", "bit error rate", "jitter"}
-    attrNode = {"latitude", "longitude", "drop packet %"}
+    attrEdge = {"total delay", "link speed raw", "bit error rate", "jitter", "drop packet %"}
+    attrNode = {"latitude", "longitude"}
 
     def __init__(self, canvas: Canvas):
         super().__init__()

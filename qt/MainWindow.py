@@ -159,6 +159,9 @@ class MainWindow(QMainWindow):
         # Real Time Dialog
         realTimeBtn = self.findChild(QToolButton, 'real_time_btn')
         realTimeBtn.pressed.connect(self.openRealTimeDialog)
+        # Spectrum Box
+        self.spectrum = self.findChild(QLabel, 'spectrum')
+        self.spectrum.hide()
 
     def openAddAttributesDialog(self):
         AddAttributesDialog(self.canvas).exec()

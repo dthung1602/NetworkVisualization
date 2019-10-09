@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1366</width>
-    <height>836</height>
+    <height>808</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,7 +20,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #282828</string>
+   <string notr="true">background-color: #000</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -28,8 +28,8 @@
      <rect>
       <x>-10</x>
       <y>40</y>
-      <width>1091</width>
-      <height>1131</height>
+      <width>1131</width>
+      <height>791</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -241,7 +241,7 @@ border-image: url(&quot;resource/gui/tool/zoom-out.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset zoom&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Reset zoom&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -329,7 +329,7 @@ border-image: url(&quot;resource/gui/tool/graph.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;resource/gui/tooltip/shortest-path.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Find the Shortest Path&lt;/span&gt;&lt;br/&gt;Display the shortest path based on&lt;br/&gt;the choosen attribute&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -634,7 +634,7 @@ border-image: url(&quot;resource/gui/tool/filter.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List the missing edge/vertex's attributes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;List the missing edge/vertex's attributes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -678,7 +678,7 @@ border-image: url(&quot;resource/gui/tool/constraint.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add an attribute for edges/vertexes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Add an attribute for edges/vertexes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -722,7 +722,7 @@ border-image: url(&quot;resource/gui/tool/add-attribute.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start the Real Time Visualization mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/real-time.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Real Time Mode&lt;/strong&gt;&lt;br/&gt;Start visualize graph with real time data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -827,10 +827,10 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
    <widget class="QLabel" name="spectrum">
     <property name="geometry">
      <rect>
-      <x>1080</x>
-      <y>40</y>
-      <width>41</width>
-      <height>771</height>
+      <x>1100</x>
+      <y>41</y>
+      <width>21</width>
+      <height>742</height>
      </rect>
     </property>
     <property name="text">
@@ -843,12 +843,12 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <bool>true</bool>
     </property>
    </widget>
-   <zorder>spectrum</zorder>
    <zorder>verticalLayoutWidget</zorder>
    <zorder>widget</zorder>
    <zorder>line_3</zorder>
    <zorder>verticalLayoutWidget_2</zorder>
    <zorder>line_2</zorder>
+   <zorder>spectrum</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -875,6 +875,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
     </property>
     <addaction name="actionNew"/>
     <addaction name="action_Open"/>
+    <addaction name="actionOpen_Image"/>
     <addaction name="action_Save"/>
     <addaction name="actionSave_Image"/>
     <addaction name="action_Close"/>
@@ -1036,6 +1037,11 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
   <action name="actionGeographical_Mode">
    <property name="text">
     <string>Geographical Mode</string>
+   </property>
+  </action>
+  <action name="actionOpen_Image">
+   <property name="text">
+    <string>Open Image</string>
    </property>
   </action>
  </widget>

@@ -18,8 +18,12 @@ class CentralityMode(Mode):
         self.weight = None
 
     def onSet(self):
+        self.gui.spectrum.show()
         if self.canvas.g:
             self.applyCentrality()
+
+    def onUnset(self):
+        self.gui.spectrum.hide()
 
     def onSetGraph(self):
         self.applyCentrality()

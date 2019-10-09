@@ -12,8 +12,12 @@ class EdgeAttrColorMode(Mode):
         self.attr = None
 
     def onSet(self):
+        self.gui.spectrum.show()
         if self.canvas.g:
             self.setEdgesColor()
+
+    def onUnset(self):
+        self.gui.spectrum.hide()
 
     def onSetGraph(self):
         self.setEdgesColor()

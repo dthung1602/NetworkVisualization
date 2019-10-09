@@ -127,25 +127,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_5">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(180,180,180);
-
-                            background-color: transparent;
-                        </string>
-        </property>
-        <property name="text">
-         <string>Min/Mean:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="label_6">
         <property name="font">
          <font>
@@ -263,25 +244,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_10">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(180,180,180);
-
-                            background-color: transparent;
-                        </string>
-        </property>
-        <property name="text">
-         <string>Min/Mean:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="label_11">
         <property name="font">
          <font>
@@ -383,7 +345,7 @@
   <widget class="QPushButton" name="generate_btn">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>240</x>
      <y>470</y>
      <width>121</width>
      <height>31</height>
@@ -403,7 +365,7 @@
                         </string>
    </property>
    <property name="text">
-    <string>Generate</string>
+    <string>Start</string>
    </property>
   </widget>
   <widget class="QLabel" name="notiLabel">
@@ -430,6 +392,32 @@
    </property>
    <property name="text">
     <string>Real Time Mode: OFF</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="close_btn">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>470</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            }
+
+                            QPushButton:hover{
+                            background-color: #303030;
+                            }
+                        </string>
+   </property>
+   <property name="text">
+    <string>Stop</string>
    </property>
   </widget>
  </widget>

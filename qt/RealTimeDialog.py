@@ -35,6 +35,8 @@ class RealTimeDialog(QWidget):
         self.generateBtn = self.findChild(QPushButton, 'generate_btn')
         self.generateBtn.setEnabled(False)
         self.generateBtn.pressed.connect(self.realTimeEvent)
+        self.closeBtn = self.findChild(QPushButton, 'close_btn')
+        self.closeBtn.pressed.connect(self.close)
         self.notiLabel = self.findChild(QLabel, 'notiLabel')
         # FPS
         self.fpsSlider = self.findChild(QSlider, 'fpsSlider')
@@ -83,11 +85,11 @@ class RealTimeDialog(QWidget):
                 firstValueLabel = QLabel("None")
                 firstValueLabel.setObjectName(key + 'value1')
                 firstValueLabel.setStyleSheet(self.labelStyleSheet)
-                self.vertexGridLayout.addWidget(firstValueLabel, count, 3)
+                #self.vertexGridLayout.addWidget(firstValueLabel, count, 3)
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
                 secondValueLabel.setStyleSheet(self.labelStyleSheet)
-                self.vertexGridLayout.addWidget(secondValueLabel, count, 4)
+                self.vertexGridLayout.addWidget(secondValueLabel, count, 3)
 
                 count += 1
 
@@ -116,11 +118,11 @@ class RealTimeDialog(QWidget):
                 firstValueLabel = QLabel("None")
                 firstValueLabel.setObjectName(key + 'value1')
                 firstValueLabel.setStyleSheet(self.labelStyleSheet)
-                self.edgeGridLayout.addWidget(firstValueLabel, count, 3)
+                #self.edgeGridLayout.addWidget(firstValueLabel, count, 3)
                 secondValueLabel = QLabel("None")
                 secondValueLabel.setObjectName(key + 'value2')
                 secondValueLabel.setStyleSheet(self.labelStyleSheet)
-                self.edgeGridLayout.addWidget(secondValueLabel, count, 4)
+                self.edgeGridLayout.addWidget(secondValueLabel, count, 3)
                 count += 1
 
     def checkBoxEdited(self, state):

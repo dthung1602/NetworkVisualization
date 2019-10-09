@@ -132,6 +132,7 @@ class RealTimeRandomDialog(QDialog):
             "Generated Normal Distribution with \n Standard Deviation = " + str(stdDeviation))
         self.attrBack.append("Normal Distribution")
         self.attrBack.append(stdDeviation)
+        self.generateBtn.hide()
 
     def generateUniformDistribution(self):
 
@@ -143,6 +144,7 @@ class RealTimeRandomDialog(QDialog):
             self.attrBack.append(val)
         except Exception as e:
             print(e.__traceback__.tb_lineno, " ", e)
+        self.generateBtn.hide()
 
     def changeEdge(self, attributeName, randomArr):
         count = 0
