@@ -143,6 +143,7 @@ class ConstraintDialog(QDialog):
         randomDialog = RandomDialog(self.canvas, getattr(self.sender(), "type"))
         self.setObjectName(self.sender().objectName())
         randomDialog.exec()
+        self.check()
 
     def openRenameDialog(self, label):
         def func():

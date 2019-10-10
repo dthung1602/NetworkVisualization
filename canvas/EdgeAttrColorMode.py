@@ -27,6 +27,6 @@ class EdgeAttrColorMode(Mode):
 
     def setEdgesColor(self):
         if self.attr is not None:
-            self.canvas.g.es['color'] = arrayToSpectrum(self.canvas.g.es[self.attr])
+            self.canvas.g.es['color'] = [QPen(c, 2) for c in arrayToSpectrum(self.canvas.g.es[self.attr])]
         # else:
         #     self.canvas.g.es['color'] = [randomColor()] * self.canvas.g.ecount()

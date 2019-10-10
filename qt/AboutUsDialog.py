@@ -30,18 +30,15 @@ class AboutUsDialog(QDialog):
         self.mascotGif2 = QMovie("resource/image/small-mascot-flip.gif")
         self.mascot.setMovie(self.mascotGif)
         self.mascotFlip.setMovie(self.mascotGif2)
-        self.anim2 = QPropertyAnimation(self.mascotFlip, b"pos")
-        self.anim = QPropertyAnimation(self.mascot, b"pos")
 
         self.step = 10
         self.xRange = 500
         self.duration = 5000
-        try:
-            self.goOn()
-        except Exception as e:
-            print(e)
+
+        self.goOn()
 
     def goOn(self):
+        self.anim = QPropertyAnimation(self.mascot, b"pos")
         self.mascotFlip.hide()
         self.mascotGif.start()
         self.mascot.show()
@@ -58,6 +55,7 @@ class AboutUsDialog(QDialog):
         self.anim.finished.connect(self.goFlip)
 
     def goFlip(self):
+        self.anim2 = QPropertyAnimation(self.mascotFlip, b"pos")
         self.mascot.hide()
         self.mascotGif2.start()
         self.mascotFlip.show()

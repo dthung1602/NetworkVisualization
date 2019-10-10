@@ -39,6 +39,8 @@ class FilterDialog(QWidget):
 
         self.selectFilterEdge = self.findChild(QComboBox, 'selectFilterEdge')
         self.applyFilterBtn = self.findChild(QPushButton, 'applyFilterBtn')
+        self.cancelFilterBtn = self.findChild(QPushButton, 'cancelFilterBtn')
+        self.cancelFilterBtn.pressed.connect(self.cancelFilter)
         self.filterLeft = self.findChild(QLineEdit, 'filterLeft')
         self.filterRight = self.findChild(QLineEdit, 'filterRight')
 
@@ -115,6 +117,7 @@ class FilterDialog(QWidget):
         left = float(self.filterLeft.text())
         right = float(self.filterRight.text())
         self.filterEdgeMode.setFilters(attr, left, right)
+        self.canvas.update()
 
     def changeCentrality(self):
         centrality = CENTRALITY_OPTIONS[self.selectCentrality.currentIndex()][1]
@@ -131,3 +134,7 @@ class FilterDialog(QWidget):
         attr = self.vertexAttr[self.selectClusterAttribute.currentIndex()]
         self.vertexAttrMode.attr = attr
         self.canvas.addMode(self.vertexAttrMode)
+
+    def cancelFilter(self):
+        self.filterEdgeMode.setFilters(None, -999, 9999)
+        self.canvas.update()

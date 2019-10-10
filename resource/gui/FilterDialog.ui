@@ -35,7 +35,7 @@
                 </string>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="vertexTab">
     <attribute name="title">
@@ -517,7 +517,7 @@
     <widget class="QPushButton" name="applyFilterBtn">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>250</x>
        <y>190</y>
        <width>89</width>
        <height>25</height>
@@ -601,6 +601,32 @@
      </property>
      <property name="text">
       <string>Min:                                           Max:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="cancelFilterBtn">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>190</y>
+       <width>89</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            }
+                            QPushButton:hover{
+                            background-color: #303030;
+                            }
+
+                        </string>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
      </property>
     </widget>
    </widget>
