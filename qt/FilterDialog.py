@@ -59,12 +59,12 @@ class FilterDialog(QWidget):
         # Graph Layout Opt
         self.selectLayout.addItems([opt[0] for opt in LAYOUT_OPTIONS])
         self.selectLayout.currentIndexChanged.connect(self.setShowLayoutWeight)
-        self.selectLayoutEdgeWeight.addItems(['-- None --'] + self.edgeWeights)
+        self.selectLayoutEdgeWeight.addItems(['-- Please choose --'] + self.edgeWeights)
         self.applyLayoutBtn.pressed.connect(self.changeGraphLayout)
 
         # Clustering Algo Opt
         self.selectClusteringAlgo.addItems([opt[0] for opt in CLUSTERING_ALGO_OPTIONS])
-        self.selectClusteringAlgoEdgeWeight.addItems(['-- None --'] + self.edgeWeights)
+        self.selectClusteringAlgoEdgeWeight.addItems(['-- Please choose --'] + self.edgeWeights)
         self.applyClusterBtn.pressed.connect(self.changeClusteringAlgo)
 
         # Filter Edge Opt
@@ -73,7 +73,7 @@ class FilterDialog(QWidget):
 
         # Centrality
         self.selectCentrality.addItems([opt[0] for opt in CENTRALITY_OPTIONS])
-        self.selectCentralityEdgeWeight.addItems(['-- None --'] + self.edgeWeights)
+        self.selectCentralityEdgeWeight.addItems(['-- Please choose --'] + self.edgeWeights)
         self.applyCentralityBtn.pressed.connect(self.changeCentrality)
         self.cancelCentralityBtn.pressed.connect(self.cancelCentrality)
 
@@ -82,7 +82,7 @@ class FilterDialog(QWidget):
         self.applyClusterAttribute.pressed.connect(self.changeClusterAttribute)
 
         # Edge Attribute Opt
-        self.selectEdgeAttribute.addItems(['-- None --'] + self.canvas.g.es.attributes())
+        self.selectEdgeAttribute.addItems(['-- Please choose --'] + self.canvas.g.es.attributes())
         self.applyEdgeAttribute.pressed.connect(self.setEdgeAttr)
 
     def setShowLayoutWeight(self, opt):

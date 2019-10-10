@@ -106,7 +106,26 @@ class MainWindow(QMainWindow):
         self.findChild(QAction, 'actionGeographical_Mode').triggered.connect(self.changeViewModeTo(GeoViewMode))
         self.findChild(QAction, 'actionDark_Mode').triggered.connect(self.changeViewModeTo(DarkViewMode))
         self.findChild(QAction, 'actionLight_Mode').triggered.connect(self.changeViewModeTo(LightViewMode))
-
+        # Add a Node
+        self.findChild(QAction, 'action_Add_nodes').triggered.connect(self.editMode.setAddVertex)
+        # Delete a node
+        self.findChild(QAction, 'actionDelete_a_Node').triggered.connect(self.editMode.setDeleteVertex)
+        # Add a Line
+        self.findChild(QAction, 'actionAdd_a_Line').triggered.connect(self.editMode.setAddEdge)
+        # Delete a Line
+        self.findChild(QAction, 'actionDelete_a_Line').triggered.connect(self.editMode.setDeleteEdge)
+        # Find shortest path
+        self.findChild(QAction, 'actionFind_shortest_path').triggered.connect(self.activateFindShortestPathMode)
+        # Edit mode
+        self.findChild(QAction, 'actionEdit_graph').triggered.connect(self.activateEditGraphMode)
+        # Chart mode
+        self.findChild(QAction, 'actionStatistical_Charts').triggered.connect(self.openStatDialog)
+        # Checking constraints
+        self.findChild(QAction, 'actionCheck_constraints').triggered.connect(self.openConstraintDialog)
+        # Add new attribute
+        self.findChild(QAction, 'actionAdd_a_new_attribute').triggered.connect(self.openAddAttributesDialog)
+        # Real time
+        self.findChild(QAction, 'action_Real_Time_Mode').triggered.connect(self.openRealTimeDialog)
         # Window
         # Minimize_button
         self.findChild(QAction, 'action_Minimize').triggered.connect(self.minimizeWindow)

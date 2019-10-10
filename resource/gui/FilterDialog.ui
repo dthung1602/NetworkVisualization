@@ -35,50 +35,19 @@
                 </string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
-   <widget class="QWidget" name="clusterTab">
+   <widget class="QWidget" name="vertexTab">
     <attribute name="title">
-     <string>Cluster</string>
+     <string>Vertex</string>
     </attribute>
-    <widget class="QComboBox" name="selectClusteringAlgo">
+    <widget class="QLabel" name="vertexLabel">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>50</y>
-       <width>381</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#selectClusteringAlgo{
-                            color: rgb(200, 200, 200);
-                            border-style: 2px solid rgb(200, 200, 200);
-                            border-radius: 7px;
-                            background-color: #383838;
-                            padding-left: 13px;
-                            padding-right: 10px;
-                            }
-                            QComboBox::drop-down
-                            {
-                            border: 0px; /* This seems to replace the whole arrow of the combo box */
-                            }
-                            QComboBox::down-arrow {
-                            image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
-                            width: 9px;
-                            height: 9px;
-                            padding-right: 10px;
-                            }
-                        </string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>20</y>
-       <width>211</width>
-       <height>21</height>
+       <x>50</x>
+       <y>40</y>
+       <width>151</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -88,27 +57,27 @@
                         </string>
      </property>
      <property name="text">
-      <string>Select Clustering Algorithm:</string>
+      <string>Vertex's Attributes:</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="selectClusteringAlgoEdgeWeight">
+    <widget class="QComboBox" name="selectVertex">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>130</y>
-       <width>381</width>
+       <x>50</x>
+       <y>70</y>
+       <width>371</width>
        <height>31</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QComboBox{
                             color: rgb(200, 200, 200);
-                            border-style: 2px solid rgb(200, 200, 200);
+                            border-style: none;
                             border-radius: 7px;
                             background-color: #383838;
                             padding-left: 13px;
-                            padding-right: 10px;
                             }
+
                             QComboBox::drop-down
                             {
                             border: 0px; /* This seems to replace the whole arrow of the combo box */
@@ -122,13 +91,75 @@
                         </string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QPushButton" name="applyVertexBtn">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>100</y>
-       <width>211</width>
-       <height>21</height>
+       <x>190</x>
+       <y>120</y>
+       <width>89</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            }
+
+                            QPushButton:hover{
+                            background-color: #303030;
+                            }
+                        </string>
+     </property>
+     <property name="text">
+      <string>OK</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Edge</string>
+    </attribute>
+    <widget class="QComboBox" name="selectEdge">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>70</y>
+       <width>371</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+                            color: rgb(200, 200, 200);
+                            border-style: none;
+                            border-radius: 7px;
+                            background-color: #383838;
+                            padding-left: 13px;
+                            }
+
+                            QComboBox::drop-down
+                            {
+                            border: 0px; /* This seems to replace the whole arrow of the combo box */
+                            }
+                            QComboBox::down-arrow {
+                            image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
+                            width: 9px;
+                            height: 9px;
+                            padding-right: 10px;
+                            }
+                        </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="edgeLabel">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>40</y>
+       <width>151</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -138,15 +169,15 @@
                         </string>
      </property>
      <property name="text">
-      <string>Select edge weight:</string>
+      <string>Edge's Attributes:</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="applyClusterBtn">
+    <widget class="QPushButton" name="applyEdge">
      <property name="geometry">
       <rect>
        <x>190</x>
-       <y>190</y>
-       <width>101</width>
+       <y>120</y>
+       <width>89</width>
        <height>25</height>
       </rect>
      </property>
@@ -288,6 +319,137 @@
                             border-radius: 7px;
                             background-color: #383838;
                             }
+                            QPushButton:hover{
+                            background-color: #303030;
+                            }
+                        </string>
+     </property>
+     <property name="text">
+      <string>OK</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="clusterTab">
+    <attribute name="title">
+     <string>Cluster</string>
+    </attribute>
+    <widget class="QComboBox" name="selectClusteringAlgo">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>50</y>
+       <width>381</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#selectClusteringAlgo{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            padding-left: 13px;
+                            padding-right: 10px;
+                            }
+                            QComboBox::drop-down
+                            {
+                            border: 0px; /* This seems to replace the whole arrow of the combo box */
+                            }
+                            QComboBox::down-arrow {
+                            image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
+                            width: 9px;
+                            height: 9px;
+                            padding-right: 10px;
+                            }
+                        </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>20</y>
+       <width>211</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(180,180,180);
+                            font-size: 15px;
+                            background-color: transparent;
+                        </string>
+     </property>
+     <property name="text">
+      <string>Select Clustering Algorithm:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="selectClusteringAlgoEdgeWeight">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>130</y>
+       <width>381</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            padding-left: 13px;
+                            padding-right: 10px;
+                            }
+                            QComboBox::drop-down
+                            {
+                            border: 0px; /* This seems to replace the whole arrow of the combo box */
+                            }
+                            QComboBox::down-arrow {
+                            image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
+                            width: 9px;
+                            height: 9px;
+                            padding-right: 10px;
+                            }
+                        </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>100</y>
+       <width>211</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(180,180,180);
+                            font-size: 15px;
+                            background-color: transparent;
+                        </string>
+     </property>
+     <property name="text">
+      <string>Select edge weight:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="applyClusterBtn">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>190</y>
+       <width>101</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+                            color: rgb(200, 200, 200);
+                            border-style: 2px solid rgb(200, 200, 200);
+                            border-radius: 7px;
+                            background-color: #383838;
+                            }
+
                             QPushButton:hover{
                             background-color: #303030;
                             }
@@ -596,168 +758,6 @@
      </property>
      <property name="text">
       <string>Edge weight:</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="vertexTab">
-    <attribute name="title">
-     <string>Vertex</string>
-    </attribute>
-    <widget class="QLabel" name="vertexLabel">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>40</y>
-       <width>151</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(180,180,180);
-                            font-size: 15px;
-                            background-color: transparent;
-                        </string>
-     </property>
-     <property name="text">
-      <string>Vertex's Attributes:</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="selectVertex">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>70</y>
-       <width>371</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QComboBox{
-                            color: rgb(200, 200, 200);
-                            border-style: none;
-                            border-radius: 7px;
-                            background-color: #383838;
-                            padding-left: 13px;
-                            }
-
-                            QComboBox::drop-down
-                            {
-                            border: 0px; /* This seems to replace the whole arrow of the combo box */
-                            }
-                            QComboBox::down-arrow {
-                            image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
-                            width: 9px;
-                            height: 9px;
-                            padding-right: 10px;
-                            }
-                        </string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="applyVertexBtn">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>120</y>
-       <width>89</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-                            color: rgb(200, 200, 200);
-                            border-style: 2px solid rgb(200, 200, 200);
-                            border-radius: 7px;
-                            background-color: #383838;
-                            }
-
-                            QPushButton:hover{
-                            background-color: #303030;
-                            }
-                        </string>
-     </property>
-     <property name="text">
-      <string>OK</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab">
-    <attribute name="title">
-     <string>Edge</string>
-    </attribute>
-    <widget class="QComboBox" name="selectEdge">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>70</y>
-       <width>371</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QComboBox{
-                            color: rgb(200, 200, 200);
-                            border-style: none;
-                            border-radius: 7px;
-                            background-color: #383838;
-                            padding-left: 13px;
-                            }
-
-                            QComboBox::drop-down
-                            {
-                            border: 0px; /* This seems to replace the whole arrow of the combo box */
-                            }
-                            QComboBox::down-arrow {
-                            image: url(&quot;resource/gui/tool/down-arrow.png&quot;);
-                            width: 9px;
-                            height: 9px;
-                            padding-right: 10px;
-                            }
-                        </string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="edgeLabel">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>40</y>
-       <width>151</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(180,180,180);
-                            font-size: 15px;
-                            background-color: transparent;
-                        </string>
-     </property>
-     <property name="text">
-      <string>Edge's Attributes:</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="applyEdge">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>120</y>
-       <width>89</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-                            color: rgb(200, 200, 200);
-                            border-style: 2px solid rgb(200, 200, 200);
-                            border-radius: 7px;
-                            background-color: #383838;
-                            }
-
-                            QPushButton:hover{
-                            background-color: #303030;
-                            }
-                        </string>
-     </property>
-     <property name="text">
-      <string>OK</string>
      </property>
     </widget>
    </widget>

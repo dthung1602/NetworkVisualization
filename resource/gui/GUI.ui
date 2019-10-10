@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1366</width>
+    <width>1369</width>
     <height>808</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #000</string>
+   <string notr="true">background-color: #FFF</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -634,7 +634,7 @@ border-image: url(&quot;resource/gui/tool/filter.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;List the missing edge/vertex's attributes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/constraint.png&quot;&gt;&lt;p&gt;&lt;strong&gt;List the missing edge/vertex's attributes&lt;/strong&gt;&lt;br/&gt;Check missing attributes and generate new values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -678,7 +678,8 @@ border-image: url(&quot;resource/gui/tool/constraint.png&quot;);
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Add an attribute for edges/vertexes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body style=&quot;background-color: #dddddd; border-radius: 5px;&quot;&gt;&lt;img src=&quot;resource/gui/tooltip/add-attribute.png&quot;&gt;&lt;p&gt;&lt;strong&gt;Add an attribute for edges/vertices&lt;/strong&gt;&lt;br/&gt;Add a new empty attribute for edges/vertices&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Add nodes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -812,9 +813,9 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>1110</x>
       <y>40</y>
-      <width>251</width>
+      <width>261</width>
       <height>771</height>
      </rect>
     </property>
@@ -827,10 +828,10 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
    <widget class="QLabel" name="spectrum">
     <property name="geometry">
      <rect>
-      <x>1100</x>
+      <x>1097</x>
       <y>41</y>
       <width>21</width>
-      <height>742</height>
+      <height>751</height>
      </rect>
     </property>
     <property name="text">
@@ -855,7 +856,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1366</width>
+     <width>1369</width>
      <height>26</height>
     </rect>
    </property>
@@ -874,10 +875,13 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <string>&amp;File</string>
     </property>
     <addaction name="actionNew"/>
+    <addaction name="separator"/>
     <addaction name="action_Open"/>
     <addaction name="actionOpen_Image"/>
+    <addaction name="separator"/>
     <addaction name="action_Save"/>
     <addaction name="actionSave_Image"/>
+    <addaction name="separator"/>
     <addaction name="action_Close"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -885,6 +889,10 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
      <string>&amp;Edit</string>
     </property>
     <addaction name="action_Add_nodes"/>
+    <addaction name="actionDelete_a_Node"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_a_Line"/>
+    <addaction name="actionDelete_a_Line"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -909,6 +917,10 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
     </property>
     <addaction name="actionEdit_graph"/>
     <addaction name="actionFind_shortest_path"/>
+    <addaction name="actionStatistical_Charts"/>
+    <addaction name="actionCheck_constraints"/>
+    <addaction name="actionAdd_a_new_attribute"/>
+    <addaction name="action_Real_Time_Mode"/>
    </widget>
    <widget class="QMenu" name="menu_Window">
     <property name="title">
@@ -963,7 +975,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
   </action>
   <action name="action_Add_nodes">
    <property name="text">
-    <string>&amp;Add nodes</string>
+    <string>&amp;Add a Node</string>
    </property>
   </action>
   <action name="action_Minimize">
@@ -996,7 +1008,7 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
   </action>
   <action name="actionFind_shortest_path">
    <property name="text">
-    <string>Find shortest path</string>
+    <string>Find the shortest path</string>
    </property>
   </action>
   <action name="actionEdit_graph">
@@ -1042,6 +1054,41 @@ border-image: url(&quot;resource/gui/tool/real-time.png&quot;);
   <action name="actionOpen_Image">
    <property name="text">
     <string>Open Image</string>
+   </property>
+  </action>
+  <action name="actionDelete_a_Node">
+   <property name="text">
+    <string>Delete a Node</string>
+   </property>
+  </action>
+  <action name="actionAdd_a_Line">
+   <property name="text">
+    <string>Add a Line</string>
+   </property>
+  </action>
+  <action name="actionDelete_a_Line">
+   <property name="text">
+    <string>Delete a Line</string>
+   </property>
+  </action>
+  <action name="actionStatistical_Charts">
+   <property name="text">
+    <string>Statistical Graphs</string>
+   </property>
+  </action>
+  <action name="actionCheck_constraints">
+   <property name="text">
+    <string>Check constraints</string>
+   </property>
+  </action>
+  <action name="actionAdd_a_new_attribute">
+   <property name="text">
+    <string>Add a new attribute</string>
+   </property>
+  </action>
+  <action name="action_Real_Time_Mode">
+   <property name="text">
+    <string>&amp;Real Time Mode</string>
    </property>
   </action>
  </widget>
