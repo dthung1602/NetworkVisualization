@@ -2,7 +2,6 @@ from .Mode import Mode
 
 LAYOUT_OPTIONS = [
     ['Auto', 'auto'],
-    ['Bipartite', 'layout_bipartite'],
     ['Circle', 'layout_circle'],
     ['Distributed Recursive', 'layout_drl'],
     ['Fruchterman-Reingold', 'layout_fruchterman_reingold'],

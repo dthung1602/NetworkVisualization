@@ -102,8 +102,13 @@ class Canvas(QWidget):
 
         mode.canvas = self
         mode.onSet()
-        self.modes = [m for m in self.modes if not isConflict(m)]
-        self.modes = sorted(self.modes + [mode], key=lambda m: m.priority)
+        modes = []
+        for m in self.modes:
+            if isConflict(m):
+                m.onUnset()
+            else:
+                modes.append(m)
+        self.modes = sorted(modes + [mode], key=lambda m: m.priority)
         self.update()
 
     def removeMode(self, mode: Mode):

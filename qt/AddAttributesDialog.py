@@ -13,7 +13,7 @@ class AddAttributesDialog(QDialog):
 
         loadUi('resource/gui/AddAttributesDialog.ui', self)
         self.setWindowIcon(QIcon('resource/gui/icon.ico'))
-        self.setWindowTitle("Add Attributes for Vertexes/Edges")
+        self.setWindowTitle("Add Attributes for Vertices/Edges")
 
         # ------------Vertex-----------------
         self.layout = self.findChild(QVBoxLayout, 'verticalLayout')

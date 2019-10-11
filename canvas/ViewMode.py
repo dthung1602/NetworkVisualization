@@ -14,7 +14,7 @@ class ViewMode(Mode, ABC):
     backgroundPen = None
     foregroundBrush = None
     foregroundPen = None
-    selectedPen = QPen(Qt.red, 2)
+    selectedPen = QPen(QColor(255, 0, 0), 4)
 
     def onSet(self):
         g = self.canvas.g
@@ -71,7 +71,7 @@ class DarkViewMode(ViewMode):
     conflict_modes = ['LightViewMode', 'GeoViewMode']
     backgroundBrush = QBrush(Qt.black)
     backgroundPen = QPen(Qt.black)
-    foregroundBrush = QBrush(Qt.darkGreen)
+    foregroundBrush = QBrush(Qt.white)
     foregroundPen = QPen(Qt.white)
 
 
@@ -87,7 +87,7 @@ class GeoViewMode(ViewMode):
     conflict_modes = ['LightViewMode', 'DarkViewMode']
     backgroundPen = QPen(Qt.black)
     foregroundPen = QPen(Qt.black)
-    foregroundBrush = QBrush(Qt.darkBlue)
+    foregroundBrush = QBrush(Qt.green)
 
     def __init__(self, gui):
         super().__init__(gui)

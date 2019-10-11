@@ -9,9 +9,7 @@ CLUSTERING_ALGO_OPTIONS = [
     ['Leading eigenvector', 'community_leading_eigenvector'],
     ['Label Propagation', 'community_label_propagation'],
     ['Multilevel', 'community_multilevel'],
-    ['Optimal Modularity', 'community_optimal_modularity'],
     ['Edge Betweenness', 'community_edge_betweenness'],
-    ['Spinglass', 'community_spinglass'],
     ['Walktrap', 'community_walktrap']
 ]
 
