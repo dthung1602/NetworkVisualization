@@ -14,7 +14,6 @@ monitoring becomes a complex task. One way to support network administrators is
 to use proper visualization methods of network information in order to provide a swift
 overview about possible problems. 
 ### 1.2 Goal
-2 Goal
 As a first step it is important to identify relevant
 properties in a communication network
 and derive a model from an actual instance.
