@@ -126,7 +126,8 @@ class Canvas(QWidget):
         self.center = QPointF(self.WIDTH / 2, self.HEIGHT / 2)
         self.zoom = 1
         self.backgroundDragging = None
-        self.selectedEdges = self.selectedVertices = []
+        self.selectedEdges = []
+        self.selectedVertices = []
 
         self.updateViewRect()
 
