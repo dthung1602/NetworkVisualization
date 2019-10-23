@@ -1,4 +1,5 @@
 # Network Visualization
+![](https://i.imgur.com/6veSWH9.png)
 ## 1. Introduction
 ### 1.1 Purpose  
 Communication networks grow both in quantity and quality. In the past decades, the
